@@ -7,9 +7,10 @@ import classNames from 'classnames';
 
 import { FormattedMessage, injectIntl, intlShape } from '../../../util/reactIntl';
 import * as validators from '../../../util/validators';
-import { Form, PrimaryButton, FieldTextInput } from '../../../components';
+import { Form, PrimaryButton, FieldTextInput, FieldCheckbox, FieldSelect } from '../../../components';
 
 import css from './SignupForm.module.css';
+import { hearAboutUs, languageISpeak, professionTypes, tShirtSize } from '../../../config/configListing';
 
 const SignupFormComponent = props => (
   <FinalForm
@@ -25,6 +26,7 @@ const SignupFormComponent = props => (
         invalid,
         intl,
         termsAndConditions,
+        values
       } = fieldRenderProps;
 
       // email
@@ -134,6 +136,23 @@ const SignupFormComponent = props => (
             </div>
             <FieldTextInput
               className={css.password}
+              type="number"
+              id={formId ? `${formId}.phoneNumber` : 'phoneNumber'}
+              name="phoneNumber"
+              label={intl.formatMessage({
+                id: 'SignupForm.phoneNumberLabel',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'SignupForm.phoneNumberPlaceholder',
+              })}
+              validate={validators.required(
+                intl.formatMessage({
+                  id: 'SignupForm.phoneNumberRequired',
+                })
+              )}
+            />
+            <FieldTextInput
+              className={css.password}
               type="password"
               id={formId ? `${formId}.password` : 'password'}
               name="password"
@@ -147,6 +166,113 @@ const SignupFormComponent = props => (
               validate={passwordValidators}
             />
           </div>
+
+          <div>
+            <label>I am a...</label>
+            {professionTypes.map((item, index) => {
+              return (
+                <div key={index}>
+                  <FieldCheckbox
+                    id={`${index}.professionTypes`}
+                    name="professionTypes"
+                    label={item?.label}
+                    value={item?.key}
+                    required={true} />
+                </div>
+              )
+            })}
+          </div>
+
+          {values?.professionTypes?.includes("other") && 
+          <FieldTextInput
+            className={css.password}
+            type="text"
+            id={formId ? `${formId}.OtherProfession` : 'OtherProfession'}
+            name="OtherProfession"
+            // label={}
+            placeholder={intl.formatMessage({
+              id: 'SignupForm.OtherProfessionPlaceholder',
+            })}
+          />}
+
+          <FieldSelect
+            id={`${formId}.hearAboutUs`}
+            name="hearAboutUs"
+            className={css.field}
+            label={intl.formatMessage({ id: 'SignupForm.hearAboutUsLabel' })}
+          >
+            <option disabled value="">
+              {intl.formatMessage({ id: 'SignupForm.hearAboutUsPlaceholder' })}
+            </option>
+            {hearAboutUs.map(size => {
+              return (
+                <option key={size.key} value={size.value}>
+                  {size.label}
+                </option>
+              );
+            })}
+          </FieldSelect>
+
+          {values?.hearAboutUs === "friend" && 
+          <FieldTextInput
+            className={css.password}
+            type="text"
+            id={formId ? `${formId}.hearAboutUsFriendDetails` : 'hearAboutUsFriendDetails'}
+            name="hearAboutUsFriendDetails"
+            placeholder={intl.formatMessage({
+              id: 'SignupForm.hearAboutUsFriendDetailsPlaceholder',
+            })}
+          />}
+
+          <FieldSelect
+            id={`${formId}.tShirtSize`}
+            name="tShirtSize"
+            className={css.field}
+            label={intl.formatMessage({ id: 'SignupForm.tShirtSizeLabel' })}
+            validate={validators.required(
+              intl.formatMessage({ id: 'SignupForm.tShirtSize' })
+            )}
+          >
+            <option disabled value="">
+              {intl.formatMessage({ id: 'SignupForm.tShirtSizePlaceholder' })}
+            </option>
+            {tShirtSize.map(size => {
+              return (
+                <option key={size.key} value={size.value}>
+                  {size.label}
+                </option>
+              );
+            })}
+          </FieldSelect>
+
+
+          <div>
+            <label>I speak....</label>
+            {languageISpeak.map((item, index) => {
+              return (
+                <div key={index}>
+                  <FieldCheckbox
+                    id={`${index}.languageISpeak`}
+                    name="languageISpeak"
+                    label={item?.label}
+                    value={item?.key}
+                    required={true} />
+                </div>
+              )
+            })}
+          </div>
+
+
+          {values?.languageISpeak?.length > 0 && 
+          <FieldTextInput
+            className={css.password}
+            type="text"
+            id={formId ? `${formId}.languageISpeakText` : 'languageISpeakText'}
+            name="languageISpeakText"
+            placeholder={intl.formatMessage({
+              id: 'SignupForm.languageISpeakTextPlaceholder',
+            })}
+          />}
 
           <div className={css.bottomWrapper}>
             {termsAndConditions}

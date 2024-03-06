@@ -295,6 +295,49 @@ export const listingTypes = [
   // },
 ];
 
+
+export const professionTypes = [
+  { key: "nurse", value: "nurse", label: "Nurse" },
+  { key: "esthetician", value: "esthetician", label: "Esthetician" },
+  { key: "aspiring-injector ", value: "aspiring-injector ", label: "Aspiring Injector " },
+  { key: "nurse-practitioner ", value: "nurse-practitioner", label: "Nurse Practitioner" },
+  { key: "doctor", value: "doctor", label: "Doctor" },
+  { key: "physician", value: "physician", label: "Physician" },
+  { key: "other", value: "other", label: "Other" },
+]
+
+export const languageISpeak = [
+  { key: "nurse", value: "nurse", label: "English" },
+  { key: "spanish", value: "spanish", label: "Spanish" }
+]
+
+export const hearAboutUs = [
+  { key: "instagram", value: "instagram", label: "Instagram" },
+  { key: "facebook", value: "facebook", label: "Facebook" },
+  { key: "google", value: "google", label: "Google" },
+  { key: "friend", value: "friend", label: "My friend said you're the best!" },
+]
+
+
+export const tShirtSize = [
+  { key: "womenXS", value: "womenXS", label: "Women's Extra Small (XS)" },
+  { key: "womenS", value: "womenS", label: "Women's Small (S)" },
+  { key: "womenM", value: "womenM", label: "Women's Medium (M)" },
+  { key: "womenL", value: "womenL", label: "Women's Large (L)" },
+  { key: "womenXL", value: "womenXL", label: "Women's Extra Large (XL)" },
+  { key: "womenXXL", value: "womenXXL", label: "Women's Double Extra Large (XXL)" },
+  { key: "womenXXXL", value: "womenXXXL", label: "Women's Triple Extra Large (XXXL)" },
+  { key: "menXS", value: "menXS", label: "Men's Extra Small (XS)" },
+  { key: "menS", value: "menS", label: "Men's Small (S)" },
+  { key: "menM", value: "menM", label: "Men's Medium (M)" },
+  { key: "menL", value: "menL", label: "Men's Large (L)" },
+  { key: "menXL", value: "menXL", label: "Men's Extra Large (XL)" },
+  { key: "menXXL", value: "menXXL", label: "Men's Double Extra Large (XXL)" },
+  { key: "menXXXL", value: "menXXXL", label: "Men's Triple Extra Large (XXXL)" },
+];
+
+
+
 // SearchPage can enforce listing query to only those listings with valid listingType
 // However, it only works if you have set 'enum' type search schema for the public data fields
 //   - listingType
