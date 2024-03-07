@@ -21,11 +21,11 @@
 }
 
 .firstNameRoot {
-  width: calc(34% - 9px);
+  width: calc(44% - 9px);
 }
 
 .lastNameRoot {
-  width: calc(66% - 9px);
+  width: calc(56% - 9px);
 }
 
 .password {
@@ -34,4 +34,36 @@
 
 .bottomWrapper {
   composes: marketplaceModalBottomWrapper from global;
+  margin-top: 40px;
+  & button{
+    background-color: var(--marketplaceColor);
+    &:hover{
+      background-color: var(--marketplaceColor);
+    }
+  }
+}
+
+.field{
+  margin-bottom: 32px;
+}
+
+.checkboxWrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.checkBox {
+  width: 50%;
+  margin-bottom: 23px;
+}
+
+.labelTitle {
+  color: #4a4a4a;
+  font-family: Poppins;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 153.846% */
+  letter-spacing: -0.305px;
+  margin: 33px 0 14px;
 }
