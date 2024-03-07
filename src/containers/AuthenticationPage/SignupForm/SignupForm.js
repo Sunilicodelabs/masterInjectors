@@ -168,32 +168,36 @@ const SignupFormComponent = props => (
           </div>
 
           <div>
-            <label>I am a...</label>
-            {professionTypes.map((item, index) => {
-              return (
-                <div key={index}>
-                  <FieldCheckbox
-                    id={`${index}.professionTypes`}
-                    name="professionTypes"
-                    label={item?.label}
-                    value={item?.key}
-                    required={true} />
-                </div>
-              )
-            })}
+            <label className={css.labelTitle}>I am a...</label>
+            <div className={css.checkboxWrapper}>
+              {professionTypes.map((item, index) => {
+                return (
+                  <div key={index} className={css.checkBox}>
+                    <FieldCheckbox
+                      id={`${index}.professionTypes`}
+                      name="professionTypes"
+                      label={item?.label}
+                      value={item?.key}
+                      required={true} />
+                  </div>
+                )
+              })}
+
+              {values?.professionTypes?.includes("other") &&
+                <FieldTextInput
+                  className={css.checkBox}
+                  type="text"
+                  id={formId ? `${formId}.OtherProfession` : 'OtherProfession'}
+                  name="OtherProfession"
+                  // label={}
+                  placeholder={intl.formatMessage({
+                    id: 'SignupForm.OtherProfessionPlaceholder',
+                  })}
+                />}
+            </div>
           </div>
 
-          {values?.professionTypes?.includes("other") && 
-          <FieldTextInput
-            className={css.password}
-            type="text"
-            id={formId ? `${formId}.OtherProfession` : 'OtherProfession'}
-            name="OtherProfession"
-            // label={}
-            placeholder={intl.formatMessage({
-              id: 'SignupForm.OtherProfessionPlaceholder',
-            })}
-          />}
+
 
           <FieldSelect
             id={`${formId}.hearAboutUs`}
@@ -213,21 +217,21 @@ const SignupFormComponent = props => (
             })}
           </FieldSelect>
 
-          {values?.hearAboutUs === "friend" && 
-          <FieldTextInput
-            className={css.password}
-            type="text"
-            id={formId ? `${formId}.hearAboutUsFriendDetails` : 'hearAboutUsFriendDetails'}
-            name="hearAboutUsFriendDetails"
-            placeholder={intl.formatMessage({
-              id: 'SignupForm.hearAboutUsFriendDetailsPlaceholder',
-            })}
-          />}
+          {values?.hearAboutUs === "friend" &&
+            <FieldTextInput
+              className={css.password}
+              type="text"
+              id={formId ? `${formId}.hearAboutUsFriendDetails` : 'hearAboutUsFriendDetails'}
+              name="hearAboutUsFriendDetails"
+              placeholder={intl.formatMessage({
+                id: 'SignupForm.hearAboutUsFriendDetailsPlaceholder',
+              })}
+            />}
 
           <FieldSelect
             id={`${formId}.tShirtSize`}
             name="tShirtSize"
-            className={css.field}
+            // className={css.field}
             label={intl.formatMessage({ id: 'SignupForm.tShirtSizeLabel' })}
             validate={validators.required(
               intl.formatMessage({ id: 'SignupForm.tShirtSize' })
@@ -247,11 +251,13 @@ const SignupFormComponent = props => (
 
 
           <div>
-            <label>I speak....</label>
+            <label className={css.labelTitle}>I speak....</label>
+            <div className={css.checkboxWrapper}>
             {languageISpeak.map((item, index) => {
               return (
-                <div key={index}>
+                <div key={index}   className={css.checkBox}>
                   <FieldCheckbox
+                   
                     id={`${index}.languageISpeak`}
                     name="languageISpeak"
                     label={item?.label}
@@ -260,25 +266,26 @@ const SignupFormComponent = props => (
                 </div>
               )
             })}
+             </div>
           </div>
 
 
-          {values?.languageISpeak?.length > 0 && 
-          <FieldTextInput
-            className={css.password}
-            type="text"
-            id={formId ? `${formId}.languageISpeakText` : 'languageISpeakText'}
-            name="languageISpeakText"
-            placeholder={intl.formatMessage({
-              id: 'SignupForm.languageISpeakTextPlaceholder',
-            })}
-          />}
+          {values?.languageISpeak?.length > 0 &&
+            <FieldTextInput
+              // className={css.password}
+              type="text"
+              id={formId ? `${formId}.languageISpeakText` : 'languageISpeakText'}
+              name="languageISpeakText"
+              placeholder={intl.formatMessage({
+                id: 'SignupForm.languageISpeakTextPlaceholder',
+              })}
+            />}
 
           <div className={css.bottomWrapper}>
-            {termsAndConditions}
             <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled}>
               <FormattedMessage id="SignupForm.signUp" />
             </PrimaryButton>
+            {termsAndConditions}
           </div>
         </Form>
       );

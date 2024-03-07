@@ -86,6 +86,10 @@ const LoginFormComponent = props => (
             />
           </div>
           <div className={css.bottomWrapper}>
+    
+            <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled}>
+              <FormattedMessage id="LoginForm.logIn" />
+            </PrimaryButton>
             <p className={css.bottomWrapperText}>
               <span className={css.recoveryLinkInfo}>
                 <FormattedMessage
@@ -94,9 +98,6 @@ const LoginFormComponent = props => (
                 />
               </span>
             </p>
-            <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled}>
-              <FormattedMessage id="LoginForm.logIn" />
-            </PrimaryButton>
           </div>
         </Form>
       );
