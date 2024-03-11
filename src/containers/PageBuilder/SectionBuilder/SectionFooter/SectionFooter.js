@@ -1,10 +1,11 @@
 import React from 'react';
 import { arrayOf, bool, func, node, number, object, shape, string } from 'prop-types';
 import classNames from 'classnames';
-import { LinkedLogo } from '../../../../components';
+import { LinkedLogo, NamedLink } from '../../../../components';
 
 import Field from '../../Field';
 import BlockBuilder from '../../BlockBuilder';
+import logoImg from "../../../../assets/logo-white.png"
 
 import SectionContainer from '../SectionContainer';
 import css from './SectionFooter.module.css';
@@ -79,13 +80,16 @@ const SectionFooter = props => {
       <div className={css.footer}>
         <div className={classNames(css.content, getContentCss(numberOfColumns))}>
           <div>
-            <LinkedLogo
+            {/* <LinkedLogo
               rootClassName={css.logoLink}
               logoClassName={css.logoWrapper}
               logoImageClassName={css.logoImage}
               linkToExternalSite={linkLogoToExternalSite}
               layout={logoLayout}
-            />
+            /> */}
+            <NamedLink name="LandingPage">
+              <img src={logoImg} alt='logo' />
+            </NamedLink>
           </div>
           <div className={css.sloganMobile}>
             <Field data={slogan} className={css.slogan} />
