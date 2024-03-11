@@ -6,6 +6,9 @@ import Field, { hasDataInFields } from '../../Field';
 import BlockContainer from '../BlockContainer';
 
 import css from './BlockDefault.module.css';
+import { Button } from '../../../../components';
+import IconCollection from '../../../../components/IconCollection/IconCollection';
+import SearchComponent from './LandingFilterForm';
 
 const FieldMedia = props => {
   const { className, media, sizes, options } = props;
@@ -35,22 +38,53 @@ const BlockDefault = props => {
   const classes = classNames(rootClassName || css.root, className);
   const hasTextComponentFields = hasDataInFields([title, text, callToAction], options);
 
+
+
+
   return (
-    <BlockContainer id={blockId} className={classes}>
-      <FieldMedia
-        media={media}
-        sizes={responsiveImageSizes}
-        className={mediaClassName}
-        options={options}
-      />
-      {hasTextComponentFields ? (
-        <div className={classNames(textClassName, css.text)}>
-          <Field data={title} options={options} />
-          <Field data={text} options={options} />
-          <Field data={callToAction} className={ctaButtonClass} options={options} />
+    <>
+      <BlockContainer id={blockId} className={classes}>
+        <FieldMedia
+          media={media}
+          sizes={responsiveImageSizes}
+          className={mediaClassName}
+          options={options}
+        />
+        {hasTextComponentFields ? (
+          <div className={classNames(textClassName, css.text)}>
+            <Field data={title} options={options} />
+            <Field data={text} options={options} />
+            <Field data={callToAction} className={ctaButtonClass} options={options} />
+          </div>
+        ) : null}
+        {blockId == "landing-hero-left" && <div>
+        <SearchComponent
+            onSubmit={()=>{}}
+          /> 
+          </div>}
+      </BlockContainer>
+
+      {blockId == "master-injector-membership-2" && <BlockContainer id={"master-injector-membership-3"} className={classes}>
+        <div>
+
+          <div className={css.cources}>
+            <div><h4>Injector</h4>
+              <p>$250 Monthly</p>
+            </div>
+            <div>
+              <h4>Nurse Injector</h4>
+              <p>$375 Monthly</p>
+            </div>
+          </div>
+          <div >
+            <Button className={css.button}>
+              <IconCollection name="iconLock" />
+              Complete 1st Course To Unlock</Button>
+          </div>
         </div>
-      ) : null}
-    </BlockContainer>
+      </BlockContainer>}
+
+    </>
   );
 };
 

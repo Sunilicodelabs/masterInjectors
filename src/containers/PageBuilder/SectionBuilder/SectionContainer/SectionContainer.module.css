@@ -29,3 +29,22 @@
   bottom: 0;
   left: 0;
 }
+
+:global(#who-can-benefit){
+  & > div:nth-child(2){
+    & >div{
+      max-width: 980px;
+      gap: 88px;
+    }
+    @media (min-width: 768px){
+      padding: 47px 0;
+    }
+  }
+}
+
+:global(#landing-blog) {
+ & > div{
+  padding-top: 0;
+ }
+  }
+  

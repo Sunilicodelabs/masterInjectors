@@ -33,9 +33,9 @@ const SignupLink = () => {
 
 const LoginLink = () => {
   return (
-    <NamedLink name="LoginPage" className={css.topbarLink}>
+    <NamedLink name="LoginPage" className={classNames(css.topbarLink, css.loginLink)}>
       <span className={css.topbarLinkLabel}>
-        <FormattedMessage id="TopbarDesktop.login" />
+        <FormattedMessage id="TopbarDesktop.loginOrSignUp" />
       </span>
     </NamedLink>
   );
@@ -159,24 +159,45 @@ const TopbarDesktop = props => {
         alt={intl.formatMessage({ id: 'TopbarDesktop.logo' }, { marketplaceName })}
         linkToExternalSite={config?.topbar?.logoLink}
       />
-      <TopbarSearchForm
+      <div className={css.takeAvailableSpace}></div>
+      {/* <TopbarSearchForm
         className={classNames(css.searchLink, { [css.takeAvailableSpace]: giveSpaceForSearch })}
         desktopInputRoot={css.topbarSearchWithLeftPadding}
         onSubmit={onSearchSubmit}
         initialValues={initialSearchFormValues}
         appConfig={config}
-      />
-
-      <CustomLinksMenu
+      /> */}
+      <NamedLink name="LandingPage" className={classNames(css.topbarLink)}>
+        <span className={css.topbarLinkLabel}>
+          Home
+        </span>
+      </NamedLink>
+      <NamedLink name="LoginPage" className={classNames(css.topbarLink)}>
+        <span className={css.topbarLinkLabel}>
+          Who We Help
+        </span>
+      </NamedLink>
+      <NamedLink name="LoginPage" className={classNames(css.topbarLink)}>
+        <span className={css.topbarLinkLabel}>
+          Classes And Memberships
+        </span>
+      </NamedLink>
+      <NamedLink name="LoginPage" className={classNames(css.topbarLink)}>
+        <span className={css.topbarLinkLabel}>
+          Contact Us
+        </span>
+      </NamedLink>
+      {/* <CustomLinksMenu
         currentPage={currentPage}
         customLinks={customLinks}
         intl={intl}
         hasClientSideContentReady={authenticatedOnClientSide || !isAuthenticatedOrJustHydrated}
-      />
+      /> */}
 
       {inboxLinkMaybe}
       {profileMenuMaybe}
-      {signupLinkMaybe}
+      {/* {signupLinkMaybe} */}
+      <div className={css.border}></div>
       {loginLinkMaybe}
     </nav>
   );
