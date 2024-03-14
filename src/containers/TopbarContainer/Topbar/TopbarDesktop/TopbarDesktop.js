@@ -14,6 +14,7 @@ import {
   MenuContent,
   MenuItem,
   NamedLink,
+  NamedRedirect,
 } from '../../../../components';
 
 import TopbarSearchForm from '../TopbarSearchForm/TopbarSearchForm';
@@ -177,7 +178,7 @@ const TopbarDesktop = props => {
           Who We Help
         </span>
       </NamedLink>
-      <NamedLink name="LoginPage" className={classNames(css.topbarLink)}>
+      <NamedLink name="CMSPage" params={{ pageId: "subscription" }} className={classNames(css.topbarLink)}>
         <span className={css.topbarLinkLabel}>
           Classes And Memberships
         </span>

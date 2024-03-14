@@ -215,3 +215,31 @@
 .darkTheme pre {
   background-color: var(--colorGrey700);
 }
+
+:global(#subscription-hero) {
+  & .title {
+    color: var(--White, #fff);
+
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 32px; /* 160% */
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  & .description {
+    color: var(--White, #fff);
+
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 32px; /* 80% */
+    letter-spacing: 1px;
+    margin:12px 0 0;
+    padding: 0;
+  }
+  & .blockContainer {
+    max-width: 950px;
+  }
+}
