@@ -184,12 +184,13 @@ const setNoAvailabilityForUnbookableListings = processAlias => {
  */
 const getInitialValues = (props, existingListingTypeInfo, listingTypes, listingFieldsConfig) => {
   const { description, title, publicData, privateData } = props?.listing?.attributes || {};
-  const { listingType } = publicData;
+  const { listingType ,courseForDescription} = publicData;
 
   // Initial values for the form
   return {
     title,
     description,
+    courseForDescription,
     // Transaction type info: listingType, transactionProcessAlias, unitType
     ...getTransactionInfo(listingTypes, existingListingTypeInfo),
     ...initialValuesForListingFields(publicData, 'public', listingType, listingFieldsConfig),
@@ -211,8 +212,9 @@ const EditListingDetailsPanel = props => {
     updateInProgress,
     errors,
     config,
+    userType,
+    listingMinimumPriceSubUnits
   } = props;
-
   const classes = classNames(rootClassName || css.root, className);
   const { publicData, state } = listing?.attributes || {};
   const listingTypes = config.listing.listingTypes;
@@ -259,8 +261,10 @@ const EditListingDetailsPanel = props => {
       {canShowEditListingDetailsForm ? (
         <EditListingDetailsForm
           className={css.form}
+          userType={userType}
           initialValues={initialValues}
           saveActionMsg={submitButtonText}
+          listingMinimumPriceSubUnits={listingMinimumPriceSubUnits}
           onSubmit={values => {
             const {
               title,
@@ -268,6 +272,7 @@ const EditListingDetailsPanel = props => {
               listingType,
               transactionProcessAlias,
               unitType,
+              courseForDescription,
               ...rest
             } = values;
 
@@ -278,6 +283,7 @@ const EditListingDetailsPanel = props => {
               publicData: {
                 listingType,
                 transactionProcessAlias,
+                courseForDescription,
                 unitType,
                 ...pickListingFieldsData(rest, 'public', listingType, listingFieldsConfig),
               },

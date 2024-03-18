@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import { FormattedMessage, intlShape } from '../../../../util/reactIntl';
 import { ACCOUNT_SETTINGS_PAGES } from '../../../../routing/routeConfiguration';
-import { propTypes } from '../../../../util/types';
+import { ADMIN, propTypes } from '../../../../util/types';
 import {
   Avatar,
   InlineTextButton,
@@ -21,6 +21,7 @@ import TopbarSearchForm from '../TopbarSearchForm/TopbarSearchForm';
 import CustomLinksMenu from './CustomLinksMenu/CustomLinksMenu';
 
 import css from './TopbarDesktop.module.css';
+import { getUserType } from '../../../../util/helper';
 
 const SignupLink = () => {
   return (
@@ -64,47 +65,134 @@ const ProfileMenu = ({ currentPage, currentUser, onLogout }) => {
       page === 'AccountSettingsPage' && ACCOUNT_SETTINGS_PAGES.includes(currentPage);
     return currentPage === page || isAccountSettingsPage ? css.currentPage : null;
   };
+  const userType = getUserType(currentUser);
+
+  const setLocalStorage = ()=>{
+    localStorage.setItem('isTemplate', 'true')
+  }
 
   return (
     <Menu>
       <MenuLabel className={css.profileMenuLabel} isOpenClassName={css.profileMenuIsOpen}>
         <Avatar className={css.avatar} user={currentUser} disableProfileLink />
       </MenuLabel>
-      <MenuContent className={css.profileMenuContent}>
-        <MenuItem key="ManageListingsPage">
-          <NamedLink
-            className={classNames(css.menuLink, currentPageClass('ManageListingsPage'))}
-            name="ManageListingsPage"
-          >
-            <span className={css.menuItemBorder} />
-            <FormattedMessage id="TopbarDesktop.yourListingsLink" />
-          </NamedLink>
-        </MenuItem>
-        <MenuItem key="ProfileSettingsPage">
-          <NamedLink
-            className={classNames(css.menuLink, currentPageClass('ProfileSettingsPage'))}
-            name="ProfileSettingsPage"
-          >
-            <span className={css.menuItemBorder} />
-            <FormattedMessage id="TopbarDesktop.profileSettingsLink" />
-          </NamedLink>
-        </MenuItem>
-        <MenuItem key="AccountSettingsPage">
-          <NamedLink
-            className={classNames(css.menuLink, currentPageClass('AccountSettingsPage'))}
-            name="AccountSettingsPage"
-          >
-            <span className={css.menuItemBorder} />
-            <FormattedMessage id="TopbarDesktop.accountSettingsLink" />
-          </NamedLink>
-        </MenuItem>
-        <MenuItem key="logout">
-          <InlineTextButton rootClassName={css.logoutButton} onClick={onLogout}>
-            <span className={css.menuItemBorder} />
-            <FormattedMessage id="TopbarDesktop.logout" />
-          </InlineTextButton>
-        </MenuItem>
-      </MenuContent>
+
+
+      {userType === ADMIN ?
+        <MenuContent className={css.profileMenuContent}>
+          <MenuItem key="ManageListingsPage">
+            <NamedLink
+              className={classNames(css.menuLink, currentPageClass('ManageListingsPage'))}
+              name="ManageListingsPage"
+            >
+              <span className={css.menuItemBorder} />
+              <FormattedMessage id="TopbarDesktop.yourListingsLink" />
+            </NamedLink>
+          </MenuItem>
+          <MenuItem key="ProfileSettingsPage">
+            <NamedLink
+              className={classNames(css.menuLink, currentPageClass('ProfileSettingsPage'))}
+              name="ProfileSettingsPage"
+            >
+              <span className={css.menuItemBorder} />
+              <FormattedMessage id="TopbarDesktop.profileSettingsLink" />
+            </NamedLink>
+          </MenuItem>
+          <MenuItem key="NewListingPage" >
+            <NamedLink
+            
+              className={classNames(css.menuLink, currentPageClass('NewListingPage'))}
+              name="NewListingPage"
+            >
+              <span  className={css.menuItemBorder} />
+              <span onClick={()=> setLocalStorage()}>
+              <FormattedMessage id="TopbarDesktop.createCourseLink" />
+              </span>
+            </NamedLink>
+          </MenuItem>
+          {/* <MenuItem key="TemplatePage" >
+            <NamedLink
+              className={classNames(css.menuLink, currentPageClass('TemplatePage'))}
+              name="TemplatePage"
+            >
+              <span className={css.menuItemBorder} />
+              <FormattedMessage id="TopbarDesktop.TemplatePageLink" />
+            </NamedLink>
+          </MenuItem> */}
+
+          {/* <MenuItem key="CoursesPage">
+            <NamedLink
+              className={classNames(css.menuLink, currentPageClass('CoursesPage'))}
+              name="CoursesPage"
+            >
+              <span className={css.menuItemBorder} />
+              <FormattedMessage id="TopbarDesktop.CoursesPageLink" />
+            </NamedLink>
+          </MenuItem> */}
+
+          <MenuItem key="AccountSettingsPage">
+            <NamedLink
+              className={classNames(css.menuLink, currentPageClass('AccountSettingsPage'))}
+              name="AccountSettingsPage"
+            >
+              <span className={css.menuItemBorder} />
+              <FormattedMessage id="TopbarDesktop.accountSettingsLink" />
+            </NamedLink>
+          </MenuItem>
+          <MenuItem key="logout">
+            <InlineTextButton rootClassName={css.logoutButton} onClick={onLogout}>
+              <span className={css.menuItemBorder} />
+              <FormattedMessage id="TopbarDesktop.logout" />
+            </InlineTextButton>
+          </MenuItem>
+        </MenuContent>
+        :
+        <MenuContent className={css.profileMenuContent}>
+          <MenuItem key="ManageListingsPage">
+            <NamedLink
+              className={classNames(css.menuLink, currentPageClass('ManageListingsPage'))}
+              name="ManageListingsPage"
+            >
+              <span className={css.menuItemBorder} />
+              <FormattedMessage id="TopbarDesktop.yourListingsLink" />
+            </NamedLink>
+          </MenuItem>
+          <MenuItem key="CoursesPage">
+            <NamedLink
+              className={classNames(css.menuLink, currentPageClass('CoursesPage'))}
+              name="CoursesPage"
+            >
+              <span className={css.menuItemBorder} />
+              <FormattedMessage id="TopbarDesktop.CoursesPageLink" />
+            </NamedLink>
+          </MenuItem>
+          <MenuItem key="ProfileSettingsPage">
+            <NamedLink
+              className={classNames(css.menuLink, currentPageClass('ProfileSettingsPage'))}
+              name="ProfileSettingsPage"
+            >
+              <span className={css.menuItemBorder} />
+              <FormattedMessage id="TopbarDesktop.profileSettingsLink" />
+            </NamedLink>
+          </MenuItem>
+
+
+          <MenuItem key="AccountSettingsPage">
+            <NamedLink
+              className={classNames(css.menuLink, currentPageClass('AccountSettingsPage'))}
+              name="AccountSettingsPage"
+            >
+              <span className={css.menuItemBorder} />
+              <FormattedMessage id="TopbarDesktop.accountSettingsLink" />
+            </NamedLink>
+          </MenuItem>
+          <MenuItem key="logout">
+            <InlineTextButton rootClassName={css.logoutButton} onClick={onLogout}>
+              <span className={css.menuItemBorder} />
+              <FormattedMessage id="TopbarDesktop.logout" />
+            </InlineTextButton>
+          </MenuItem>
+        </MenuContent>}
     </Menu>
   );
 };
@@ -126,7 +214,6 @@ const TopbarDesktop = props => {
     initialSearchFormValues,
   } = props;
   const [mounted, setMounted] = useState(false);
-
   useEffect(() => {
     setMounted(true);
   }, []);

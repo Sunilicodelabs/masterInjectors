@@ -121,3 +121,7 @@
   word-break: break-word;
   hyphens: auto;
 }
+.saveButton {
+  color: #fc0483;
+  cursor: pointer;
+}

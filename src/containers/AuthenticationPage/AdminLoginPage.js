@@ -145,18 +145,18 @@ export const AuthenticationForms = props => {
   } = props;
   const fromState = { state: from ? { from } : null };
   const tabs = [
-    {
-      text: (
-        <Heading as={!isLogin ? 'h1' : 'h2'} rootClassName={css.tab}>
-          <FormattedMessage id="AuthenticationPage.signupLinkText" />
-        </Heading>
-      ),
-      selected: !isLogin,
-      linkProps: {
-        name: 'SignupPage',
-        to: fromState,
-      },
-    },
+    // {
+    //   text: (
+    //     <Heading as={!isLogin ? 'h1' : 'h2'} rootClassName={css.tab}>
+    //       <FormattedMessage id="AuthenticationPage.signupLinkText" />
+    //     </Heading>
+    //   ),
+    //   selected: !isLogin,
+    //   linkProps: {
+    //     name: 'SignupPage',
+    //     to: fromState,
+    //   },
+    // },
     {
       text: (
         <Heading as={isLogin ? 'h1' : 'h2'} rootClassName={css.tab}>
@@ -165,7 +165,7 @@ export const AuthenticationForms = props => {
       ),
       selected: isLogin,
       linkProps: {
-        name: 'LoginPage',
+        name: 'AdminLoginPage',
         to: fromState,
       },
     },
@@ -213,16 +213,16 @@ export const AuthenticationForms = props => {
       <LinkTabNavHorizontal className={css.tabs} tabs={tabs} />
       {loginOrSignupError}
 
-      {isLogin ? (
+      {/* {isLogin ? ( */}
         <LoginForm className={css.loginForm} onSubmit={submitLogin} inProgress={authInProgress} />
-      ) : (
+      {/* ) : (
         <SignupForm
           className={css.signupForm}
           onSubmit={handleSubmitSignup}
           inProgress={authInProgress}
           termsAndConditions={termsAndConditions}
         />
-      )}
+      )} */}
 
       <SocialLoginButtonsMaybe
         isLogin={isLogin}
@@ -416,7 +416,7 @@ export const AuthenticationPageComponent = props => {
   if (isAuthenticated && from) {
     return <Redirect to={from} />;
   } else if (isAuthenticated && currentUserLoaded && !showEmailVerification) {
-    return <NamedRedirect name="CoursesPage" />;
+    return <NamedRedirect name="LandingPage" />;
   }
 
   const resendErrorTranslationId = isTooManyEmailVerificationRequestsError(

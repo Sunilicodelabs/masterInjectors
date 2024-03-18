@@ -20,15 +20,15 @@ const RESULT_PAGE_SIZE = 24;
 
 // ================ Action types ================ //
 
-export const SEARCH_LISTINGS_REQUEST = 'app/SearchPage/SEARCH_LISTINGS_REQUEST';
-export const SEARCH_LISTINGS_SUCCESS = 'app/SearchPage/SEARCH_LISTINGS_SUCCESS';
-export const SEARCH_LISTINGS_ERROR = 'app/SearchPage/SEARCH_LISTINGS_ERROR';
+export const SEARCH_LISTINGS_REQUEST = 'app/CoursesPage/SEARCH_LISTINGS_REQUEST';
+export const SEARCH_LISTINGS_SUCCESS = 'app/CoursesPage/SEARCH_LISTINGS_SUCCESS';
+export const SEARCH_LISTINGS_ERROR = 'app/CoursesPage/SEARCH_LISTINGS_ERROR';
 
-export const SEARCH_MAP_LISTINGS_REQUEST = 'app/SearchPage/SEARCH_MAP_LISTINGS_REQUEST';
-export const SEARCH_MAP_LISTINGS_SUCCESS = 'app/SearchPage/SEARCH_MAP_LISTINGS_SUCCESS';
-export const SEARCH_MAP_LISTINGS_ERROR = 'app/SearchPage/SEARCH_MAP_LISTINGS_ERROR';
+export const SEARCH_MAP_LISTINGS_REQUEST = 'app/CoursesPage/SEARCH_MAP_LISTINGS_REQUEST';
+export const SEARCH_MAP_LISTINGS_SUCCESS = 'app/CoursesPage/SEARCH_MAP_LISTINGS_SUCCESS';
+export const SEARCH_MAP_LISTINGS_ERROR = 'app/CoursesPage/SEARCH_MAP_LISTINGS_ERROR';
 
-export const SEARCH_MAP_SET_ACTIVE_LISTING = 'app/SearchPage/SEARCH_MAP_SET_ACTIVE_LISTING';
+export const SEARCH_MAP_SET_ACTIVE_LISTING = 'app/CoursesPage/SEARCH_MAP_SET_ACTIVE_LISTING';
 
 // ================ Reducer ================ //
 
@@ -98,7 +98,7 @@ export const searchListingsError = e => ({
 export const searchListings = (searchParams, config) => (dispatch, getState, sdk) => {
   dispatch(searchListingsRequest(searchParams));
 
-  // SearchPage can enforce listing query to only those listings with valid listingType
+  // CoursesPage can enforce listing query to only those listings with valid listingType
   // NOTE: this only works if you have set 'enum' type search schema to listing's public data fields
   //       - listingType
   //       Same setup could be expanded to 2 other extended data fields:
@@ -136,7 +136,7 @@ export const searchListings = (searchParams, config) => (dispatch, getState, sdk
     const isNightlyMode = dateRangeMode === 'night';
     const isEntireRangeAvailable = availability === 'time-full';
 
-    // SearchPage need to use a single time zone but listings can have different time zones
+    // CoursesPage need to use a single time zone but listings can have different time zones
     // We need to expand/prolong the time window (start & end) to cover other time zones too.
     //
     // NOTE: you might want to consider changing UI so that
@@ -261,7 +261,13 @@ export const loadData = (params, search, config) => {
         'title',
         'geolocation',
         'price',
-        'publicData'
+        'publicData.listingType',
+        'publicData.transactionProcessAlias',
+        'publicData.unitType',
+        // These help rendering of 'purchase' listings,
+        // when transitioning from search page to listing page
+        'publicData.pickupEnabled',
+        'publicData.shippingEnabled',
       ],
       'fields.user': ['profile.displayName', 'profile.abbreviatedName'],
       'fields.image': [

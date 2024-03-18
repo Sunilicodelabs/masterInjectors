@@ -20,6 +20,7 @@ import { Button, Form, AspectRatioWrapper } from '../../../../components';
 // Import modules from this directory
 import ListingImage from './ListingImage';
 import css from './EditListingPhotosForm.module.css';
+import IconCollection from '../../../../components/IconCollection/IconCollection';
 
 const ACCEPT_IMAGES = 'image/*';
 
@@ -130,6 +131,8 @@ export const EditListingPhotosFormComponent = props => {
     }
   };
 
+
+
   return (
     <FinalForm
       {...props}
@@ -177,6 +180,22 @@ export const EditListingPhotosFormComponent = props => {
 
         const classes = classNames(css.root, className);
 
+
+        const handleDrop = (event, fileName) => {
+          event.preventDefault();
+          const reader = new FileReader();
+          const file = event.dataTransfer.files[0];
+          form.change('addImage', event.dataTransfer.files);
+          if (file.size < 500000) {
+            onImageUploadHandler(file);
+          }
+
+          reader.onload = () => {
+            // setFile(reader.result);
+          };
+          reader.readAsDataURL(file);
+        }
+
         return (
           <Form
             className={classes}
@@ -220,27 +239,38 @@ export const EditListingPhotosFormComponent = props => {
                 }
               </FieldArray>
 
-              <FieldAddImage
-                id="addImage"
-                name="addImage"
-                accept={ACCEPT_IMAGES}
-                label={
-                  <span className={css.chooseImageText}>
-                    <span className={css.chooseImage}>
-                      <FormattedMessage id="EditListingPhotosForm.chooseImage" />
+              <div
+                onDrop={event => handleDrop(event)}
+                onDragOver={event => event.preventDefault()}
+              >
+                <FieldAddImage
+                  id="addImage"
+                  name="addImage"
+                  accept={ACCEPT_IMAGES}
+                  label={
+                    <span className={css.chooseImageText}>
+                      <IconCollection icon="imageIcon" />
+                      {images.length === 0 && (
+                        <>
+                          <br />
+                          <span className={css.chooseImage}>
+                            <FormattedMessage id="EditListingPhotosForm.chooseImage" />
+                          </span>
+                          <span className={css.imageTypes}>
+                            <FormattedMessage id="EditListingPhotosForm.imageTypes" />
+                          </span>
+                        </>
+                      )}
                     </span>
-                    <span className={css.imageTypes}>
-                      <FormattedMessage id="EditListingPhotosForm.imageTypes" />
-                    </span>
-                  </span>
-                }
-                type="file"
-                disabled={state.imageUploadRequested}
-                formApi={form}
-                onImageUploadHandler={onImageUploadHandler}
-                aspectWidth={aspectWidth}
-                aspectHeight={aspectHeight}
-              />
+                  }
+                  type="file"
+                  disabled={state.imageUploadRequested}
+                  formApi={form}
+                  onImageUploadHandler={onImageUploadHandler}
+                  aspectWidth={aspectWidth}
+                  aspectHeight={aspectHeight}
+                />
+              </div>
             </div>
 
             {imagesError ? <div className={css.arrayError}>{imagesError}</div> : null}
@@ -250,9 +280,9 @@ export const EditListingPhotosFormComponent = props => {
               uploadImageError={uploadImageError}
             />
 
-            <p className={css.tip}>
+            {/* <p className={css.tip}>
               <FormattedMessage id="EditListingPhotosForm.addImagesTip" />
-            </p>
+            </p> */}
 
             <PublishListingError error={publishListingError} />
             <ShowListingsError error={showListingsError} />

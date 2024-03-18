@@ -11,8 +11,8 @@ import { types as sdkTypes } from '../../../../util/sdkLoader';
 import { H3, ListingLink } from '../../../../components';
 
 // Import modules from this directory
-import EditListingPricingAndStockForm from './EditListingPricingAndStockForm';
 import css from './EditListingPricingAndStockPanel.module.css';
+import EditListingPricingAndStockForm from './EditListingPricingAndStockForm';
 
 const { Money } = sdkTypes;
 const BILLIARD = 1000000000000000;
@@ -29,6 +29,8 @@ const getInitialValues = props => {
   const currentStock = listing?.currentStock;
 
   const publicData = listing?.attributes?.publicData;
+  const { coursePrice, listItems ,isPriceEditable } = publicData || {};
+  const formntedCoursePrice = coursePrice && new Money(coursePrice, "USD") || {};
   const listingTypeConfig = getListingTypeConfig(publicData, listingTypes);
   const hasInfiniteStock = STOCK_INFINITE_ITEMS.includes(listingTypeConfig?.stockType);
 
@@ -46,13 +48,12 @@ const getInitialValues = props => {
       : 1;
   const stockTypeInfinity = [];
 
-  return { price, stock, stockTypeInfinity };
+  return { price,coursePrice:formntedCoursePrice,listItems, stock, stockTypeInfinity ,isPriceEditable };
 };
 
 const EditListingPricingAndStockPanel = props => {
   // State is needed since re-rendering would overwrite the values during XHR call.
   const [state, setState] = useState({ initialValues: getInitialValues(props) });
-
   const {
     className,
     rootClassName,
@@ -105,7 +106,7 @@ const EditListingPricingAndStockPanel = props => {
           className={css.form}
           initialValues={initialValues}
           onSubmit={values => {
-            const { price, stock, stockTypeInfinity } = values;
+            const { price, stock, stockTypeInfinity,coursePrice ,listItems ,isPriceEditable } = values;
 
             // Update stock only if the value has changed, or stock is infinity in stockType,
             // but not current stock is a small number (might happen with old listings)
@@ -137,15 +138,18 @@ const EditListingPricingAndStockPanel = props => {
             // New values for listing attributes
             const updateValues = {
               price,
+              publicData:{
+                listItems,
+                coursePrice:coursePrice?.amount,
+                isPriceEditable
+              },
               ...stockUpdateMaybe,
             };
             // Save the initialValues to state
             // Otherwise, re-rendering would overwrite the values during XHR call.
             setState({
               initialValues: {
-                price,
-                stock: stockUpdateMaybe?.stockUpdate?.newTotal || stock,
-                stockTypeInfinity,
+                ...values
               },
             });
             onSubmit(updateValues);

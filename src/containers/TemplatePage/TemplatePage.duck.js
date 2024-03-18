@@ -20,15 +20,15 @@ const RESULT_PAGE_SIZE = 24;
 
 // ================ Action types ================ //
 
-export const SEARCH_LISTINGS_REQUEST = 'app/SearchPage/SEARCH_LISTINGS_REQUEST';
-export const SEARCH_LISTINGS_SUCCESS = 'app/SearchPage/SEARCH_LISTINGS_SUCCESS';
-export const SEARCH_LISTINGS_ERROR = 'app/SearchPage/SEARCH_LISTINGS_ERROR';
+export const SEARCH_LISTINGS_REQUEST = 'app/TemplatePage/SEARCH_LISTINGS_REQUEST';
+export const SEARCH_LISTINGS_SUCCESS = 'app/TemplatePage/SEARCH_LISTINGS_SUCCESS';
+export const SEARCH_LISTINGS_ERROR = 'app/TemplatePage/SEARCH_LISTINGS_ERROR';
 
-export const SEARCH_MAP_LISTINGS_REQUEST = 'app/SearchPage/SEARCH_MAP_LISTINGS_REQUEST';
-export const SEARCH_MAP_LISTINGS_SUCCESS = 'app/SearchPage/SEARCH_MAP_LISTINGS_SUCCESS';
-export const SEARCH_MAP_LISTINGS_ERROR = 'app/SearchPage/SEARCH_MAP_LISTINGS_ERROR';
+export const SEARCH_MAP_LISTINGS_REQUEST = 'app/TemplatePage/SEARCH_MAP_LISTINGS_REQUEST';
+export const SEARCH_MAP_LISTINGS_SUCCESS = 'app/TemplatePage/SEARCH_MAP_LISTINGS_SUCCESS';
+export const SEARCH_MAP_LISTINGS_ERROR = 'app/TemplatePage/SEARCH_MAP_LISTINGS_ERROR';
 
-export const SEARCH_MAP_SET_ACTIVE_LISTING = 'app/SearchPage/SEARCH_MAP_SET_ACTIVE_LISTING';
+export const SEARCH_MAP_SET_ACTIVE_LISTING = 'app/TemplatePage/SEARCH_MAP_SET_ACTIVE_LISTING';
 
 // ================ Reducer ================ //
 
@@ -98,21 +98,10 @@ export const searchListingsError = e => ({
 export const searchListings = (searchParams, config) => (dispatch, getState, sdk) => {
   dispatch(searchListingsRequest(searchParams));
 
-  // SearchPage can enforce listing query to only those listings with valid listingType
-  // NOTE: this only works if you have set 'enum' type search schema to listing's public data fields
-  //       - listingType
-  //       Same setup could be expanded to 2 other extended data fields:
-  //       - transactionProcessAlias
-  //       - unitType
-  //       ...and then turned enforceValidListingType config to true in configListing.js
-  // Read More:
-  // https://www.sharetribe.com/docs/how-to/manage-search-schemas-with-flex-cli/#adding-listing-search-schemas
   const searchValidListingTypes = listingTypes => {
     return config.listing.enforceValidListingType
       ? {
           pub_listingType: listingTypes.map(l => l.listingType),
-          // pub_transactionProcessAlias: listingTypes.map(l => l.transactionType.alias),
-          // pub_unitType: listingTypes.map(l => l.transactionType.unitType),
         }
       : {};
   };
@@ -136,15 +125,6 @@ export const searchListings = (searchParams, config) => (dispatch, getState, sdk
     const isNightlyMode = dateRangeMode === 'night';
     const isEntireRangeAvailable = availability === 'time-full';
 
-    // SearchPage need to use a single time zone but listings can have different time zones
-    // We need to expand/prolong the time window (start & end) to cover other time zones too.
-    //
-    // NOTE: you might want to consider changing UI so that
-    //   1) location is always asked first before date range
-    //   2) use some 3rd party service to convert location to time zone (IANA tz name)
-    //   3) Make exact dates filtering against that specific time zone
-    //   This setup would be better for dates filter,
-    //   but it enforces a UX where location is always asked first and therefore configurability
     const getProlongedStart = date => subtractTime(date, 14, 'hours', searchTZ);
     const getProlongedEnd = date => addTime(date, 12, 'hours', searchTZ);
 
@@ -167,20 +147,13 @@ export const searchListings = (searchParams, config) => (dispatch, getState, sdk
     const dayCount = isEntireRangeAvailable ? daysBetween(startDate, endDate) : 1;
     const day = 1440;
     const hour = 60;
-    // When entire range is required to be available, we count minutes of included date range,
-    // but there's a need to subtract one hour due to possibility of daylight saving time.
-    // If partial range is needed, then we just make sure that the shortest time unit supported
-    // is available within the range.
-    // You might want to customize this to match with your time units (e.g. day: 1440 - 60)
+
     const minDuration = isEntireRangeAvailable ? dayCount * day - hour : hour;
     return hasValidDates
       ? {
           start: getProlongedStart(startDate),
           end: getProlongedEnd(endDate),
-          // Availability can be time-full or time-partial.
-          // However, due to prolonged time window, we need to use time-partial.
           availability: 'time-partial',
-          // minDuration uses minutes
           minDuration,
         }
       : {};
@@ -188,12 +161,6 @@ export const searchListings = (searchParams, config) => (dispatch, getState, sdk
 
   const stockFilters = datesMaybe => {
     const hasDatesFilterInUse = Object.keys(datesMaybe).length > 0;
-
-    // If dates filter is not in use,
-    //   1) Add minStock filter with default value (1)
-    //   2) Add relaxed stockMode: "match-undefined"
-    // The latter is used to filter out all the listings that explicitly are out of stock,
-    // but keeps bookable and inquiry listings.
     return hasDatesFilterInUse ? {} : { minStock: 1, stockMode: 'match-undefined' };
   };
 
@@ -261,7 +228,11 @@ export const loadData = (params, search, config) => {
         'title',
         'geolocation',
         'price',
-        'publicData'
+        'publicData.listingType',
+        'publicData.transactionProcessAlias',
+        'publicData.unitType',
+        'publicData.pickupEnabled',
+        'publicData.shippingEnabled',
       ],
       'fields.user': ['profile.displayName', 'profile.abbreviatedName'],
       'fields.image': [

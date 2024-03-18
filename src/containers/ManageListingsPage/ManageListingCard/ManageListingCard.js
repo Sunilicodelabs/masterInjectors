@@ -361,7 +361,6 @@ export const ManageListingCardComponent = props => {
   const isPendingApproval = state === LISTING_STATE_PENDING_APPROVAL;
   const isClosed = state === LISTING_STATE_CLOSED;
   const isDraft = state === LISTING_STATE_DRAFT;
-
   const { listingType, transactionProcessAlias } = publicData || {};
   const isBookable = isBookingProcessAlias(transactionProcessAlias);
   const isProductOrder = isPurchaseProcessAlias(transactionProcessAlias);
@@ -555,7 +554,9 @@ export const ManageListingCardComponent = props => {
             name="EditListingPage"
             params={{ id, slug, type: editListingLinkType, tab: 'details' }}
           >
+            <span onClick={()=> localStorage.setItem('isTemplate', 'false')}>
             <FormattedMessage id="ManageListingCard.editListing" />
+              </span>
           </NamedLink>
 
           <LinkToStockOrAvailabilityTab

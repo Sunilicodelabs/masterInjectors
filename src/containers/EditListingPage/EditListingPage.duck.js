@@ -15,6 +15,7 @@ import { storableError } from '../../util/errors';
 import * as log from '../../util/log';
 import { parse } from '../../util/urlHelpers';
 import { isBookingProcessAlias } from '../../transactions/transaction';
+const RESULT_PAGE_SIZE = 24;
 
 import { addMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import {
@@ -23,6 +24,7 @@ import {
   fetchStripeAccount,
 } from '../../ducks/stripeConnectAccount.duck';
 import { fetchCurrentUser } from '../../ducks/user.duck';
+import { isOriginInUse } from '../../util/search';
 
 const { UUID } = sdkTypes;
 
@@ -168,6 +170,17 @@ export const SAVE_PAYOUT_DETAILS_REQUEST = 'app/EditListingPage/SAVE_PAYOUT_DETA
 export const SAVE_PAYOUT_DETAILS_SUCCESS = 'app/EditListingPage/SAVE_PAYOUT_DETAILS_SUCCESS';
 export const SAVE_PAYOUT_DETAILS_ERROR = 'app/EditListingPage/SAVE_PAYOUT_DETAILS_ERROR';
 
+
+export const SEARCH_LISTINGS_REQUEST = 'app/TemplatePage/SEARCH_LISTINGS_REQUEST';
+export const SEARCH_LISTINGS_SUCCESS = 'app/TemplatePage/SEARCH_LISTINGS_SUCCESS';
+export const SEARCH_LISTINGS_ERROR = 'app/TemplatePage/SEARCH_LISTINGS_ERROR';
+
+export const SEARCH_MAP_LISTINGS_REQUEST = 'app/TemplatePage/SEARCH_MAP_LISTINGS_REQUEST';
+export const SEARCH_MAP_LISTINGS_SUCCESS = 'app/TemplatePage/SEARCH_MAP_LISTINGS_SUCCESS';
+export const SEARCH_MAP_LISTINGS_ERROR = 'app/TemplatePage/SEARCH_MAP_LISTINGS_ERROR';
+
+export const SEARCH_MAP_SET_ACTIVE_LISTING = 'app/TemplatePage/SEARCH_MAP_SET_ACTIVE_LISTING';
+
 // ================ Reducer ================ //
 
 const initialState = {
@@ -208,7 +221,14 @@ const initialState = {
   updateInProgress: false,
   payoutDetailsSaveInProgress: false,
   payoutDetailsSaved: false,
+
+  pagination: null,
+  searchParams: null,
+  searchInProgress: false,
+  searchListingsError: null,
+  currentPageResultIds: [],
 };
+const resultIds = data => data.data.map(l => l.id);
 
 export default function reducer(state = initialState, action = {}) {
   const { type, payload } = action;
@@ -452,6 +472,32 @@ export default function reducer(state = initialState, action = {}) {
     case SAVE_PAYOUT_DETAILS_SUCCESS:
       return { ...state, payoutDetailsSaveInProgress: false, payoutDetailsSaved: true };
 
+      case SEARCH_LISTINGS_REQUEST:
+        return {
+          ...state,
+          searchParams: payload.searchParams,
+          searchInProgress: true,
+          searchMapListingIds: [],
+          searchListingsError: null,
+        };
+      case SEARCH_LISTINGS_SUCCESS:
+        return {
+          ...state,
+          currentPageResultIds: resultIds(payload.data),
+          pagination: payload.data.meta,
+          searchInProgress: false,
+        };
+      case SEARCH_LISTINGS_ERROR:
+        // eslint-disable-next-line no-console
+        console.error(payload);
+        return { ...state, searchInProgress: false, searchListingsError: payload };
+  
+      case SEARCH_MAP_SET_ACTIVE_LISTING:
+        return {
+          ...state,
+          activeListingId: payload,
+        };  
+
     default:
       return state;
   }
@@ -473,6 +519,23 @@ export const clearUpdatedTab = () => ({
 export const removeListingImage = imageId => ({
   type: REMOVE_LISTING_IMAGE,
   payload: { imageId },
+});
+
+
+export const searchListingsRequest = searchParams => ({
+  type: SEARCH_LISTINGS_REQUEST,
+  payload: { searchParams },
+});
+
+export const searchListingsSuccess = response => ({
+  type: SEARCH_LISTINGS_SUCCESS,
+  payload: { data: response.data },
+});
+
+export const searchListingsError = e => ({
+  type: SEARCH_LISTINGS_ERROR,
+  error: true,
+  payload: e,
 });
 
 // All the action creators that don't have the {Success, Error} suffix
@@ -903,12 +966,80 @@ export const savePayoutDetails = (values, isUpdateCall) => (dispatch, getState, 
     .catch(() => dispatch(savePayoutDetailsError()));
 };
 
+
+export const searchListings = (config) => (dispatch, getState, sdk) => {
+
+  const originMaybe = isOriginInUse(config) && origin ? { origin } : {};
+  const {
+    aspectWidth = 1,
+    aspectHeight = 1,
+    variantPrefix = 'listing-card',
+  } = config.layout.listingImage;
+  const aspectRatio = aspectHeight / aspectWidth;
+  const imageVariantConfig = {
+    ...createImageVariantConfig(`${variantPrefix}`, 400, aspectRatio),
+    ...createImageVariantConfig(`${variantPrefix}-2x`, 800, aspectRatio),
+  };
+
+  // Merge all parameters
+  const searchParamsMerged = {
+    ...originMaybe,
+    meta_isTemplate:true,
+    perPage: RESULT_PAGE_SIZE,
+    include: ['author', 'images'],
+    'fields.listing': [
+      'title',
+      'description',
+      'geolocation',
+      'price',
+      'publicData',
+    ],
+    'fields.user': ['profile.displayName', 'profile.abbreviatedName'],
+    'fields.image': [
+      'variants.scaled-small',
+      'variants.scaled-medium',
+      `variants.${variantPrefix}`,
+      `variants.${variantPrefix}-2x`,
+    ],
+    ...imageVariantConfig,
+    'limit.images': 1,
+    // ...searchValidListingTypes(config.listing.listingTypes),
+  };
+
+  // Query listings using SDK
+  return sdk.listings
+    .query(searchParamsMerged)
+    .then(response => {
+      const listingFields = config?.listing?.listingFields;
+      const sanitizeConfig = { listingFields };
+
+      // Dispatch action to add listings to store
+      dispatch(addMarketplaceEntities(response, sanitizeConfig));
+      // Dispatch action to indicate successful search
+      dispatch(searchListingsSuccess(response));
+      return response;
+    })
+    .catch(e => {
+      // Dispatch action to indicate search error
+      dispatch(searchListingsError(storableError(e)));
+      throw e;
+    });
+};
+
+export const setActiveListing = listingId => ({
+  type: SEARCH_MAP_SET_ACTIVE_LISTING,
+  payload: listingId,
+});
+
+
+
 // loadData is run for each tab of the wizard. When editing an
 // existing listing, the listing must be fetched first.
 export const loadData = (params, search, config) => (dispatch, getState, sdk) => {
   dispatch(clearUpdatedTab());
   const { id, type } = params;
 
+  dispatch(searchListings(config))
   if (type === 'new') {
     // No need to listing data when creating a new listing
     return Promise.all([dispatch(fetchCurrentUser())])
