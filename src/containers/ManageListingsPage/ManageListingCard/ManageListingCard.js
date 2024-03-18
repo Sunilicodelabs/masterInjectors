@@ -130,7 +130,9 @@ const ShowFinishDraftOverlayMaybe = props => {
           name="EditListingPage"
           params={{ id, slug, type: LISTING_PAGE_PARAM_TYPE_DRAFT, tab: 'photos' }}
         >
+          <span onClick={()=> localStorage.setItem('isTemplate', 'false')}>            
           <FormattedMessage id="ManageListingCard.finishListingDraft" />
+          </span>
         </NamedLink>
       </Overlay>
     </React.Fragment>
