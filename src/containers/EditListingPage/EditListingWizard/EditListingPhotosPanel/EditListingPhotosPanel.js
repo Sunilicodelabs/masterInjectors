@@ -14,8 +14,10 @@ import EditListingPhotosForm from './EditListingPhotosForm';
 import css from './EditListingPhotosPanel.module.css';
 
 const getInitialValues = params => {
-  const { images } = params;
-  return { images };
+  const { images, listing } = params;
+  const { publicData } = listing?.attributes;
+  const { contractName, courseHostLink } = publicData;
+  return { images, contractName, courseHostLink };
 };
 
 const EditListingPhotosPanel = props => {
@@ -62,7 +64,14 @@ const EditListingPhotosPanel = props => {
         initialValues={getInitialValues(props)}
         onImageUpload={onImageUpload}
         onSubmit={values => {
-          const { addImage, ...updateValues } = values;
+          const { addImage, images, contractName, courseHostLink } = values;
+          const updateValues = {
+            images,
+            publicData: {
+              contractName,
+              courseHostLink
+            }
+          }
           onSubmit(updateValues);
         }}
         onRemoveImage={onRemoveImage}

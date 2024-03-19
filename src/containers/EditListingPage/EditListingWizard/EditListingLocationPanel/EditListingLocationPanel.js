@@ -21,10 +21,13 @@ const getInitialValues = props => {
   // TODO bounds are missing - those need to be queried directly from Google Places
   const locationFieldsPresent = publicData?.location?.address && geolocation;
   const location = publicData?.location || {};
+  const { dateAndTime , capacity, courseHost, additionalDetails } = publicData || [];
   const { address, building } = location;
 
   return {
     building,
+    capacity, courseHost, additionalDetails,
+    dateAndTime:dateAndTime && dateAndTime.length > 0 ? dateAndTime : [{},{}],
     location: locationFieldsPresent
       ? {
           search: address,
@@ -73,7 +76,7 @@ const EditListingLocationPanel = props => {
         className={css.form}
         initialValues={state.initialValues}
         onSubmit={values => {
-          const { building = '', location } = values;
+          const { building = '', location ,dateAndTime ,capacity ,courseHost ,additionalDetails } = values;
           const {
             selectedPlace: { address, origin },
           } = location;
@@ -83,6 +86,10 @@ const EditListingLocationPanel = props => {
             geolocation: origin,
             publicData: {
               location: { address, building },
+              dateAndTime,
+              capacity,
+              courseHost,
+              additionalDetails
             },
           };
           // Save the initialValues to state

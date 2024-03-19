@@ -149,8 +149,6 @@ export const EditListingPricingAndStockFormComponent = props => (
       const addValue = () => {
 
         const listItems = values.listItems || [];
-        console.log('listItems', listItems)
-
         listItems.push(values.list);
         form.change('listItems', listItems);
         form.change('list', '');
@@ -307,7 +305,8 @@ export const EditListingPricingAndStockFormComponent = props => (
             disabled={submitDisabled}
             ready={submitReady}
           >
-            {saveActionMsg}
+            Location
+            {/* {saveActionMsg} */}
           </Button>
         </Form>
       );

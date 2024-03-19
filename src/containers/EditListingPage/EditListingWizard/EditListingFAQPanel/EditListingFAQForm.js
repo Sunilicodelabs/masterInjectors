@@ -58,11 +58,6 @@ export const EditListingPricingAndStockFormComponent = props => (
       const submitInProgress = updateInProgress;
       const submitDisabled = invalid || disabled || submitInProgress;
 
-      const [faqCount, setFaqCount] = useState(1);
-
-      const handleAddFAQ = () => {
-        setFaqCount(prevCount => prevCount + 1);
-      };
 
       return (
         <Form onSubmit={handleSubmit} className={classes}>

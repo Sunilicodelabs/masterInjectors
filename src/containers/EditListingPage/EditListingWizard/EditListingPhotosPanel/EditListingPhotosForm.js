@@ -15,12 +15,13 @@ import { nonEmptyArray, composeValidators } from '../../../../util/validators';
 import { isUploadImageOverLimitError } from '../../../../util/errors';
 
 // Import shared components
-import { Button, Form, AspectRatioWrapper } from '../../../../components';
+import { Button, Form, AspectRatioWrapper, FieldSelect, FieldTextInput } from '../../../../components';
 
 // Import modules from this directory
 import ListingImage from './ListingImage';
 import css from './EditListingPhotosForm.module.css';
 import IconCollection from '../../../../components/IconCollection/IconCollection';
+import { courseHosts } from '../../../../config/configListing';
 
 const ACCEPT_IMAGES = 'image/*';
 
@@ -283,6 +284,34 @@ export const EditListingPhotosFormComponent = props => {
             {/* <p className={css.tip}>
               <FormattedMessage id="EditListingPhotosForm.addImagesTip" />
             </p> */}
+
+
+            <FieldTextInput
+              className={css.building}
+              type="contractName"
+              name="contractName"
+              id={`contractName`}
+              label={'Contract Name'}
+              placeholder={'Contract Name'}
+            />
+
+            <FieldSelect
+              className={css.quantityField}
+              name={"courseHostLink"}
+              id={`courseHostLink`}
+              label={'Select the primary host:'}
+            >
+              <option disabled value="">
+                {intl.formatMessage({ id: 'ProductOrderForm.selectQuantityOption' })}
+              </option>
+              {courseHosts?.map(host => {
+                return (
+                  <option key={host.key} value={host.value}>
+                    {host.label}
+                  </option>
+                );
+              })}
+            </FieldSelect>
 
             <PublishListingError error={publishListingError} />
             <ShowListingsError error={showListingsError} />

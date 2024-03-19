@@ -107,7 +107,8 @@ export const EditListingPricingFormComponent = props => (
             disabled={submitDisabled}
             ready={submitReady}
           >
-            {saveActionMsg}
+            Location
+            {/* {saveActionMsg} */}
           </Button>
         </Form>
       );

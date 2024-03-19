@@ -71,10 +71,9 @@ const TABS_DETAILS_ONLY = [DETAILS];
 const TABS_PRODUCT = [DETAILS, PRICING_AND_STOCK, DELIVERY, PHOTOS];
 const TABS_BOOKING = [DETAILS, LOCATION, PRICING, AVAILABILITY, PHOTOS];
 const TABS_TEMPLATE = [TEMPLATES];
-const TABS_COURSES = [TEMPLATES,DETAILS,PRICING_AND_STOCK,FAQ, PHOTOS];
+const TABS_COURSES = [TEMPLATES, DETAILS, PRICING_AND_STOCK, LOCATION, FAQ, PHOTOS];
 const TABS_INQUIRY = [DETAILS, LOCATION, PRICING, PHOTOS];
-const TABS_ALL = [...TABS_PRODUCT, ...TABS_BOOKING, ...TABS_INQUIRY ,...TABS_COURSES,...TABS_TEMPLATE];
-
+const TABS_ALL = [...TABS_PRODUCT, ...TABS_BOOKING, ...TABS_INQUIRY, ...TABS_COURSES, ...TABS_TEMPLATE];
 // Tabs are horizontal in small screens
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
 
@@ -89,7 +88,7 @@ const getTabs = (processTabs, disallowedTabs) => {
 };
 // Pick only allowed booking tabs (location could be omitted)
 const tabsForBookingProcess = (processTabs, listingTypeConfig) => {
-  const disallowedTabs = !displayLocation(listingTypeConfig) ? [LOCATION] : [];
+  const disallowedTabs = !!displayLocation(listingTypeConfig) ? [LOCATION] : [];
   return getTabs(processTabs, disallowedTabs);
 };
 // Pick only allowed purchase tabs (delivery could be omitted)
@@ -191,14 +190,14 @@ const hasValidListingFieldsInExtendedData = (publicData, privateData, config) =>
       return schemaType === SCHEMA_TYPE_ENUM
         ? typeof savedListingField === 'string' && hasValidEnumValue(savedListingField)
         : schemaType === SCHEMA_TYPE_MULTI_ENUM
-        ? Array.isArray(savedListingField) && hasValidMultiEnumValues(savedListingField)
-        : schemaType === SCHEMA_TYPE_TEXT
-        ? typeof savedListingField === 'string'
-        : schemaType === SCHEMA_TYPE_LONG
-        ? typeof savedListingField === 'number' && Number.isInteger(savedListingField)
-        : schemaType === SCHEMA_TYPE_BOOLEAN
-        ? savedListingField === true || savedListingField === false
-        : false;
+          ? Array.isArray(savedListingField) && hasValidMultiEnumValues(savedListingField)
+          : schemaType === SCHEMA_TYPE_TEXT
+            ? typeof savedListingField === 'string'
+            : schemaType === SCHEMA_TYPE_LONG
+              ? typeof savedListingField === 'number' && Number.isInteger(savedListingField)
+              : schemaType === SCHEMA_TYPE_BOOLEAN
+                ? savedListingField === true || savedListingField === false
+                : false;
     }
     return true;
   };
@@ -344,10 +343,10 @@ const getListingTypeConfig = (listing, selectedListingType, config) => {
   const listingTypeConfig = existingListingType
     ? validListingTypes.find(conf => conf.listingType === existingListingType)
     : selectedListingType
-    ? validListingTypes.find(conf => conf.listingType === selectedListingType.listingType)
-    : hasOnlyOneListingType
-    ? validListingTypes[0]
-    : null;
+      ? validListingTypes.find(conf => conf.listingType === selectedListingType.listingType)
+      : hasOnlyOneListingType
+        ? validListingTypes[0]
+        : null;
   return listingTypeConfig;
 };
 
@@ -480,12 +479,12 @@ class EditListingWizard extends Component {
     const processName = transactionProcessAlias
       ? transactionProcessAlias.split('/')[0]
       : validListingTypes.length === 1
-      ? validListingTypes[0].transactionType.process
-      : INQUIRY_PROCESS_NAME;
+        ? validListingTypes[0].transactionType.process
+        : INQUIRY_PROCESS_NAME;
 
     const hasListingTypeSelected =
       existingListingType || this.state.selectedListingType || validListingTypes.length === 1;
-      var isTemplate = localStorage.getItem('isTemplate');
+    var isTemplate = localStorage.getItem('isTemplate');
 
     // For oudated draft listing, we don't show other tabs but the "details"
     const tabs =
@@ -500,6 +499,7 @@ class EditListingWizard extends Component {
               : isPurchaseProcess(processName)
                 ? tabsForPurchaseProcess(TABS_PRODUCT, listingTypeConfig)
                 : tabsForInquiryProcess(TABS_INQUIRY, listingTypeConfig);
+
 
     // Check if wizard tab is active / linkable.
     // When creating a new listing, we don't allow users to access next tab until the current one is completed.

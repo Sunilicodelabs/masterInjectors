@@ -231,6 +231,14 @@ export const listingFields = [
  *                        providers who have not set payout details and contact them to ensure that they add the details.
  */
 
+
+export const courseHosts = [
+  { key: "host1", value: "host1", label: "Host 1" },
+  { key: "host2", value: "host2", label: "Host 2" },
+  { key: "host3", value: "host3", label: "Host 3" },
+  { key: "host4", value: "host4", label: "Host 4" },
+]
+
 export const listingTypes = [
   {
     listingType: 'daily-booking',
