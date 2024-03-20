@@ -35,7 +35,7 @@ const SearchPageWithGrid = loadable(() => import(/* webpackChunkName: "SearchPag
 const StripePayoutPage = loadable(() => import(/* webpackChunkName: "StripePayoutPage" */ '../containers/StripePayoutPage/StripePayoutPage'));
 const TermsOfServicePage = loadable(() => import(/* webpackChunkName: "TermsOfServicePage" */ '../containers/TermsOfServicePage/TermsOfServicePage'));
 const TransactionPage = loadable(() => import(/* webpackChunkName: "TransactionPage" */ '../containers/TransactionPage/TransactionPage'));
-
+const SubscriptionPage = loadable(() => import(/* webpackChunkName: "TransactionPage" */ '../containers/SubscriptionPage/SubscriptionPage'));
 // Styleguide helps you to review current components and develop new ones
 const StyleguidePage = loadable(() => import(/* webpackChunkName: "StyleguidePage" */ '../containers/StyleguidePage/StyleguidePage'));
 
@@ -257,6 +257,12 @@ const routeConfiguration = (layoutConfig) => {
       authPage: 'LoginPage',
       component: () => <NamedRedirect name="ContactDetailsPage" />,
     },
+    {
+      path: '/subscription',
+      name: 'SubscriptionPage',
+      component: SubscriptionPage,
+    },
+    
     {
       path: '/account/contact-details',
       name: 'ContactDetailsPage',
