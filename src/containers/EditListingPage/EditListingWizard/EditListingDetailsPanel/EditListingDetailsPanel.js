@@ -8,7 +8,7 @@ import { EXTENDED_DATA_SCHEMA_TYPES, LISTING_STATE_DRAFT } from '../../../../uti
 import { isBookingProcessAlias } from '../../../../transactions/transaction';
 
 // Import shared components
-import { H3, ListingLink } from '../../../../components';
+import { H3, H5, ListingLink } from '../../../../components';
 
 // Import modules from this directory
 import ErrorMessage from './ErrorMessage';
@@ -257,6 +257,11 @@ const EditListingDetailsPanel = props => {
           />
         )}
       </H3>
+      <H5>
+        <FormattedMessage 
+        id="EditListingDetailsPanel.createListingDesc"
+        />
+      </H5>
 
       {canShowEditListingDetailsForm ? (
         <EditListingDetailsForm

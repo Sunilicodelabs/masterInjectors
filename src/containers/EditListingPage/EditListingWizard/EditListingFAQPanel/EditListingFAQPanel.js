@@ -26,9 +26,11 @@ const getInitialValues = props => {
   const isPublished = listing?.id && listing?.attributes?.state !== LISTING_STATE_DRAFT;
   const price = listing?.attributes?.price;
   const publicData = listing?.attributes?.publicData;
+  var isTemplate = localStorage.getItem('isTemplate');
+
   const { FAQs } = publicData || {};
 
-  return { FAQs: FAQs && FAQs.length > 0 ? FAQs : [{}]};
+  return { FAQs: FAQs && FAQs.length > 0 && isTemplate=="false" ? FAQs : [{}]};
 };
 
 const EditListingFAQPanel = props => {
@@ -49,6 +51,14 @@ const EditListingFAQPanel = props => {
     updateInProgress,
     errors,
   } = props;
+  const handleSubmitFAQ=(values)=>{
+      const updateValues = {
+        publicData:{
+          FAQs:values
+        },
+      };
+      onSubmit(updateValues);
+  }
 
   const classes = classNames(rootClassName || css.root, className);
   const initialValues = state.initialValues;
@@ -80,9 +90,10 @@ const EditListingFAQPanel = props => {
         <EditListingFAQForm
           className={css.form}
           initialValues={initialValues}
+          publicData={publicData}
+          handleSubmitFAQ={handleSubmitFAQ}
           onSubmit={values => {
             const { FAQs } = values;
-
             const updateValues = {
               publicData:{
                 FAQs

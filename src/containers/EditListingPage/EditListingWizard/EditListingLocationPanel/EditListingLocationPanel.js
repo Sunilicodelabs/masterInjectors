@@ -7,11 +7,12 @@ import { FormattedMessage } from '../../../../util/reactIntl';
 import { LISTING_STATE_DRAFT } from '../../../../util/types';
 
 // Import shared components
-import { H3, ListingLink } from '../../../../components';
+import { H1, H3, H5, ListingLink } from '../../../../components';
 
 // Import modules from this directory
 import EditListingLocationForm from './EditListingLocationForm';
 import css from './EditListingLocationPanel.module.css';
+import { availabilityPlan } from '../../EditListingPage.duck';
 
 const getInitialValues = props => {
   const { listing } = props;
@@ -54,6 +55,8 @@ const EditListingLocationPanel = props => {
     errors,
   } = props;
 
+
+  const listingTittle = listing?.attributes?.title;
   const classes = classNames(rootClassName || css.root, className);
   const isPublished = listing?.id && listing?.attributes.state !== LISTING_STATE_DRAFT;
 
@@ -66,12 +69,14 @@ const EditListingLocationPanel = props => {
             values={{ listingTitle: <ListingLink listing={listing} />, lineBreak: <br /> }}
           />
         ) : (
-          <FormattedMessage
-            id="EditListingLocationPanel.createListingTitle"
-            values={{ lineBreak: <br /> }}
-          />
+          listingTittle
+          // <FormattedMessage
+          //   id="EditListingLocationPanel.createListingTitle"
+          //   values={{ lineBreak: <br /> }}
+          // />
         )}
       </H3>
+      <H5>Create a new bookable listing for the {listingTittle}</H5>
       <EditListingLocationForm
         className={css.form}
         initialValues={state.initialValues}
@@ -84,6 +89,7 @@ const EditListingLocationPanel = props => {
           // New values for listing attributes
           const updateValues = {
             geolocation: origin,
+            availabilityPlan:availabilityPlan,
             publicData: {
               location: { address, building },
               dateAndTime,
@@ -97,8 +103,7 @@ const EditListingLocationPanel = props => {
           // and therefore re-rendering would overwrite the values during XHR call.
           setState({
             initialValues: {
-              building,
-              location: { search: address, selectedPlace: { address, origin } },
+             ...values
             },
           });
           onSubmit(updateValues);

@@ -134,8 +134,8 @@ export const ListingCardComponent = props => {
     const res = await dispatch(requestCreateListingDraft(draftListingDeatils, config));
     const { data } = res?.data;
     const slug = createSlug(data?.attributes?.title);
-    localStorage.setItem('isTemplate', 'false')
-    return history.push(`/l/${slug}/${data?.id?.uuid}/draft/details`)
+    localStorage.setItem('isTemplate', 'variant')
+    return history.push(`/l/${slug}/${data?.id?.uuid}/draft/location`)
   }
 
   return (

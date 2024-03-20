@@ -71,7 +71,9 @@ const TABS_DETAILS_ONLY = [DETAILS];
 const TABS_PRODUCT = [DETAILS, PRICING_AND_STOCK, DELIVERY, PHOTOS];
 const TABS_BOOKING = [DETAILS, LOCATION, PRICING, AVAILABILITY, PHOTOS];
 const TABS_TEMPLATE = [TEMPLATES];
-const TABS_COURSES = [TEMPLATES, DETAILS, PRICING_AND_STOCK, LOCATION, FAQ, PHOTOS];
+const TABS_COURSES = [TEMPLATES, DETAILS, PRICING_AND_STOCK, FAQ, PHOTOS];
+const TABS_COURSES_VARIANTS = [TEMPLATES, LOCATION, PRICING_AND_STOCK, FAQ, PHOTOS];
+const TABS_COURSES_VARIANTS_WITHOUT_PRICE = [TEMPLATES, LOCATION, FAQ, PHOTOS];
 const TABS_INQUIRY = [DETAILS, LOCATION, PRICING, PHOTOS];
 const TABS_ALL = [...TABS_PRODUCT, ...TABS_BOOKING, ...TABS_INQUIRY, ...TABS_COURSES, ...TABS_TEMPLATE];
 // Tabs are horizontal in small screens
@@ -88,7 +90,7 @@ const getTabs = (processTabs, disallowedTabs) => {
 };
 // Pick only allowed booking tabs (location could be omitted)
 const tabsForBookingProcess = (processTabs, listingTypeConfig) => {
-  const disallowedTabs = !!displayLocation(listingTypeConfig) ? [LOCATION] : [];
+  const disallowedTabs = !displayLocation(listingTypeConfig) ? [LOCATION] : [];
   return getTabs(processTabs, disallowedTabs);
 };
 // Pick only allowed purchase tabs (delivery could be omitted)
@@ -116,6 +118,7 @@ const tabsForInquiryProcess = (processTabs, listingTypeConfig) => {
 const tabLabelAndSubmit = (intl, tab, isNewListingFlow, isPriceDisabled, processName) => {
   const processNameString = isNewListingFlow ? `${processName}.` : '';
   const newOrEdit = isNewListingFlow ? 'new' : 'edit';
+  var isTemplate = localStorage.getItem('isTemplate');
 
   let labelKey = null;
   let submitButtonKey = null;
@@ -144,11 +147,11 @@ const tabLabelAndSubmit = (intl, tab, isNewListingFlow, isPriceDisabled, process
     labelKey = 'EditListingWizard.tabLabelAvailability';
     submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.saveAvailability`;
   } else if (tab === PHOTOS) {
-    labelKey = 'EditListingWizard.tabLabelPhotos';
+    labelKey =  isTemplate==="variant" ? "EditListingWizard.tabLabelAttachment" : 'EditListingWizard.tabLabelPhotos';
     submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.savePhotos`;
   } else if (tab === FAQ) {
     labelKey = 'EditListingWizard.tabLabelFAQ';
-    submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.savePhotos`;
+    submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.saveFAQs`;
   }
 
   return {
@@ -229,7 +232,6 @@ const tabCompleted = (tab, listing, config) => {
   const { listingType, transactionProcessAlias, unitType, shippingEnabled, pickupEnabled } =
     publicData || {};
   const deliveryOptionPicked = publicData && (shippingEnabled || pickupEnabled);
-
   switch (tab) {
     case TEMPLATES:
       return true
@@ -485,13 +487,16 @@ class EditListingWizard extends Component {
     const hasListingTypeSelected =
       existingListingType || this.state.selectedListingType || validListingTypes.length === 1;
     var isTemplate = localStorage.getItem('isTemplate');
-
     // For oudated draft listing, we don't show other tabs but the "details"
     const tabs =
       isNewListingFlow && (invalidExistingListingType || !hasListingTypeSelected)
         ? TABS_DETAILS_ONLY
         : userType === ADMIN && isTemplate === "true"
           ? tabsForBookingProcess(TABS_TEMPLATE, listingTypeConfig)
+        : userType === ADMIN && isTemplate === "variant" && listing?.attributes?.publicData?.isPriceEditable?.length === 0
+          ? tabsForBookingProcess(TABS_COURSES_VARIANTS_WITHOUT_PRICE, listingTypeConfig)
+          : userType === ADMIN && isTemplate === "variant"
+          ? tabsForBookingProcess(TABS_COURSES_VARIANTS, listingTypeConfig)
           : userType === ADMIN
             ? tabsForBookingProcess(TABS_COURSES, listingTypeConfig)
             : isBookingProcess(processName)

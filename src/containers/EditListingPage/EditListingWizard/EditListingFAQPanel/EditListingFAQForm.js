@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { bool, func, number, shape, string } from 'prop-types';
 import { compose } from 'redux';
 import { Form as FinalForm } from 'react-final-form';
@@ -37,7 +37,7 @@ export const EditListingPricingAndStockFormComponent = props => (
         className,
         disabled,
         ready,
-        handleSubmit,
+        onSubmit,
         intl,
         invalid,
         pristine,
@@ -49,74 +49,87 @@ export const EditListingPricingAndStockFormComponent = props => (
         updateInProgress,
         values,
         form,
+        publicData,
+        handleSubmitFAQ
       } = formRenderProps;
 
-
+      const { FAQs } = publicData || {};
+      var isTemplate = localStorage.getItem('isTemplate');
 
       const classes = classNames(css.root, className);
       const submitReady = (updated && pristine) || ready;
       const submitInProgress = updateInProgress;
       const submitDisabled = invalid || disabled || submitInProgress;
 
+      const initialFormData = FAQs;
+
+      const [formData, setFormData] = useState(initialFormData);
+      const [editId, setEditId] = useState(null);
+      const [FAQTitle, setFAQTitle] = useState('');
+      const [FAQPolicies, setFAQPolicies] = useState('');
+
+      const handleEdit = (id) => {
+        const editItem = formData.find(item => item.id === id);
+        setEditId(id);
+        setFAQTitle(editItem.FAQTitle);
+        setFAQPolicies(editItem.FAQPolicies);
+      };
+
+      const handleDelete = (id) => {
+        const updatedFormData = formData.filter(item => item.id !== id);
+        setFormData(updatedFormData);
+      };
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        const updatedFormData = editId ? formData.map(item => {
+          if (item.id === editId) {
+            return { ...item, FAQTitle, FAQPolicies };
+          }
+          return item;
+        }) : [...formData, { id: formData.length + 1, FAQTitle: FAQTitle, FAQPolicies: FAQPolicies }];
+
+        setFormData(updatedFormData);
+        setEditId(null);
+        setFAQTitle('');
+        setFAQPolicies('');
+      };
 
       return (
-        <Form onSubmit={handleSubmit} className={classes}>
 
-          <FieldArray
-            name={`FAQs`}
-            render={({ fields }) => (
-              <React.Fragment>
-                {fields.map((name, index) => {
-                  return (
-                  <div key={"FAQs" + index}>
-                    <div className={css.nameContainer}>
-                      <FieldTextInput
-                        className={css.firstName}
-                        type="text"
-                        name={`${name}.FAQTitle`}
-                        id={`${name}.firstName`}
-                        label={"Title"}
-                        placeholder={"Title"}
-                      />
-                      <FieldTextInput
-                        className={css.lastName}
-                        type="textarea"
-                        name={`${name}.FAQPolicies`}
-                        id={`${name}.FAQPolicies`}
-                        label={'Write Up'}
-                        placeholder={'Here are all the policies...'}
-                      />
-                      <div className={css.removeBoxFirst}>
-                        <button
-                          className={css.removeButton}
-                          type="button"
-                          onClick={() => fields.remove(index)}
-                        >
-                         Delete
-                        </button>
-                      </div>
-                    </div>
-
-                  </div>
-                  )
-                })}
-                <Button type="button" className={css.addButton} onClick={() => fields.push({})}>
-                  Add
-                </Button>
-              </React.Fragment>
-            )}
-          />
-
+        <div>
+          <form onSubmit={handleSubmit}>
+            <label>
+              Title:
+              <input type="text" value={FAQTitle} onChange={(e) => setFAQTitle(e.target.value)} />
+            </label>
+            <label>
+              Here are all the policies...
+              <input type="text" value={FAQPolicies} onChange={(e) => setFAQPolicies(e.target.value)} />
+            </label>
+            <button type="submit">{editId ? 'Update FAQ' : '+Add FAQ'}</button>
+          </form>
+          <ul>
+            {formData.map(item => (
+              <li key={item.id}>
+                {item.FAQTitle} - {item.FAQPolicies}
+                <button onClick={() => handleEdit(item.id)}>Edit</button>
+                <button onClick={() => handleDelete(item.id)}>Delete</button>
+              </li>
+            ))}
+          </ul>
           <Button
             className={css.submitButton}
-            type="submit"
+            onClick={()=>handleSubmitFAQ(formData)}
             inProgress={submitInProgress}
             disabled={submitDisabled}
             ready={submitReady}
           >
-            Media
+            {saveActionMsg}
+
           </Button>
-        </Form>
+        </div>
+
       );
     }}
   />

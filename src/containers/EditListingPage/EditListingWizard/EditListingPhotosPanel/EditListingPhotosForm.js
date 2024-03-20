@@ -156,6 +156,7 @@ export const EditListingPhotosFormComponent = props => {
           errors,
           values,
           listingImageConfig,
+          isTemplate
         } = formRenderProps;
 
         const images = values.images;
@@ -286,32 +287,35 @@ export const EditListingPhotosFormComponent = props => {
             </p> */}
 
 
-            <FieldTextInput
-              className={css.building}
-              type="contractName"
-              name="contractName"
-              id={`contractName`}
-              label={'Contract Name'}
-              placeholder={'Contract Name'}
-            />
+            {isTemplate ==="variant" ? <>
+              <FieldTextInput
+                className={css.building}
+                type="contractName"
+                name="contractName"
+                id={`contractName`}
+                label={'Contract Name'}
+                placeholder={'Contract Name'}
+              />
 
-            <FieldSelect
-              className={css.quantityField}
-              name={"courseHostLink"}
-              id={`courseHostLink`}
-              label={'Select the primary host:'}
-            >
-              <option disabled value="">
-                {intl.formatMessage({ id: 'ProductOrderForm.selectQuantityOption' })}
-              </option>
-              {courseHosts?.map(host => {
-                return (
-                  <option key={host.key} value={host.value}>
-                    {host.label}
-                  </option>
-                );
-              })}
-            </FieldSelect>
+              <FieldSelect
+                className={css.quantityField}
+                name={"courseHostLink"}
+                id={`courseHostLink`}
+                label={'Select the primary host:'}
+              >
+                <option disabled value="">
+                  {intl.formatMessage({ id: 'ProductOrderForm.selectQuantityOption' })}
+                </option>
+                {courseHosts?.map(host => {
+                  return (
+                    <option key={host.key} value={host.value}>
+                      {host.label}
+                    </option>
+                  );
+                })}
+              </FieldSelect>
+            </> : null
+            }
 
             <PublishListingError error={publishListingError} />
             <ShowListingsError error={showListingsError} />

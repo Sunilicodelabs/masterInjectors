@@ -239,6 +239,30 @@ export const courseHosts = [
   { key: "host4", value: "host4", label: "Host 4" },
 ]
 
+export const courseType = [
+  { key: "online", value: "online", label: "Online" },
+  { key: "inPerson", value: "inPerson", label: "In Person" },
+  { key: "hybrid", value: "hybrid", label: "Hybrid" }
+]
+
+export const courseDressCode = [
+  { key: "Casual", value: "Casual", label: "Casual" },
+  { key: "dressyCasual", value: "dressyCasual", label: "Dressy Casual" },
+  { key: "businessCasual", value: "businessCasual", label: "Business Casual" },
+  { key: "businessFormal", value: "businessFormal", label: "Business Formal" }
+]
+
+export const courseLevels = [
+  { key: "novice", value: "novice", label: "Novice" },
+  { key: "expert", value: "Expert", label: "Expert" },
+  { key: "masterNeurotoxins", value: "masterNeurotoxins", label: "Master Neurotoxins" }
+]
+
+export const courseRequirements = [
+  { key: "requirement1", value: "requirement1", label: "Requirement 1" },
+  { key: "requirement2", value: "requirement2", label: "Requirement 2" }
+]
+
 export const listingTypes = [
   {
     listingType: 'daily-booking',

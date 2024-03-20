@@ -40,6 +40,7 @@ const EditListingPhotosPanel = props => {
   const rootClass = rootClassName || css.root;
   const classes = classNames(rootClass, className);
   const isPublished = listing?.id && listing?.attributes?.state !== LISTING_STATE_DRAFT;
+  var isTemplate = localStorage.getItem('isTemplate');
 
   return (
     <div className={classes}>
@@ -51,7 +52,7 @@ const EditListingPhotosPanel = props => {
           />
         ) : (
           <FormattedMessage
-            id="EditListingPhotosPanel.createListingTitle"
+            id= {isTemplate ? "EditListingPhotosPanel.attactmentTittle" : "EditListingPhotosPanel.createListingTitle"}
             values={{ lineBreak: <br /> }}
           />
         )}
@@ -63,6 +64,7 @@ const EditListingPhotosPanel = props => {
         fetchErrors={errors}
         initialValues={getInitialValues(props)}
         onImageUpload={onImageUpload}
+        isTemplate={isTemplate}
         onSubmit={values => {
           const { addImage, images, contractName, courseHostLink } = values;
           const updateValues = {

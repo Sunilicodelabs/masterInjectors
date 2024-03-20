@@ -25,6 +25,7 @@ import {
 } from '../../ducks/stripeConnectAccount.duck';
 import { fetchCurrentUser } from '../../ducks/user.duck';
 import { isOriginInUse } from '../../util/search';
+import moment from 'moment';
 
 const { UUID } = sdkTypes;
 
@@ -57,13 +58,13 @@ const updateUploadedImagesState = (state, payload) => {
   );
   return duplicateImageEntities.length > 0
     ? {
-        uploadedImages: {},
-        uploadedImagesOrder: [],
-      }
+      uploadedImages: {},
+      uploadedImagesOrder: [],
+    }
     : {
-        uploadedImages,
-        uploadedImagesOrder,
-      };
+      uploadedImages,
+      uploadedImagesOrder,
+    };
 };
 
 const getImageVariantInfo = listingImageConfig => {
@@ -89,14 +90,14 @@ const sortExceptionsByStartTime = (a, b) => {
 const mergeToWeeklyExceptionQueries = (weeklyExceptionQueries, weekStartId, newDataProps) => {
   return weekStartId
     ? {
-        weeklyExceptionQueries: {
-          ...weeklyExceptionQueries,
-          [weekStartId]: {
-            ...weeklyExceptionQueries[weekStartId],
-            ...newDataProps,
-          },
+      weeklyExceptionQueries: {
+        ...weeklyExceptionQueries,
+        [weekStartId]: {
+          ...weeklyExceptionQueries[weekStartId],
+          ...newDataProps,
         },
-      }
+      },
+    }
     : {};
 };
 // When navigating through monthly calendar (e.g. when adding a new AvailabilityException),
@@ -104,14 +105,14 @@ const mergeToWeeklyExceptionQueries = (weeklyExceptionQueries, weekStartId, newD
 const mergeToMonthlyExceptionQueries = (monthlyExceptionQueries, monthId, newDataProps) => {
   return monthId
     ? {
-        monthlyExceptionQueries: {
-          ...monthlyExceptionQueries,
-          [monthId]: {
-            ...monthlyExceptionQueries[monthId],
-            ...newDataProps,
-          },
+      monthlyExceptionQueries: {
+        ...monthlyExceptionQueries,
+        [monthId]: {
+          ...monthlyExceptionQueries[monthId],
+          ...newDataProps,
         },
-      }
+      },
+    }
     : {};
 };
 
@@ -311,12 +312,12 @@ export default function reducer(state = initialState, action = {}) {
       // If listing stays the same, we trust previously fetched exception data.
       return listingIdFromPayload?.uuid === state.listingId?.uuid
         ? {
-            ...initialState,
-            listingId,
-            allExceptions,
-            weeklyExceptionQueries,
-            monthlyExceptionQueries,
-          }
+          ...initialState,
+          listingId,
+          allExceptions,
+          weeklyExceptionQueries,
+          monthlyExceptionQueries,
+        }
         : { ...initialState, listingId: listingIdFromPayload };
     }
     case SHOW_LISTINGS_ERROR:
@@ -331,8 +332,8 @@ export default function reducer(state = initialState, action = {}) {
       const exceptionQueriesMaybe = monthId
         ? mergeToMonthlyExceptionQueries(state.monthlyExceptionQueries, monthId, newData)
         : weekStartId
-        ? mergeToWeeklyExceptionQueries(state.weeklyExceptionQueries, weekStartId, newData)
-        : {};
+          ? mergeToWeeklyExceptionQueries(state.weeklyExceptionQueries, weekStartId, newData)
+          : {};
       return { ...state, ...exceptionQueriesMaybe };
     }
     case FETCH_EXCEPTIONS_SUCCESS: {
@@ -345,8 +346,8 @@ export default function reducer(state = initialState, action = {}) {
       const exceptionQueriesMaybe = monthId
         ? mergeToMonthlyExceptionQueries(state.monthlyExceptionQueries, monthId, newData)
         : weekStartId
-        ? mergeToWeeklyExceptionQueries(state.weeklyExceptionQueries, weekStartId, newData)
-        : {};
+          ? mergeToWeeklyExceptionQueries(state.weeklyExceptionQueries, weekStartId, newData)
+          : {};
       return { ...state, allExceptions, ...exceptionQueriesMaybe };
     }
     case FETCH_EXCEPTIONS_ERROR: {
@@ -356,8 +357,8 @@ export default function reducer(state = initialState, action = {}) {
       const exceptionQueriesMaybe = monthId
         ? mergeToMonthlyExceptionQueries(state.monthlyExceptionQueries, monthId, newData)
         : weekStartId
-        ? mergeToWeeklyExceptionQueries(state.weeklyExceptionQueries, weekStartId, newData)
-        : {};
+          ? mergeToWeeklyExceptionQueries(state.weeklyExceptionQueries, weekStartId, newData)
+          : {};
 
       return { ...state, ...exceptionQueriesMaybe };
     }
@@ -472,31 +473,31 @@ export default function reducer(state = initialState, action = {}) {
     case SAVE_PAYOUT_DETAILS_SUCCESS:
       return { ...state, payoutDetailsSaveInProgress: false, payoutDetailsSaved: true };
 
-      case SEARCH_LISTINGS_REQUEST:
-        return {
-          ...state,
-          searchParams: payload.searchParams,
-          searchInProgress: true,
-          searchMapListingIds: [],
-          searchListingsError: null,
-        };
-      case SEARCH_LISTINGS_SUCCESS:
-        return {
-          ...state,
-          currentPageResultIds: resultIds(payload.data),
-          pagination: payload.data.meta,
-          searchInProgress: false,
-        };
-      case SEARCH_LISTINGS_ERROR:
-        // eslint-disable-next-line no-console
-        console.error(payload);
-        return { ...state, searchInProgress: false, searchListingsError: payload };
-  
-      case SEARCH_MAP_SET_ACTIVE_LISTING:
-        return {
-          ...state,
-          activeListingId: payload,
-        };  
+    case SEARCH_LISTINGS_REQUEST:
+      return {
+        ...state,
+        searchParams: payload.searchParams,
+        searchInProgress: true,
+        searchMapListingIds: [],
+        searchListingsError: null,
+      };
+    case SEARCH_LISTINGS_SUCCESS:
+      return {
+        ...state,
+        currentPageResultIds: resultIds(payload.data),
+        pagination: payload.data.meta,
+        searchInProgress: false,
+      };
+    case SEARCH_LISTINGS_ERROR:
+      // eslint-disable-next-line no-console
+      console.error(payload);
+      return { ...state, searchInProgress: false, searchListingsError: payload };
+
+    case SEARCH_MAP_SET_ACTIVE_LISTING:
+      return {
+        ...state,
+        activeListingId: payload,
+      };
 
     default:
       return state;
@@ -695,6 +696,32 @@ export function requestCreateListingDraft(data, config) {
   };
 }
 
+
+export const onCreateAvalabiltyException = (data) => (dispatch, getState, sdk) => {
+
+  const { dateAndTime, capacity = 1 } = data.publicData;
+  return sdk.availabilityExceptions.query({
+    listingId: data.id,
+    start: moment().toDate(),
+    end: moment().add(364, "days").toDate()
+  }).then(async res => {
+    // res.data contains the response data
+    for (let i = 0; i < dateAndTime.length; i++) {
+      const { date, startTime, endTime } = dateAndTime[i];
+      const findIndexDeleteValue = res.data.data.findIndex((st => moment(st.attributes.start).format("YYYY-MM-DD") == date));
+      if (res.data.data.length && findIndexDeleteValue >= 0) {
+        const deleteException = await sdk.availabilityExceptions.delete({
+          id: response.data.data[findIndexDeleteValue].id,
+        });
+      }
+
+      const createException = await sdk.availabilityExceptions.create({ listingId: data.id, start: moment(`${date} ${startTime}`).toDate(), end: moment(`${date} ${endTime}`).toDate(), seats: capacity });
+
+    }
+
+  });
+}
+
 // Update the given tab of the wizard with the given data. This saves
 // the data to the listing, and marks the tab updated so the UI can
 // display the state.
@@ -724,7 +751,12 @@ export function requestUpdateListing(tab, data, config) {
     // That way we get updated currentStock info among ownListings.update
     return updateStockOfListingMaybe(id, stockUpdate, dispatch)
       .then(() => sdk.ownListings.update(ownListingUpdateValues, queryParams))
-      .then(response => {
+      .then(async response => {
+        
+        if (tab == "location" && data && data.availabilityPlan) {
+          await dispatch(onCreateAvalabiltyException(data));
+        }
+
         dispatch(updateListingSuccess(response));
         dispatch(addMarketplaceEntities(response));
         dispatch(markTabUpdated(tab));
@@ -984,7 +1016,7 @@ export const searchListings = (config) => (dispatch, getState, sdk) => {
   // Merge all parameters
   const searchParamsMerged = {
     ...originMaybe,
-    meta_isTemplate:true,
+    // meta_isTemplate:true,
     perPage: RESULT_PAGE_SIZE,
     include: ['author', 'images'],
     'fields.listing': [
@@ -1078,3 +1110,17 @@ export const loadData = (params, search, config) => (dispatch, getState, sdk) =>
       throw e;
     });
 };
+
+export const availabilityPlan = {
+  type: 'availability-plan/time',
+  timezone: typeof window !== 'undefined' ? getDefaultTimeZoneOnBrowser() : 'Etc/UTC',
+  entries: [
+    { dayOfWeek: 'mon', startTime: '00:00', endTime: '23:55', seats: 0, },
+    { dayOfWeek: 'tue', startTime: '00:00', endTime: '23:55', seats: 0, },
+    { dayOfWeek: 'wed', startTime: '00:00', endTime: '23:55', seats: 0, },
+    { dayOfWeek: 'thu', startTime: '00:00', endTime: '23:55', seats: 0, },
+    { dayOfWeek: 'fri', startTime: '00:00', endTime: '23:55', seats: 0, },
+    { dayOfWeek: 'sat', startTime: '00:00', endTime: '23:55', seats: 0, },
+    { dayOfWeek: 'sun', startTime: '00:00', endTime: '23:55', seats: 0, },
+  ]
+}; 
