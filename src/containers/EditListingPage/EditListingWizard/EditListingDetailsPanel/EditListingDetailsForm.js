@@ -256,43 +256,45 @@ const EditListingDetailsFormComponent = props => (
             )}
           />
 
-          <FieldSelect
-            className={css.customField}
-            name="courseType"
-            id="courseType"
-            label="Is this online, in person, or a hybrid?"
-          >
-            <option disabled value="">
-              {intl.formatMessage({ id: 'ProductOrderForm.selectQuantityOption' })}
-            </option>
-            {courseType.map(optionConfig => {
-              const key = optionConfig.key;
-              return (
-                <option key={key} value={key}>
-                  {optionConfig.label}
-                </option>
-              );
-            })}
-          </FieldSelect>
+          <div className={css.fieldsWrapper}>
+            <FieldSelect
+              className={css.customField}
+              name="courseType"
+              id="courseType"
+              label="Is this online, in person, or a hybrid?"
+            >
+              <option disabled value="">
+                {intl.formatMessage({ id: 'ProductOrderForm.selectQuantityOption' })}
+              </option>
+              {courseType.map(optionConfig => {
+                const key = optionConfig.key;
+                return (
+                  <option key={key} value={key}>
+                    {optionConfig.label}
+                  </option>
+                );
+              })}
+            </FieldSelect>
 
-          <FieldSelect
-            className={css.customField}
-            name="courseDressCode"
-            id="courseDressCode"
-            label="Select the dress code options:"
-          >
-            <option disabled value="">
-              {intl.formatMessage({ id: 'ProductOrderForm.selectQuantityOption' })}
-            </option>
-            {courseDressCode.map(optionConfig => {
-              const key = optionConfig.key;
-              return (
-                <option key={key} value={key}>
-                  {optionConfig.label}
-                </option>
-              );
-            })}
-          </FieldSelect>
+            <FieldSelect
+              className={css.customField}
+              name="courseDressCode"
+              id="courseDressCode"
+              label="Select the dress code options:"
+            >
+              <option disabled value="">
+                {intl.formatMessage({ id: 'ProductOrderForm.selectQuantityOption' })}
+              </option>
+              {courseDressCode.map(optionConfig => {
+                const key = optionConfig.key;
+                return (
+                  <option key={key} value={key}>
+                    {optionConfig.label}
+                  </option>
+                );
+              })}
+            </FieldSelect>
+          </div>
 
           {showDescription ? (
 
@@ -312,45 +314,45 @@ const EditListingDetailsFormComponent = props => (
               )}
             />
           ) : null}
+          <div className={css.fieldsWrapper}>
+            <FieldSelect
+              className={css.customField}
+              name="courseLevels"
+              id="courseLevels"
+              label="What levels are being covered?"
+            >
+              <option disabled value="">
+                {intl.formatMessage({ id: 'ProductOrderForm.selectQuantityOption' })}
+              </option>
+              {courseLevels.map(optionConfig => {
+                const key = optionConfig.key;
+                return (
+                  <option key={key} value={key}>
+                    {optionConfig.label}
+                  </option>
+                );
+              })}
+            </FieldSelect>
 
-          <FieldSelect
-            className={css.customField}
-            name="courseLevels"
-            id="courseLevels"
-            label="What levels are being covered?"
-          >
-            <option disabled value="">
-              {intl.formatMessage({ id: 'ProductOrderForm.selectQuantityOption' })}
-            </option>
-            {courseLevels.map(optionConfig => {
-              const key = optionConfig.key;
-              return (
-                <option key={key} value={key}>
-                  {optionConfig.label}
-                </option>
-              );
-            })}
-          </FieldSelect>
-
-          <FieldSelect
-            className={css.customField}
-            name="courseRequirements"
-            id="courseRequirements"
-            label="What requirements are needed?"
-          >
-            <option disabled value="">
-              {intl.formatMessage({ id: 'ProductOrderForm.selectQuantityOption' })}
-            </option>
-            {courseRequirements.map(optionConfig => {
-              const key = optionConfig.key;
-              return (
-                <option key={key} value={key}>
-                  {optionConfig.label}
-                </option>
-              );
-            })}
-          </FieldSelect>
-
+            <FieldSelect
+              className={css.customField}
+              name="courseRequirements"
+              id="courseRequirements"
+              label="What requirements are needed?"
+            >
+              <option disabled value="">
+                {intl.formatMessage({ id: 'ProductOrderForm.selectQuantityOption' })}
+              </option>
+              {courseRequirements.map(optionConfig => {
+                const key = optionConfig.key;
+                return (
+                  <option key={key} value={key}>
+                    {optionConfig.label}
+                  </option>
+                );
+              })}
+            </FieldSelect>
+          </div>
 
 
 

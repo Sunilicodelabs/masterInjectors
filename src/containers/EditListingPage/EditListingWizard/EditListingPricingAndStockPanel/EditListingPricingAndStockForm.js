@@ -165,82 +165,92 @@ export const EditListingPricingAndStockFormComponent = props => (
               <FormattedMessage id="EditListingPricingAndStockForm.showListingFailed" />
             </p>
           ) : null}
-          <FieldCurrencyInput
-            id={`${formId}.price`}
-            name="price"
-            className={css.input}
-            autoFocus={autoFocus}
-            label={intl.formatMessage(
-              { id: 'EditListingPricingAndStockForm.pricePerProduct' },
-              { unitType }
-            )}
-            placeholder={intl.formatMessage({
-              id: 'EditListingPricingAndStockForm.priceInputPlaceholder',
-            })}
-            currencyConfig={appSettings.getCurrencyFormatting(marketplaceCurrency)}
-            validate={priceValidators}
-          />
-          <FieldCurrencyInput
-            id={`${formId}.coursePrice`}
-            name="coursePrice"
-            className={css.input}
-            label={intl.formatMessage(
-              { id: 'EditListingPricingAndStockForm.pricePerCourseValue' },
-              { unitType }
-            )}
-            placeholder={intl.formatMessage({
-              id: 'EditListingPricingAndStockForm.priceInputPlaceholder',
-            })}
-            currencyConfig={appSettings.getCurrencyFormatting(marketplaceCurrency)}
-            validate={priceValidators}
-          />
+          <div className={css.fieldsWrapper}>
 
 
-          <div className={css.tagsInput}>
-            <FieldTextInput
-              id="list"
-              name="list"
-              className={css.inputBox}
-              type="text"
-              label={intl.formatMessage({ id: 'EditListingPricingAndStockForm.listItemLabel' })}
-              placeholder={intl.formatMessage({ id: 'EditListingDetailsForm.listItemLabelPlaceholder' })}
-              onKeyUp={event => {
-                event.preventDefault();
-                if (event.keyCode === 13 && event.target.value) {
-                  event.preventDefault();
-                  const listItems = values.listItems || [];
-                  listItems.push(event.target.value);
-                  form.change('listItems', listItems);
-                  form.change('list', '');
-                }
-              }}
+            <FieldCurrencyInput
+              id={`${formId}.price`}
+              name="price"
 
+              autoFocus={autoFocus}
+              label={intl.formatMessage(
+                { id: 'EditListingPricingAndStockForm.pricePerProduct' },
+                { unitType }
+              )}
+              placeholder={intl.formatMessage({
+                id: 'EditListingPricingAndStockForm.priceInputPlaceholder',
+              })}
+              currencyConfig={appSettings.getCurrencyFormatting(marketplaceCurrency)}
+              validate={priceValidators}
             />
+            <FieldCurrencyInput
+              id={`${formId}.coursePrice`}
+              name="coursePrice"
+
+              label={intl.formatMessage(
+                { id: 'EditListingPricingAndStockForm.pricePerCourseValue' },
+                { unitType }
+              )}
+              placeholder={intl.formatMessage({
+                id: 'EditListingPricingAndStockForm.priceInputPlaceholder',
+              })}
+              currencyConfig={appSettings.getCurrencyFormatting(marketplaceCurrency)}
+              validate={priceValidators}
+            />
+
+          </div>
+          <div className={css.tagsInput}>
+            <div className={css.fieldsWrapperWithBtn}>
+              <FieldTextInput
+                id="list"
+                name="list"
+                className={css.inputBox}
+                type="text"
+                label={intl.formatMessage({ id: 'EditListingPricingAndStockForm.listItemLabel' })}
+                placeholder={intl.formatMessage({ id: 'EditListingDetailsForm.listItemLabelPlaceholder' })}
+                onKeyUp={event => {
+                  event.preventDefault();
+                  if (event.keyCode === 13 && event.target.value) {
+                    event.preventDefault();
+                    const listItems = values.listItems || [];
+                    listItems.push(event.target.value);
+                    form.change('listItems', listItems);
+                    form.change('list', '');
+                  }
+                }}
+
+              />
+              <div onClick={() => { addValue() }} className={css.addValue}>
+                <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 0C7.3875 0 0 7.3875 0 16.5C0 25.6125 7.3875 33 16.5 33C25.6125 33 33 25.6125 33 16.5C33 7.3875 25.6125 0 16.5 0ZM18 22.5C18 22.8978 17.842 23.2794 17.5607 23.5607C17.2794 23.842 16.8978 24 16.5 24C16.1022 24 15.7206 23.842 15.4393 23.5607C15.158 23.2794 15 22.8978 15 22.5V18H10.5C10.1022 18 9.72064 17.842 9.43934 17.5607C9.15804 17.2794 9 16.8978 9 16.5C9 16.1022 9.15804 15.7206 9.43934 15.4393C9.72064 15.158 10.1022 15 10.5 15H15V10.5C15 10.1022 15.158 9.72064 15.4393 9.43934C15.7206 9.15804 16.1022 9 16.5 9C16.8978 9 17.2794 9.15804 17.5607 9.43934C17.842 9.72064 18 10.1022 18 10.5V15H22.5C22.8978 15 23.2794 15.158 23.5607 15.4393C23.842 15.7206 24 16.1022 24 16.5C24 16.8978 23.842 17.2794 23.5607 17.5607C23.2794 17.842 22.8978 18 22.5 18H18V22.5Z" fill="#FE02BF" />
+                </svg>
+
+              </div>
+            </div>
             <div className={css.formRow}>
               <div>
                 <div>
                   {values.listItems && values.listItems.length
                     ? values.listItems.map((hk, i) => (
-                      <div key={hk + i}>
-                        <span >{hk}</span>
+                      <div key={hk + i} className={css.lineItem}>
+                        <div>
+                          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="6.5" cy="6.5" r="6.5" fill="#FD0578" />
+                          </svg>
+
+                          <span >{hk}</span>
+                        </div>
                         <span
                           className={css.tagClose}
                           onClick={() => {
                             form.change('listItems', values.listItems.filter(h => h != hk));
                           }}
                         >
-                          <svg
-                            width="10"
-                            height="11"
-                            viewBox="0 0 10 11"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M9.05541 10.0554C8.83037 10.2804 8.52516 10.4069 8.20691 10.4069C7.88866 10.4069 7.58345 10.2804 7.35841 10.0554L4.70741 7.02541L2.05641 10.0544C1.94531 10.1673 1.81296 10.2571 1.66698 10.3187C1.52101 10.3802 1.36429 10.4122 1.20589 10.4128C1.04748 10.4135 0.890512 10.3827 0.744038 10.3224C0.597565 10.2621 0.464484 10.1734 0.352472 10.0613C0.24046 9.94934 0.151734 9.81626 0.091412 9.66978C0.0310898 9.52331 0.000364857 9.36634 0.00100988 9.20793C0.0016549 9.04953 0.0336569 8.89281 0.09517 8.74684C0.156683 8.60086 0.24649 8.46851 0.35941 8.35741L3.11741 5.20741L0.35841 2.05541C0.24549 1.94431 0.155683 1.81196 0.09417 1.66598C0.0326569 1.52001 0.000654968 1.36329 9.94895e-06 1.20489C-0.00063507 1.04648 0.0300898 0.889512 0.0904121 0.743038C0.150734 0.596565 0.23946 0.463484 0.351472 0.351472C0.463484 0.23946 0.596565 0.150734 0.743038 0.0904121C0.889512 0.0300898 1.04648 -0.00063507 1.20489 9.94895e-06C1.36329 0.000654968 1.52001 0.0326569 1.66598 0.09417C1.81196 0.155683 1.94431 0.24549 2.05541 0.35841L4.70741 3.38941L7.35841 0.35841C7.46951 0.24549 7.60186 0.155683 7.74784 0.09417C7.89382 0.0326569 8.05053 0.000654968 8.20893 9.94895e-06C8.36734 -0.00063507 8.52431 0.0300898 8.67078 0.0904121C8.81726 0.150734 8.95034 0.23946 9.06235 0.351472C9.17436 0.463484 9.26309 0.596565 9.32341 0.743038C9.38373 0.889512 9.41445 1.04648 9.41381 1.20489C9.41317 1.36329 9.38116 1.52001 9.31965 1.66598C9.25814 1.81196 9.16833 1.94431 9.05541 2.05541L6.29741 5.20741L9.05541 8.35741C9.16698 8.46886 9.25549 8.6012 9.31588 8.74688C9.37627 8.89256 9.40735 9.04871 9.40735 9.20641C9.40735 9.36411 9.37627 9.52026 9.31588 9.66594C9.25549 9.81162 9.16698 9.94396 9.05541 10.0554Z"
-                              fill="#353535"
-                            />
+                          <svg width="21" height="18" viewBox="0 0 21 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.2698 6.59998L7.9481 11.4M13.2698 11.4L7.9481 6.59998L13.2698 11.4Z" stroke="black" stroke-opacity="0.6" stroke-width="2" stroke-linecap="round" />
+                            <path d="M10.6087 17C15.5072 17 19.4782 13.4183 19.4782 9C19.4782 4.58172 15.5072 1 10.6087 1C5.71021 1 1.7392 4.58172 1.7392 9C1.7392 13.4183 5.71021 17 10.6087 17Z" stroke="black" stroke-opacity="0.6" stroke-width="2" />
                           </svg>
+
                         </span>
                       </div>
                     ))
@@ -250,9 +260,7 @@ export const EditListingPricingAndStockFormComponent = props => (
             </div>
           </div>
 
-          <div onClick={() => { addValue() }}>
-            +Add
-          </div>
+
           {/* 
           <UpdateStockToInfinityCheckboxMaybe
             formId={formId}
@@ -285,6 +293,7 @@ export const EditListingPricingAndStockFormComponent = props => (
             name="isPriceEditable"
             id="isPriceEditable"
             optionLabelClassName={css.finePrint}
+            className={css.checkbox}
             options={[
               {
                 key: 'isPriceEditable',
@@ -305,7 +314,7 @@ export const EditListingPricingAndStockFormComponent = props => (
             disabled={submitDisabled}
             ready={submitReady}
           >
-            
+
             {saveActionMsg}
           </Button>
         </Form>

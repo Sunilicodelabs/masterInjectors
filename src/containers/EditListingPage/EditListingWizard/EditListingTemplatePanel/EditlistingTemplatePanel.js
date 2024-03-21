@@ -18,30 +18,35 @@ const EditlistingTemplatePanel = props => {
   } = props;
   const classes = classNames(rootClassName || css.root, className);
 
-// + Create Course Template
+  // + Create Course Template
   return (
     <div className={classes}>
-      <div>
+      <div className={css.heading}>
+        <h3>
+          Select A Course Template
+        </h3>
         <NamedLink
           name="NewTemplatePage"
+          className={css.createCourse}
         >
           <span onClick={() => localStorage.setItem('isTemplate', 'new')}>
             <FormattedMessage id="TopbarDesktop.createCourseLink" />
           </span>
         </NamedLink>
       </div>
-     {
-      listings && listings.length > 0 ? 
-      <SearchResultsPanel
-      className={css.searchListingsPanel}
-      listings={listings}
-      pagination={null}
-      search={parse(location.search)}
-      isMapVariant={false}
-      isTemplate={true}
-    />:
-    <h1>No templates</h1>
-     }
+      <p className={css.details}>Choose from one of the templates to create a course for a new region, or create a whole new course. </p>
+      {
+        listings && listings.length > 0 ?
+          <SearchResultsPanel
+            className={css.searchListingsPanel}
+            listings={listings}
+            pagination={null}
+            search={parse(location.search)}
+            isMapVariant={false}
+            isTemplate={true}
+          /> :
+          <h4>No templates</h4>
+      }
 
     </div>
   );

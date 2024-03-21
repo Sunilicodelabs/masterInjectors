@@ -62,7 +62,7 @@ const EditListingLocationPanel = props => {
 
   return (
     <div className={classes}>
-      <H3 as="h1">
+      <H3 as="h1" className={css.SectionTitle}>
         {isPublished ? (
           <FormattedMessage
             id="EditListingLocationPanel.title"
@@ -76,7 +76,7 @@ const EditListingLocationPanel = props => {
           // />
         )}
       </H3>
-      <H5>Create a new bookable listing for the {listingTittle}</H5>
+      <H5 className={css.subTitle}>Create a new bookable listing for the {listingTittle}</H5>
       <EditListingLocationForm
         className={css.form}
         initialValues={state.initialValues}

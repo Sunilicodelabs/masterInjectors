@@ -168,7 +168,7 @@ export const EditListingLocationFormComponent = props => (
                             type="button"
                             onClick={() => fields.remove(index)}
                           >
-                            Delete
+                            <svg fill="#000000" height="22px" width="22px" version="1.1" id="Layer_1" viewBox="0 0 14.08 14.08" enable-background="new 0 0 512 512" ><path d="M1.174 12.906c0 0.646 0.525 1.174 1.174 1.174h9.386c0.646 0 1.174 -0.525 1.174 -1.174V5.28H1.174zm8.8 -5.866h1.174v5.28h-1.174zm-3.52 0h1.174v5.28h-1.174zm-3.52 0h1.174v5.28h-1.174zm10.56 -4.694h-3.52V1.174C9.974 0.525 9.446 0 8.8 0H5.28c-0.646 0 -1.174 0.525 -1.174 1.174v1.174h-3.52C0.261 2.346 0 2.61 0 2.934V3.52c0 0.325 0.261 0.586 0.586 0.586h12.906c0.325 0 0.586 -0.261 0.586 -0.586v-0.586c0.003 -0.325 -0.259 -0.588 -0.583 -0.588m-4.694 0H5.28V1.174h3.52z" /></svg>
                           </button>
                         </div>
                       </div>
@@ -177,50 +177,51 @@ export const EditListingLocationFormComponent = props => (
                   )
                 })}
 
-                <Button type="button" className={css.addButton} onClick={() => fields.push({})}>
-                  Add
-                </Button>
+                <div type="button" className={css.addButton} onClick={() => fields.push({})}>
+                  + Add A Day
+                </div>
               </React.Fragment>
             )}
           />
 
+          <div className={css.fieldsWrapper}>
+            <FieldSelect
+              className={css.quantityField}
+              name={"capacity"}
+              id={`capacity`}
+              label={'Select the capacity:'}
+            >
+              <option disabled value="">
+                {intl.formatMessage({ id: 'ProductOrderForm.selectQuantityOption' })}
+              </option>
+              {[...Array(50).keys()].map(cap => {
+                const value = cap + 1; // Adjusting value to start from 1
+                return (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                );
+              })}
+            </FieldSelect>
 
-          <FieldSelect
-            className={css.quantityField}
-            name={"capacity"}
-            id={`capacity`}
-            label={'Select the capacity:'}
-          >
-            <option disabled value="">
-              {intl.formatMessage({ id: 'ProductOrderForm.selectQuantityOption' })}
-            </option>
-            {[...Array(50).keys()].map(cap => {
-              const value = cap + 1; // Adjusting value to start from 1
-              return (
-                <option key={value} value={value}>
-                  {value}
-                </option>
-              );
-            })}
-          </FieldSelect>
-
-          <FieldSelect
-            className={css.quantityField}
-            name={"courseHost"}
-            id={`courseHost`}
-            label={'Select the primary host:'}
-          >
-            <option disabled value="">
-              {intl.formatMessage({ id: 'ProductOrderForm.selectQuantityOption' })}
-            </option>
-            {courseHosts?.map(host => {
-              return (
-                <option key={host.key} value={host.value}>
-                  {host.label}
-                </option>
-              );
-            })}
-          </FieldSelect>
+            <FieldSelect
+              className={css.quantityField}
+              name={"courseHost"}
+              id={`courseHost`}
+              label={'Select the primary host:'}
+            >
+              <option disabled value="">
+                {intl.formatMessage({ id: 'ProductOrderForm.selectQuantityOption' })}
+              </option>
+              {courseHosts?.map(host => {
+                return (
+                  <option key={host.key} value={host.value}>
+                    {host.label}
+                  </option>
+                );
+              })}
+            </FieldSelect>
+          </div>
 
           <FieldTextInput
             className={css.building}

@@ -140,8 +140,8 @@ export const ListingCardComponent = props => {
 
   return (
     <>
-      <div>
-        <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
+      <div className={classes}>
+        <NamedLink  name="ListingPage" params={{ id, slug }}>
           <AspectRatioWrapper
             className={css.aspectRatioWrapper}
             width={aspectWidth}
@@ -157,14 +157,14 @@ export const ListingCardComponent = props => {
             />
           </AspectRatioWrapper>
           <div className={css.info}>
-            <PriceMaybe price={price} publicData={publicData} config={config} intl={intl} />
-            <div className={css.mainInfo}>
               <div className={css.title}>
                 {richText(title, {
                   longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
                   longWordClass: css.longWord,
                 })}
               </div>
+            <PriceMaybe price={price} publicData={publicData} config={config} intl={intl} />
+            <div className={css.mainInfo}>
               {showAuthorInfo ? (
                 <div className={css.authorInfo}>
                   <FormattedMessage id="ListingCard.author" values={{ authorName }} />
@@ -176,11 +176,11 @@ export const ListingCardComponent = props => {
 
 
         </NamedLink>
-        {isTemplate &&
+     <div className={css.buttonWrapper}>   {isTemplate &&
           <div className={css.saveButton} onClick={() => createNewListing()}>
             Save & continue
           </div>
-        }
+        }</div>
       </div>
 
 

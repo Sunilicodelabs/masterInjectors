@@ -244,7 +244,7 @@ const EditListingDetailsPanel = props => {
 
   return (
     <div className={classes}>
-      <H3 as="h1">
+      <H3 as="h1" className={css.SectionTitle}>
         {isPublished ? (
           <FormattedMessage
             id="EditListingDetailsPanel.title"
@@ -257,7 +257,7 @@ const EditListingDetailsPanel = props => {
           />
         )}
       </H3>
-      <H5>
+      <H5 className={css.subTitle}>
         <FormattedMessage 
         id="EditListingDetailsPanel.createListingDesc"
         />
