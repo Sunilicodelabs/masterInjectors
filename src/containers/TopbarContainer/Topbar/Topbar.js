@@ -18,6 +18,7 @@ import {
   LinkedLogo,
   Modal,
   ModalMissingInformation,
+  NamedLink,
 } from '../../../components';
 
 import MenuIcon from './MenuIcon';
@@ -273,9 +274,24 @@ class TopbarComponent extends Component {
     const initialSearchFormValues = topbarSearcInitialValues();
 
     const classes = classNames(rootClassName || css.root, className);
+    const isAuthenticatedOrJustHydrated = isAuthenticated ;
+
+    const LoginLink = () => {
+      localStorage.setItem('isAdmin', 'true')
+      return (
+        <NamedLink name="AdminLoginPage" className={classNames(css.topbarLink, css.loginLink)}>
+          <span className={css.topbarLinkLabel}>
+            Admin Login
+          </span>
+        </NamedLink>
+      );
+    };
+
+    const adminLoginMayBe = isAuthenticatedOrJustHydrated ? null : <LoginLink />;
 
     return (
       <div className={classes}>
+        <div>{adminLoginMayBe} </div>
         <LimitedAccessBanner
           isAuthenticated={isAuthenticated}
           authScopes={authScopes}

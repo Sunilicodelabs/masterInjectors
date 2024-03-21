@@ -35,6 +35,9 @@ const SearchPageWithGrid = loadable(() => import(/* webpackChunkName: "SearchPag
 const StripePayoutPage = loadable(() => import(/* webpackChunkName: "StripePayoutPage" */ '../containers/StripePayoutPage/StripePayoutPage'));
 const TermsOfServicePage = loadable(() => import(/* webpackChunkName: "TermsOfServicePage" */ '../containers/TermsOfServicePage/TermsOfServicePage'));
 const TransactionPage = loadable(() => import(/* webpackChunkName: "TransactionPage" */ '../containers/TransactionPage/TransactionPage'));
+const CoursesPage = loadable(() => import(/* webpackChunkName: "TransactionPage" */ '../containers/CoursesPage/CoursesPage'));
+const AdminLoginPage = loadable(() => import(/* webpackChunkName: "TransactionPage" */ '../containers/AuthenticationPage/AdminLoginPage'));
+const TemplatePage = loadable(() => import(/* webpackChunkName: "TransactionPage" */ '../containers/TemplatePage/TemplatePage'));
 const SubscriptionPage = loadable(() => import(/* webpackChunkName: "TransactionPage" */ '../containers/SubscriptionPage/SubscriptionPage'));
 // Styleguide helps you to review current components and develop new ones
 const StyleguidePage = loadable(() => import(/* webpackChunkName: "StyleguidePage" */ '../containers/StyleguidePage/StyleguidePage'));
@@ -88,6 +91,18 @@ const routeConfiguration = (layoutConfig) => {
       loadData: pageDataLoadingAPI.SearchPage.loadData,
     },
     {
+      path: '/courses',
+      name: 'CoursesPage',
+      component: CoursesPage,
+      loadData: pageDataLoadingAPI.CoursesPage.loadData,
+    },
+    {
+      path: '/templates',
+      name: 'TemplatePage',
+      component: TemplatePage,
+      loadData: pageDataLoadingAPI.TemplatePage.loadData,
+    },
+    {
       path: '/l',
       name: 'ListingBasePage',
       component: RedirectToLandingPage,
@@ -116,6 +131,17 @@ const routeConfiguration = (layoutConfig) => {
     {
       path: '/l/new',
       name: 'NewListingPage',
+      auth: true,
+      component: () => (
+        <NamedRedirect
+          name="EditListingPage"
+          params={{ slug: draftSlug, id: draftId, type: 'new', tab: 'templates' }}
+        />
+      ),
+    },
+    {
+      path: '/l/newTemplate',
+      name: 'NewTemplatePage',
       auth: true,
       component: () => (
         <NamedRedirect
@@ -174,6 +200,11 @@ const routeConfiguration = (layoutConfig) => {
       name: 'LoginPage',
       component: AuthenticationPage,
       extraProps: { tab: 'login' },
+    },
+    {
+      path: '/adminLogin',
+      name: 'AdminLoginPage',
+      component: AdminLoginPage
     },
     {
       path: '/signup',

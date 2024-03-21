@@ -21,24 +21,30 @@ import EditListingPricingPanel from './EditListingPricingPanel/EditListingPricin
 import EditListingPricingAndStockPanel from './EditListingPricingAndStockPanel/EditListingPricingAndStockPanel';
 
 import css from './EditListingWizardTab.module.css';
+import EditlistingTemplatePanel from './EditListingTemplatePanel/EditlistingTemplatePanel';
+import EditListingFAQPanel from './EditListingFAQPanel/EditListingFAQPanel';
 
 export const DETAILS = 'details';
+export const TEMPLATES = 'templates';
 export const PRICING = 'pricing';
 export const PRICING_AND_STOCK = 'pricing-and-stock';
 export const DELIVERY = 'delivery';
 export const LOCATION = 'location';
 export const AVAILABILITY = 'availability';
 export const PHOTOS = 'photos';
+export const FAQ = 'faq';
 
 // EditListingWizardTab component supports these tabs
 export const SUPPORTED_TABS = [
   DETAILS,
+  TEMPLATES,
   PRICING,
   PRICING_AND_STOCK,
   DELIVERY,
   LOCATION,
   AVAILABILITY,
   PHOTOS,
+  FAQ
 ];
 
 const pathParamsToNextTab = (params, tab, marketplaceTabs) => {
@@ -103,13 +109,13 @@ const EditListingWizardTab = props => {
     tabSubmitButtonText,
     config,
     routeConfiguration,
+    userType,
+    listings
   } = props;
-
   const { type } = params;
   const isNewURI = type === LISTING_PAGE_PARAM_TYPE_NEW;
   const isDraftURI = type === LISTING_PAGE_PARAM_TYPE_DRAFT;
   const isNewListingFlow = isNewURI || isDraftURI;
-
   const currentListing = ensureListing(listing);
 
   // New listing flow has automatic redirects to new tab on the wizard
@@ -179,12 +185,23 @@ const EditListingWizardTab = props => {
 
   // TODO: add missing cases for supported tabs
   switch (tab) {
+    case TEMPLATES: {
+      return (
+        <EditlistingTemplatePanel
+        {...panelProps(TEMPLATES)}
+        listings={listings}
+        config={config}
+      />
+      );
+    }
     case DETAILS: {
       return (
-        <EditListingDetailsPanel
+
+      <EditListingDetailsPanel
           {...panelProps(DETAILS)}
           onListingTypeChange={onListingTypeChange}
           config={config}
+          userType={userType}
         />
       );
     }
@@ -237,6 +254,18 @@ const EditListingWizardTab = props => {
           history={history}
           routeConfiguration={routeConfiguration}
           {...panelProps(AVAILABILITY)}
+        />
+      );
+    }
+    case FAQ: {
+      return (
+        <EditListingFAQPanel
+          {...panelProps(FAQ)}
+          onListingTypeChange={onListingTypeChange}
+          config={config}
+          userType={userType}
+          marketplaceCurrency={config.currency}
+          listingMinimumPriceSubUnits={config.listingMinimumPriceSubUnits}
         />
       );
     }

@@ -65,7 +65,9 @@ export const ActionBarMaybe = props => {
         </p>
         <NamedLink className={css.editListingLink} name="EditListingPage" params={editParams}>
           <EditIcon className={css.editIcon} />
-          <FormattedMessage id={message} />
+          <span onClick={() => localStorage.setItem('isTemplate', 'false')}>
+            <FormattedMessage id={message} />
+          </span>
         </NamedLink>
       </div>
     );

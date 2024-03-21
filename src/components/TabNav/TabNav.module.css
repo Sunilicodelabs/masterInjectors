@@ -48,7 +48,7 @@
 
   @media (--viewportLarge) {
     font-weight: var(--fontWeightSemiBold);
-    font-size: 20px;
+    font-size: 21px;
     line-height: 24px;
 
     height: unset;
@@ -69,7 +69,7 @@
 
 .selectedLink {
   border-bottom-color: var(--colorBlack);
-  color: var(--colorBlack);
+  color: #FD0578;
 
   @media (--viewportLarge) {
     width: var(--TabNav_linkWidth);
@@ -85,6 +85,6 @@
 
 .disabled {
   pointer-events: none;
-  color: var(--colorGrey300);
+  color: #696969;
   text-decoration: none;
 }

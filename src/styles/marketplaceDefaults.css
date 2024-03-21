@@ -462,8 +462,8 @@ select {
   /* Background */
   /* background-image: url("data:image/svg+xml,%3Csvg width='10' height='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%232D4053' stroke='%232D4053' stroke-width='.5' fill-rule='evenodd'%3E%3Cpath d='M4.687 15.315a.443.443 0 0 0 .626 0l3.557-3.556a.446.446 0 0 0-.629-.629L5 14.37l-3.241-3.24a.445.445 0 0 0-.629.63l3.557 3.553v.002ZM5.313 1.13a.443.443 0 0 0-.626 0L1.13 4.685a.446.446 0 0 0 .629.63L5 2.074l3.241 3.24a.445.445 0 0 0 .629-.629L5.313 1.131V1.13Z'/%3E%3C/g%3E%3C/svg%3E"); */
   background-position: center right 12px;
-  background-size: 8px 14px;
-  background-image: url("");
+  background-size: 4px 8px;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='7' viewBox='0 0 10 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M4.68579 5.75897C4.86 5.9323 5.14 5.9323 5.31421 5.75897L8.86967 2.20352C9.04344 2.0293 9.04344 1.74842 8.86967 1.57509C8.6959 1.40087 8.41457 1.40087 8.24124 1.57509L5 4.81589L1.75876 1.57509C1.58498 1.40087 1.30366 1.40087 1.13033 1.57509C0.956557 1.74842 0.956557 2.0293 1.13033 2.20352L4.68579 5.75897Z' fill='%234A4A4A' stroke='%234A4A4A'/%3E%3C/svg%3E%0A");
 
   &::placeholder {
     color: var(--colorGrey300);
@@ -473,7 +473,7 @@ select {
     padding: 7px 32px 7px 16px;
     line-height: 32px;
     background-position: center right 16px;
-    background-size: 10px 16px;
+    background-size: 8px 10px;
   }
 }
 /* Effects */

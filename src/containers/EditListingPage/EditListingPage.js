@@ -17,7 +17,7 @@ import {
 } from '../../util/urlHelpers';
 import { LISTING_STATE_DRAFT, LISTING_STATE_PENDING_APPROVAL, propTypes } from '../../util/types';
 import { ensureOwnListing } from '../../util/data';
-import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
+import { getListingsById, getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { manageDisableScrolling, isScrollingDisabled } from '../../ducks/ui.duck';
 import {
   stripeAccountClearError,
@@ -112,6 +112,7 @@ export const EditListingPageComponent = props => {
     stripeAccountFetched,
     stripeAccount,
     updateStripeAccountError,
+    listings
   } = props;
 
   const { id, type, returnURLType } = params;
@@ -240,6 +241,7 @@ export const EditListingPageComponent = props => {
           payoutDetailsSaved={page.payoutDetailsSaved}
           stripeAccountFetched={stripeAccountFetched}
           stripeAccount={stripeAccount}
+          listings={listings}
           stripeAccountError={
             createStripeAccountError || updateStripeAccountError || fetchStripeAccountError
           }
@@ -342,6 +344,7 @@ const mapStateToProps = state => {
     const listings = getMarketplaceEntities(state, [{ id, type: 'ownListing' }]);
     return listings.length === 1 ? listings[0] : null;
   };
+  const listings = getListingsById(state, page?.currentPageResultIds);
 
   return {
     getAccountLinkInProgress,
@@ -356,6 +359,7 @@ const mapStateToProps = state => {
     getOwnListing,
     page,
     scrollingDisabled: isScrollingDisabled(state),
+    listings
   };
 };
 

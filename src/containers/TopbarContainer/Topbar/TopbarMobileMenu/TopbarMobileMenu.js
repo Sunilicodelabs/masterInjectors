@@ -8,7 +8,7 @@ import classNames from 'classnames';
 
 import { ACCOUNT_SETTINGS_PAGES } from '../../../../routing/routeConfiguration';
 import { FormattedMessage } from '../../../../util/reactIntl';
-import { propTypes } from '../../../../util/types';
+import { ADMIN, propTypes } from '../../../../util/types';
 import { ensureCurrentUser } from '../../../../util/data';
 
 import {
@@ -20,6 +20,7 @@ import {
 } from '../../../../components';
 
 import css from './TopbarMobileMenu.module.css';
+import { getUserType } from '../../../../util/helper';
 
 const CustomLinkComponent = ({ linkConfig, currentPage }) => {
   const { group, text, type, href, route } = linkConfig;
@@ -133,6 +134,8 @@ const TopbarMobileMenu = props => {
   };
   const inboxTab = currentUserHasListings ? 'sales' : 'orders';
 
+  const userType = getUserType(currentUser);
+
   return (
     <div className={css.root}>
       <AvatarLarge className={css.avatar} user={currentUser} />
@@ -171,6 +174,20 @@ const TopbarMobileMenu = props => {
           >
             <FormattedMessage id="TopbarMobileMenu.accountSettingsLink" />
           </NamedLink>
+          {userType === ADMIN ?
+            <NamedLink
+              className={classNames(css.navigationLink, currentPageClass('NewListingPage'))}
+              name="NewListingPage"
+            >
+              <FormattedMessage id="TopbarDesktop.createCourseLink" />
+            </NamedLink> : null
+          }
+          {/* <NamedLink
+            className={classNames(css.navigationLink, currentPageClass('CoursesPage'))}
+              name="CoursesPage"
+            >
+              <FormattedMessage id="TopbarDesktop.CoursesPageLink" />
+            </NamedLink> */}
         </div>
         <div className={css.customLinksWrapper}>{extraLinks}</div>
         <div className={css.spacer} />

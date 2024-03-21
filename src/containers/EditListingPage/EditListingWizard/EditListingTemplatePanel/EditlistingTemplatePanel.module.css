@@ -1,0 +1,66 @@
+@import '../../../../styles/customMediaQueries.css';
+
+.root {
+  flex-grow: 1;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.form {
+  flex-grow: 1;
+}
+
+.searchListingsPanel {
+  flex-grow: 1;
+  margin-top: 30px;
+  & > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 29px;
+    & > div {
+ 
+    }
+  }
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 11px;
+  & h3 {
+    color: #4a4a4a;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px; /* 123.077% */
+    letter-spacing: -1px;
+    margin: 0;
+    padding: 0;
+  }
+  & .createCourse {
+    color: var(--Hot-Pink, #fd0578);
+
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px; /* 177.778% */
+    letter-spacing: -1px;
+    text-decoration-line: underline;
+    text-transform: capitalize;
+  }
+}
+
+.details {
+  color: #000;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 22px; /* 137.5% */
+  max-width: 455px;
+  margin: 0;
+  padding: 0;
+}

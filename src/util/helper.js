@@ -1,0 +1,1 @@
+export const getUserType = (user) => { return user?.attributes?.profile?.publicData?.userType }

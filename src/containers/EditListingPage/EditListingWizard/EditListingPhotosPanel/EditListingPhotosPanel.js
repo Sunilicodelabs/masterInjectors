@@ -14,8 +14,10 @@ import EditListingPhotosForm from './EditListingPhotosForm';
 import css from './EditListingPhotosPanel.module.css';
 
 const getInitialValues = params => {
-  const { images } = params;
-  return { images };
+  const { images, listing } = params;
+  const { publicData } = listing?.attributes;
+  const { contractName, courseHostLink } = publicData;
+  return { images, contractName, courseHostLink };
 };
 
 const EditListingPhotosPanel = props => {
@@ -38,10 +40,11 @@ const EditListingPhotosPanel = props => {
   const rootClass = rootClassName || css.root;
   const classes = classNames(rootClass, className);
   const isPublished = listing?.id && listing?.attributes?.state !== LISTING_STATE_DRAFT;
+  var isTemplate = localStorage.getItem('isTemplate');
 
   return (
     <div className={classes}>
-      <H3 as="h1">
+      <H3 as="h1" className={css.SectionTitle}>
         {isPublished ? (
           <FormattedMessage
             id="EditListingPhotosPanel.title"
@@ -49,7 +52,7 @@ const EditListingPhotosPanel = props => {
           />
         ) : (
           <FormattedMessage
-            id="EditListingPhotosPanel.createListingTitle"
+            id= {isTemplate ? "EditListingPhotosPanel.attactmentTittle" : "EditListingPhotosPanel.createListingTitle"}
             values={{ lineBreak: <br /> }}
           />
         )}
@@ -61,8 +64,16 @@ const EditListingPhotosPanel = props => {
         fetchErrors={errors}
         initialValues={getInitialValues(props)}
         onImageUpload={onImageUpload}
+        isTemplate={isTemplate}
         onSubmit={values => {
-          const { addImage, ...updateValues } = values;
+          const { addImage, images, contractName, courseHostLink } = values;
+          const updateValues = {
+            images,
+            publicData: {
+              contractName,
+              courseHostLink
+            }
+          }
           onSubmit(updateValues);
         }}
         onRemoveImage={onRemoveImage}

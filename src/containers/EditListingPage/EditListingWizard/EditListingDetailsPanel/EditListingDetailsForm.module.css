@@ -25,7 +25,7 @@
   margin-bottom: 24px;
 
   @media (--viewportMedium) {
-    margin-bottom: 32px;
+    margin-bottom: 29px;
   }
 }
 
@@ -72,6 +72,17 @@
   @media (--viewportLarge) {
     display: inline-block;
     width: 241px;
-    margin-top: 100px;
+    margin-top: 15px;
+    height: 64px;
+    border-radius: 0;
+  }
+}
+
+.fieldsWrapper{
+  display: flex;
+  gap: 22px;
+  margin-bottom: 29px;
+  & > div{
+    flex: 1;
   }
 }
