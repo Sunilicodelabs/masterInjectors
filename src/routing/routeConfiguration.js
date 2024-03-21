@@ -38,7 +38,7 @@ const TransactionPage = loadable(() => import(/* webpackChunkName: "TransactionP
 const CoursesPage = loadable(() => import(/* webpackChunkName: "TransactionPage" */ '../containers/CoursesPage/CoursesPage'));
 const AdminLoginPage = loadable(() => import(/* webpackChunkName: "TransactionPage" */ '../containers/AuthenticationPage/AdminLoginPage'));
 const TemplatePage = loadable(() => import(/* webpackChunkName: "TransactionPage" */ '../containers/TemplatePage/TemplatePage'));
-
+const SubscriptionPage = loadable(() => import(/* webpackChunkName: "TransactionPage" */ '../containers/SubscriptionPage/SubscriptionPage'));
 // Styleguide helps you to review current components and develop new ones
 const StyleguidePage = loadable(() => import(/* webpackChunkName: "StyleguidePage" */ '../containers/StyleguidePage/StyleguidePage'));
 
@@ -288,6 +288,12 @@ const routeConfiguration = (layoutConfig) => {
       authPage: 'LoginPage',
       component: () => <NamedRedirect name="ContactDetailsPage" />,
     },
+    {
+      path: '/subscription',
+      name: 'SubscriptionPage',
+      component: SubscriptionPage,
+    },
+    
     {
       path: '/account/contact-details',
       name: 'ContactDetailsPage',
