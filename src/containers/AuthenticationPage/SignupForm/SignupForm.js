@@ -219,7 +219,7 @@ const SignupFormComponent = props => (
 
           {values?.hearAboutUs === "friend" &&
             <FieldTextInput
-              className={css.password}
+              className={css.inputBox}
               type="text"
               id={formId ? `${formId}.hearAboutUsFriendDetails` : 'hearAboutUsFriendDetails'}
               name="hearAboutUsFriendDetails"

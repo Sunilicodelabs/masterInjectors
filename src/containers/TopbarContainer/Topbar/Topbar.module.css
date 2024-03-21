@@ -277,3 +277,9 @@
     margin: 0;
   }
 }
+.topbaradminLink {
+  background-color: #fff;
+  text-align: right;
+  float: right;
+  padding-right: 12px;
+}

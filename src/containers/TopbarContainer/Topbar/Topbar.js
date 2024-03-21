@@ -279,7 +279,7 @@ class TopbarComponent extends Component {
     const LoginLink = () => {
       localStorage.setItem('isAdmin', 'true')
       return (
-        <NamedLink name="AdminLoginPage" className={classNames(css.topbarLink, css.loginLink)}>
+        <NamedLink name="AdminLoginPage" className={css.topbaradminLink}>
           <span className={css.topbarLinkLabel}>
             Admin Login
           </span>
