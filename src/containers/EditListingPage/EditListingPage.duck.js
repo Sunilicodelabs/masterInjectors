@@ -711,7 +711,7 @@ export const onCreateAvalabiltyException = (data) => (dispatch, getState, sdk) =
       const findIndexDeleteValue = res.data.data.findIndex((st => moment(st.attributes.start).format("YYYY-MM-DD") == date));
       if (res.data.data.length && findIndexDeleteValue >= 0) {
         const deleteException = await sdk.availabilityExceptions.delete({
-          id: response.data.data[findIndexDeleteValue].id,
+          id: res.data.data[findIndexDeleteValue].id,
         });
       }
 
