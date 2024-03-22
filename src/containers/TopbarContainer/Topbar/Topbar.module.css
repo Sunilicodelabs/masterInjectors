@@ -282,4 +282,25 @@
   text-align: right;
   float: right;
   padding-right: 12px;
+  color: var(--Hot-Pink, #fd0578);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 142.857% */
+  text-decoration-line: underline;
+  text-transform: uppercase;
+}
+
+.topbarSocialLinks {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.topbarAdminLoginWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 11px 22px;
 }

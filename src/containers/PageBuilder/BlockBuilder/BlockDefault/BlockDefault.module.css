@@ -202,6 +202,14 @@
       align-items: center;
       justify-content: center;
       margin: 0 auto;
+      color: var(--White, #fff);
+      text-align: center;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
   }
 }
@@ -215,6 +223,11 @@
 :global(#landing-what-we-offer-2) {
   & p {
     max-width: 307px;
+  }
+  &:last-child{
+    & a{
+      cursor: not-allowed;
+    }
   }
 }
 
@@ -279,21 +292,16 @@
   }
 }
 
+:global(#master-injector-membership-3){
+  width: 100%;
+  max-width: 350px;
+}
+
 .cources {
   display: flex;
   justify-content: space-between;
   gap: 15px;
   & h4 {
-    color: var(--Purple, #fe02bf) !important;
-    font-size: 25px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 28px; /* 112% */
-    letter-spacing: -0.267px;
-    margin: 0 0 8px;
-    padding: 0;
-  }
-  & p {
     color: var(--White, #fff);
     font-size: 25px;
     font-style: normal;
@@ -301,6 +309,16 @@
     line-height: 28px; /* 112% */
     letter-spacing: -0.267px;
     margin: 0;
+    padding: 0;
+  }
+  & p {
+    color: var(--Purple, #fe02bf) !important;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px; /* 112% */
+    letter-spacing: -0.267px;
+    margin: 0 0 8px;
     padding: 0;
   }
 }

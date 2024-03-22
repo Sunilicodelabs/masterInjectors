@@ -172,7 +172,7 @@ const SignupFormComponent = props => (
             <div className={css.checkboxWrapper}>
               {professionTypes.map((item, index) => {
                 return (
-                  <div key={index} className={css.checkBox}>
+                  <div key={index} className={css.checkBox} style={{marginBottom:29}}>
                     <FieldCheckbox
                       id={`${index}.professionTypes`}
                       name="professionTypes"
@@ -185,7 +185,7 @@ const SignupFormComponent = props => (
 
               {values?.professionTypes?.includes("other") &&
                 <FieldTextInput
-                  className={css.checkBox}
+                  className={classNames(css.checkBox,css.inputField)}
                   type="text"
                   id={formId ? `${formId}.OtherProfession` : 'OtherProfession'}
                   name="OtherProfession"

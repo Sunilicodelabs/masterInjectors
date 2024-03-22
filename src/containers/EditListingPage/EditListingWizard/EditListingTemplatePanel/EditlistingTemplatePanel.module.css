@@ -20,7 +20,9 @@
     flex-wrap: wrap;
     gap: 29px;
     & > div {
- 
+      @media (--viewportLarge) {
+        max-width: calc(50% - 14px);
+       }
     }
   }
 }

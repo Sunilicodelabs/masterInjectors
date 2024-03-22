@@ -30,7 +30,7 @@
 
   @media (--viewportMedium) {
     position: relative;
-    padding-top: var(--topbarHeightDesktop);
+    padding-top: 130px;
     min-height: calc(100vh - var(--topbarHeightDesktop));
   }
 }
