@@ -48,7 +48,7 @@
   --colorGrey400: hsl(240 3% 60%);
   --colorGrey500: hsl(240 3% 50%);
   --colorGrey600: hsl(240 3% 40%);
-  --colorGrey700: hsl(240 3% 30%);
+  --colorGrey700: #4A4A4A;
   --colorGrey800: hsl(240 3% 20%);
   --colorGrey900: hsl(240 3% 10%);
   --colorBlack: hsl(0 0% 0%);
@@ -56,7 +56,7 @@
   --colorLightTransparent: rgba(255, 255, 255, 0.65);
 
   /* ================ Font ================ */
-  --fontFamily: -apple-system, BlinkMacSystemFont,'Montserrat', 'Inter', Helvetica, Arial, sans-serif,
+  --fontFamily: 'Montserrat', 'Inter', Helvetica, Arial, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 
   --fontWeightRegular: 400;

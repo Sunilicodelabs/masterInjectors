@@ -20,15 +20,14 @@
     flex: 1;
     min-width: 160px;
   }
-  & .addImageWrapper{
+  & .addImageWrapper {
     max-height: 202px;
     height: 100%;
-    & > div{
+    & > div {
       height: 100%;
-      & > div{
+      & > div {
         height: 100%;
         padding-bottom: 26% !important;
-
       }
     }
   }
@@ -82,7 +81,6 @@
   border-width: 2px;
   border-radius: 15px;
 
-
   /* Behaviour */
   cursor: pointer;
   transition: var(--transitionStyleButton);
@@ -99,7 +97,7 @@
 }
 
 .chooseImage {
-  color: var(--Lighter, #4C5368);
+  color: var(--Lighter, #4c5368);
   text-align: center;
   font-family: Poppins;
   font-size: 14px;
@@ -112,14 +110,13 @@
   margin-bottom: 0;
 
   @media (--viewportLarge) {
-    
     margin-top: 0;
     margin-bottom: 0;
   }
 }
 
 .imageTypes {
-  color: var(--Lighter, #4C5368);
+  color: var(--Lighter, #4c5368);
   font-family: Poppins;
   font-size: 12px;
   font-style: italic;
@@ -181,24 +178,30 @@
   flex-shrink: 0;
   margin-top: auto;
   margin-bottom: 24px;
-
+  color: var(--White, #fff);
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.267px;
+  text-transform: uppercase;
   @media (--viewportLarge) {
     display: inline-block;
     width: 241px;
     margin-top: 30px;
     height: 64px;
-
   }
 }
 
-.fieldsWrapper{
+.fieldsWrapper {
   display: flex;
   gap: 22px;
   margin-bottom: 29px;
   & > div {
     flex: 1;
   }
-  & select{
+  & select {
     padding: 3px 32px 2px 16px;
   }
 }
