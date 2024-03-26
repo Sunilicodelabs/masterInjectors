@@ -96,6 +96,24 @@ const SignupFormComponent = props => (
               })}
               validate={validators.composeValidators(emailRequired, emailValid)}
             />
+
+            <FieldTextInput
+              className={css.password}
+              type="number"
+              id={formId ? `${formId}.phoneNumber` : 'phoneNumber'}
+              name="phoneNumber"
+              label={intl.formatMessage({
+                id: 'SignupForm.phoneNumberLabel',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'SignupForm.phoneNumberPlaceholder',
+              })}
+              validate={validators.required(
+                intl.formatMessage({
+                  id: 'SignupForm.phoneNumberRequired',
+                })
+              )}
+            />
             <div className={css.name}>
               <FieldTextInput
                 className={css.firstNameRoot}
@@ -134,23 +152,7 @@ const SignupFormComponent = props => (
                 )}
               />
             </div>
-            <FieldTextInput
-              className={css.password}
-              type="number"
-              id={formId ? `${formId}.phoneNumber` : 'phoneNumber'}
-              name="phoneNumber"
-              label={intl.formatMessage({
-                id: 'SignupForm.phoneNumberLabel',
-              })}
-              placeholder={intl.formatMessage({
-                id: 'SignupForm.phoneNumberPlaceholder',
-              })}
-              validate={validators.required(
-                intl.formatMessage({
-                  id: 'SignupForm.phoneNumberRequired',
-                })
-              )}
-            />
+
             <FieldTextInput
               className={css.password}
               type="password"
@@ -172,8 +174,8 @@ const SignupFormComponent = props => (
             <div className={css.checkboxWrapper}>
               {professionTypes.map((item, index) => {
                 return (
-                  <div key={index} className={css.checkBox}>
-                    <FieldCheckbox
+                  <div key={index} className={css.checkBox} style={{marginBottom:29}}>                    
+                  <FieldCheckbox
                       id={`${index}.professionTypes`}
                       name="professionTypes"
                       label={item?.label}
@@ -185,7 +187,7 @@ const SignupFormComponent = props => (
 
               {values?.professionTypes?.includes("other") &&
                 <FieldTextInput
-                  className={css.checkBox}
+                  className={classNames(css.checkBox,css.inputField)}
                   type="text"
                   id={formId ? `${formId}.OtherProfession` : 'OtherProfession'}
                   name="OtherProfession"
@@ -253,24 +255,24 @@ const SignupFormComponent = props => (
           <div>
             <label className={css.labelTitle}>I speak....</label>
             <div className={css.checkboxWrapper}>
-            {languageISpeak.map((item, index) => {
-              return (
-                <div key={index}   className={css.checkBox}>
-                  <FieldCheckbox
-                   
-                    id={`${index}.languageISpeak`}
-                    name="languageISpeak"
-                    label={item?.label}
-                    value={item?.key}
-                    required={true} />
-                </div>
-              )
-            })}
-             </div>
+              {languageISpeak.map((item, index) => {
+                return (
+                  <div key={index} className={css.checkBox}>
+                    <FieldCheckbox
+
+                      id={`${index}.languageISpeak`}
+                      name="languageISpeak"
+                      label={item?.label}
+                      value={item?.key}
+                      required={true} />
+                  </div>
+                )
+              })}
+            </div>
           </div>
 
 
-          {values?.languageISpeak?.length > 0 &&
+          {/* {values?.languageISpeak?.length > 0 &&
             <FieldTextInput
               // className={css.password}
               type="text"
@@ -279,7 +281,7 @@ const SignupFormComponent = props => (
               placeholder={intl.formatMessage({
                 id: 'SignupForm.languageISpeakTextPlaceholder',
               })}
-            />}
+            />} */}
 
           <div className={css.bottomWrapper}>
             <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled}>

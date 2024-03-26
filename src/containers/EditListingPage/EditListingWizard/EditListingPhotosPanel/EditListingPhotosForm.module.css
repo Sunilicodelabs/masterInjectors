@@ -80,9 +80,14 @@
 }
 
 .chooseImage {
-  composes: h4 from global;
-  color: var(--colorGrey700);
-  font-weight: var(--fontWeightSemiBold);
+  color: var(--Lighter, #4c5368);
+  text-align: center;
+  font-family: Poppins;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: 0.14px;
 
   margin-top: 0;
   margin-bottom: 0;
@@ -95,8 +100,13 @@
 }
 
 .imageTypes {
-  composes: marketplaceTinyFontStyles from global;
-  color: var(--colorGrey300);
+  color: var(--Lighter, #4c5368);
+  font-family: Poppins;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.12px;
 
   margin-top: 0;
   margin-bottom: 0;
@@ -152,6 +162,14 @@
   flex-shrink: 0;
   margin-top: auto;
   margin-bottom: 24px;
+  color: var(--White, #fff);
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.267px;
+  text-transform: uppercase;
 
   @media (--viewportLarge) {
     display: inline-block;

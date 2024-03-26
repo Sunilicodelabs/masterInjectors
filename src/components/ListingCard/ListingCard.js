@@ -64,7 +64,7 @@ const PriceMaybe = props => {
       </div>
       {isBookable ? (
         <div className={css.perUnit}>
-          <FormattedMessage id="ListingCard.perUnit" values={{ unitType: publicData?.unitType }} />
+          {/* <FormattedMessage id="ListingCard.perUnit" values={{ unitType: publicData?.unitType }} /> */}
         </div>
       ) : null}
     </div>
@@ -134,7 +134,7 @@ export const ListingCardComponent = props => {
     const res = await dispatch(requestCreateListingDraft(draftListingDeatils, config));
     const { data } = res?.data;
     const slug = createSlug(data?.attributes?.title);
-    localStorage.setItem('isTemplate', 'variant')
+    typeof window!="undefined" && localStorage.setItem('isTemplate', 'variant')
     return history.push(`/l/${slug}/${data?.id?.uuid}/draft/location`)
   }
 
@@ -165,11 +165,11 @@ export const ListingCardComponent = props => {
                   longWordClass: css.longWord,
                 })}
               </div>
-              {showAuthorInfo ? (
+              {/* {showAuthorInfo ? (
                 <div className={css.authorInfo}>
                   <FormattedMessage id="ListingCard.author" values={{ authorName }} />
                 </div>
-              ) : null}
+              ) : null}  */}
             </div>
 
           </div>

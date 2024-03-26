@@ -148,7 +148,7 @@ const PriceMaybe = props => {
     <div className={css.priceContainer}>
       <p className={css.price}>{formatMoney(intl, price)}</p>
       <div className={css.perUnit}>
-        <FormattedMessage id="OrderPanel.perUnit" values={{ unitType }} />
+        {/* <FormattedMessage id="OrderPanel.perUnit" values={{ unitType }} /> */}
       </div>
     </div>
   );

@@ -25,8 +25,8 @@ const EditlistingTemplatePanel = props => {
         <NamedLink
           name="NewTemplatePage"
         >
-          <span onClick={() => localStorage.setItem('isTemplate', 'new')}>
-            <FormattedMessage id="TopbarDesktop.createCourseLink" />
+          <span onClick={() => typeof window!="undefined" && localStorage.setItem('isTemplate', 'new')}>
+            <FormattedMessage id="EditlistingTemplatePanel.createNewCourseLink" />
           </span>
         </NamedLink>
       </div>
@@ -64,7 +64,7 @@ EditlistingTemplatePanel.propTypes = {
   disabled: bool.isRequired,
   ready: bool.isRequired,
   onSubmit: func.isRequired,
-  onListingTypeChange: func.isRequired,
+  // onListingTypeChange: func.isRequired,
   submitButtonText: string.isRequired,
   panelUpdated: bool.isRequired,
   updateInProgress: bool.isRequired,

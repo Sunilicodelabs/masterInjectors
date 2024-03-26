@@ -130,7 +130,7 @@ const ShowFinishDraftOverlayMaybe = props => {
           name="EditListingPage"
           params={{ id, slug, type: LISTING_PAGE_PARAM_TYPE_DRAFT, tab: 'photos' }}
         >
-          <span onClick={()=> localStorage.setItem('isTemplate', 'false')}>            
+          <span onClick={()=> typeof window!="undefined" && localStorage.setItem('isTemplate', 'false')}>            
           <FormattedMessage id="ManageListingCard.finishListingDraft" />
           </span>
         </NamedLink>
@@ -556,7 +556,7 @@ export const ManageListingCardComponent = props => {
             name="EditListingPage"
             params={{ id, slug, type: editListingLinkType, tab: 'details' }}
           >
-            <span onClick={()=> localStorage.setItem('isTemplate', 'false')}>
+            <span onClick={()=>typeof window!="undefined" && localStorage.setItem('isTemplate', 'false')}>
             <FormattedMessage id="ManageListingCard.editListing" />
               </span>
           </NamedLink>

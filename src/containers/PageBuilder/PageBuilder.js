@@ -13,7 +13,7 @@ import css from './PageBuilder.module.css';
 
 const getMetadata = (meta, schemaType, fieldOptions) => {
   const { pageTitle, pageDescription, socialSharing } = meta;
-
+console.log('pageTitle', pageTitle)
   // pageTitle is used for <title> tag in addition to page schema for SEO
   const title = validProps(pageTitle, fieldOptions)?.content;
   // pageDescription is used for different <meta> tags in addition to page schema for SEO

@@ -118,8 +118,7 @@ const tabsForInquiryProcess = (processTabs, listingTypeConfig) => {
 const tabLabelAndSubmit = (intl, tab, isNewListingFlow, isPriceDisabled, processName) => {
   const processNameString = isNewListingFlow ? `${processName}.` : '';
   const newOrEdit = isNewListingFlow ? 'new' : 'edit';
-  var isTemplate = localStorage.getItem('isTemplate');
-
+  var isTemplate =typeof window!="undefined" && localStorage.getItem('isTemplate');
   let labelKey = null;
   let submitButtonKey = null;
   if (tab === DETAILS) {
@@ -151,7 +150,7 @@ const tabLabelAndSubmit = (intl, tab, isNewListingFlow, isPriceDisabled, process
     submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.savePhotos`;
   } else if (tab === FAQ) {
     labelKey = 'EditListingWizard.tabLabelFAQ';
-    submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.saveFAQs`;
+    submitButtonKey = isTemplate ==="variant" ? `EditListingWizard.${processNameString}${newOrEdit}.saveFAQsAttacment` :`EditListingWizard.${processNameString}${newOrEdit}.saveFAQs`;
   }
 
   return {
@@ -486,7 +485,7 @@ class EditListingWizard extends Component {
 
     const hasListingTypeSelected =
       existingListingType || this.state.selectedListingType || validListingTypes.length === 1;
-    var isTemplate = localStorage.getItem('isTemplate');
+    var isTemplate = typeof window!="undefined" && localStorage.getItem('isTemplate');
     // For oudated draft listing, we don't show other tabs but the "details"
     const tabs =
       isNewListingFlow && (invalidExistingListingType || !hasListingTypeSelected)

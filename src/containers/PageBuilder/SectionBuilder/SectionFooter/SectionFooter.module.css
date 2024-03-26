@@ -207,3 +207,54 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+.authPageFooter {
+  background-color: #0b0b0b !important;
+}
+
+.footerRow {
+  display: flex;
+  gap: 30px;
+  @media (max-width:1023px) {
+    flex-wrap: wrap;
+  }
+  & > div {
+    flex: 1;
+    @media (max-width:1023px) {
+     min-width: 140px;
+    }
+    & img {
+      max-width: 140px;
+    }
+  }
+  & h5 {
+    color: var(--Red, #fc0658);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 32px; /* 200% */
+    letter-spacing: -0.089px;
+    margin-bottom: 0;
+  }
+  & ul {
+    & li {
+      color: #fff;
+    }
+  }
+  & .pink {
+    color: var(--Purple, #fe02bf);
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px; /* 133.333% */
+  }
+}
+.footerLogo {
+  
+    & img {
+      width: 200px;
+    }
+
+  
+}

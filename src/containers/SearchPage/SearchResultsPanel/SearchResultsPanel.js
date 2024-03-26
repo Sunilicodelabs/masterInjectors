@@ -65,7 +65,7 @@ const SearchResultsPanel = props => {
             listing={l}
             renderSizes={cardRenderSizes(isMapVariant)}
             setActiveListing={setActiveListing}
-            isTemplate={true}
+            isTemplate={isTemplate}
           />
         ))}
         {props.children}

@@ -35,6 +35,14 @@
 .submitButton {
   margin-top: auto;
   margin-bottom: 24px;
+  color: var(--White, #FFF);
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.267px;
+  text-transform: uppercase;
 
   @media (--viewportLarge) {
     display: inline-block;

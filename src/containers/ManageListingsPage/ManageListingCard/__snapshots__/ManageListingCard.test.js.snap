@@ -33,7 +33,7 @@ exports[`ManageListingCard matches snapshot (purchase) 1`] = `
               >
                 <g
                   fill="none"
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                 >
                   <path
                     d="M13.6 9.6L24 .8l10.4 8.8z"

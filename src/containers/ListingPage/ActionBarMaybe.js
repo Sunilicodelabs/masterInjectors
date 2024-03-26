@@ -31,15 +31,16 @@ export const ActionBarMaybe = props => {
 
   if (isOwnListing && showNoPayoutDetailsSet) {
     return (
-      <div className={classes}>
-        <p className={classNames(css.ownListingText, css.missingPayoutDetailsText)}>
-          <FormattedMessage id="ListingPage.addPayoutDetailsMessage" />
-        </p>
-        <NamedLink className={css.addPayoutDetails} name="StripePayoutPage">
-          <EditIcon className={css.editIcon} />
-          <FormattedMessage id="ListingPage.addPayoutDetails" />
-        </NamedLink>
-      </div>
+      null
+      // <div className={classes}>
+      //   <p className={classNames(css.ownListingText, css.missingPayoutDetailsText)}>
+      //     <FormattedMessage id="ListingPage.addPayoutDetailsMessage" />
+      //   </p>
+      //   <NamedLink className={css.addPayoutDetails} name="StripePayoutPage">
+      //     <EditIcon className={css.editIcon} />
+      //     <FormattedMessage id="ListingPage.addPayoutDetails" />
+      //   </NamedLink>
+      // </div>
     );
   } else if (isOwnListing) {
     let ownListingTextTranslationId = 'ListingPage.ownListing';
@@ -65,7 +66,7 @@ export const ActionBarMaybe = props => {
         </p>
         <NamedLink className={css.editListingLink} name="EditListingPage" params={editParams}>
           <EditIcon className={css.editIcon} />
-          <span onClick={() => localStorage.setItem('isTemplate', 'false')}>
+          <span onClick={() =>typeof window!="undefined" &&  localStorage.setItem('isTemplate', 'false')}>
             <FormattedMessage id={message} />
           </span>
         </NamedLink>

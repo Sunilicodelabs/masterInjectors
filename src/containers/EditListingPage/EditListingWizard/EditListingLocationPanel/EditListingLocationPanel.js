@@ -24,11 +24,18 @@ const getInitialValues = props => {
   const location = publicData?.location || {};
   const { dateAndTime , capacity, courseHost, additionalDetails } = publicData || [];
   const { address, building } = location;
-
+  let listingdateAndTime = dateAndTime;
+  if (listingdateAndTime && listingdateAndTime.length > 0) {
+    if (listingdateAndTime.length === 1) {
+      listingdateAndTime.push({});
+    }
+} else {
+  listingdateAndTime = [{}, {}];
+}
   return {
     building,
     capacity, courseHost, additionalDetails,
-    dateAndTime:dateAndTime && dateAndTime.length > 0 ? dateAndTime : [{},{}],
+    dateAndTime:listingdateAndTime && listingdateAndTime.length > 0 ? listingdateAndTime : [{},{}],
     location: locationFieldsPresent
       ? {
           search: address,
@@ -82,6 +89,10 @@ const EditListingLocationPanel = props => {
         initialValues={state.initialValues}
         onSubmit={values => {
           const { building = '', location ,dateAndTime ,capacity ,courseHost ,additionalDetails } = values;
+          const filteredDateAndTime = dateAndTime.filter(item => Object.keys(item).length !== 0);
+
+          console.log('values', values)
+          console.log('filteredDateAndTime', filteredDateAndTime)
           const {
             selectedPlace: { address, origin },
           } = location;
@@ -92,7 +103,7 @@ const EditListingLocationPanel = props => {
             availabilityPlan:availabilityPlan,
             publicData: {
               location: { address, building },
-              dateAndTime,
+              dateAndTime:filteredDateAndTime,
               capacity,
               courseHost,
               additionalDetails

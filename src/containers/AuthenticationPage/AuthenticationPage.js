@@ -456,8 +456,7 @@ export const AuthenticationPageComponent = props => {
       <LayoutSingleColumn
         mainColumnClassName={css.layoutWrapperMain}
         topbar={<TopbarContainer className={topbarClasses} />}
-        footer={<FooterContainer />}
-      >
+        footer={<FooterContainer currentPage="AuthPage"/>}      >
         <ResponsiveBackgroundImageContainer
           className={css.root}
           childrenWrapperClassName={css.contentContainer}

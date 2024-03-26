@@ -40,7 +40,7 @@ const EditListingPhotosPanel = props => {
   const rootClass = rootClassName || css.root;
   const classes = classNames(rootClass, className);
   const isPublished = listing?.id && listing?.attributes?.state !== LISTING_STATE_DRAFT;
-  var isTemplate = localStorage.getItem('isTemplate');
+  var isTemplate = typeof window!="undefined" &&localStorage.getItem('isTemplate');
 
   return (
     <div className={classes}>

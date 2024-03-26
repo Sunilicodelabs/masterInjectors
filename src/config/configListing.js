@@ -246,21 +246,23 @@ export const courseType = [
 ]
 
 export const courseDressCode = [
-  { key: "Casual", value: "Casual", label: "Casual" },
-  { key: "dressyCasual", value: "dressyCasual", label: "Dressy Casual" },
-  { key: "businessCasual", value: "businessCasual", label: "Business Casual" },
-  { key: "businessFormal", value: "businessFormal", label: "Business Formal" }
+  { key: "scrubsPreferred", value: "scrubsPreferred", label: "Scrubs preferred" },
+  { key: "professionalAttireCloseToedShoes", value: "professionalAttireCloseToedShoes", label: "Professional attire close toed shoes" },
 ]
 
 export const courseLevels = [
-  { key: "novice", value: "novice", label: "Novice" },
-  { key: "expert", value: "Expert", label: "Expert" },
-  { key: "masterNeurotoxins", value: "masterNeurotoxins", label: "Master Neurotoxins" }
+  { key: "noviceNeurotoxin", value: "noviceNeurotoxin", label: "Novice Neurotoxin - Frontalis, Glabella Complex, Crows Feet" },
+  { key: "expertNeurotoxin", value: "expertNeurotoxin", label: "Expert Neurotoxin - Brow lift, Lip Flip, Dao, Mentalis" },
+  { key: "masterNeurotoxins", value: "masterNeurotoxins", label: "Master Neurotoxin -  Masseter, Jowls, Septum, Platysmal Bands" },
+  { key: "noviceDermalFiller", value: "noviceDermalFiller", label: "Novice Dermal Filler - lips" },
+  { key: "expertDermalFiller", value: "expertDermalFiller", label: "Expert Dermal Filler - Chin & Cheek" },
 ]
 
 export const courseRequirements = [
-  { key: "requirement1", value: "requirement1", label: "Requirement 1" },
-  { key: "requirement2", value: "requirement2", label: "Requirement 2" }
+  { key: "wellnessInjectionsCourse", value: "WellnessInjectionsCourse", label: "Therapy / Wellness Injections Course" },
+  { key: "nursingOrEMTLicense", value: "nursingOrEMTLicense", label: "Nursing or EMT license" },
+  { key: "SkilledInLipFiller", value: "SkilledInLipFiller", label: "Skilled in Lip Filler" },
+  { key: "expertDermalFiller", value: "expertDermalFiller", label: "Expert Dermal Filler" }
 ]
 
 export const listingTypes = [

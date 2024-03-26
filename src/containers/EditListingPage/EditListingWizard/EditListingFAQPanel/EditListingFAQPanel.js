@@ -26,7 +26,7 @@ const getInitialValues = props => {
   const isPublished = listing?.id && listing?.attributes?.state !== LISTING_STATE_DRAFT;
   const price = listing?.attributes?.price;
   const publicData = listing?.attributes?.publicData;
-  var isTemplate = localStorage.getItem('isTemplate');
+  var isTemplate =typeof window!="undefined" && localStorage.getItem('isTemplate');
 
   const { FAQs } = publicData || {};
 

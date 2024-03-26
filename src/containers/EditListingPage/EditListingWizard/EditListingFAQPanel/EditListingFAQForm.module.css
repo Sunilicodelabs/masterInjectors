@@ -1,0 +1,90 @@
+@import '../../../../styles/customMediaQueries.css';
+
+.inputs {
+  margin-bottom: 29px;
+}
+
+label {
+  margin-bottom: 5px;
+}
+
+.inputsSm {
+  margin-bottom: 16px;
+}
+
+.addbtn {
+  margin-left: auto;
+  width: max-content;
+  color: var(--Hot-Pink, #fd0578);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px; /* 177.778% */
+  letter-spacing: -1px;
+  text-decoration-line: underline;
+  text-transform: capitalize;
+  cursor: pointer;
+  border: 0;
+  display: block;
+}
+
+.faqItems {
+  border-top: 1px solid #696969;
+  margin-bottom: 26px;
+  padding-top: 20px;
+  & p {
+    color: #000;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 171.429% */
+    letter-spacing: -0.348px;
+    margin: 0;
+  }
+}
+
+.FaqHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  align-items: center;
+  & h4 {
+    color: var(--Text, #212121);
+    font-family: Poppins;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px; /* 133.333% */
+    letter-spacing: 0.15px;
+    margin: 0;
+  }
+  & button {
+    border: 0;
+    & svg {
+      fill: transparent;
+    }
+  }
+}
+
+.submitButton {
+    margin-top: auto;
+    margin-bottom: 24px;
+    color: var(--White, #FFF);
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.267px;
+    text-transform: uppercase;
+  
+    @media (--viewportLarge) {
+      display: inline-block;
+      width: 241px;
+      margin-top: 15px;
+      height: 64px;
+      border-radius: 0;
+    }
+  }
+  

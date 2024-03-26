@@ -68,7 +68,7 @@ const ProfileMenu = ({ currentPage, currentUser, onLogout }) => {
   const userType = getUserType(currentUser);
 
   const setLocalStorage = ()=>{
-    localStorage.setItem('isTemplate', 'true')
+    typeof window!="undefined" && localStorage.setItem('isTemplate', 'true')
   }
 
   return (
@@ -148,16 +148,8 @@ const ProfileMenu = ({ currentPage, currentUser, onLogout }) => {
         </MenuContent>
         :
         <MenuContent className={css.profileMenuContent}>
-          <MenuItem key="ManageListingsPage">
-            <NamedLink
-              className={classNames(css.menuLink, currentPageClass('ManageListingsPage'))}
-              name="ManageListingsPage"
-            >
-              <span className={css.menuItemBorder} />
-              <FormattedMessage id="TopbarDesktop.yourListingsLink" />
-            </NamedLink>
-          </MenuItem>
-          <MenuItem key="CoursesPage">
+         
+          {/* <MenuItem key="CoursesPage">
             <NamedLink
               className={classNames(css.menuLink, currentPageClass('CoursesPage'))}
               name="CoursesPage"
@@ -165,7 +157,7 @@ const ProfileMenu = ({ currentPage, currentUser, onLogout }) => {
               <span className={css.menuItemBorder} />
               <FormattedMessage id="TopbarDesktop.CoursesPageLink" />
             </NamedLink>
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem key="ProfileSettingsPage">
             <NamedLink
               className={classNames(css.menuLink, currentPageClass('ProfileSettingsPage'))}
@@ -265,7 +257,12 @@ const TopbarDesktop = props => {
           Who We Help
         </span>
       </NamedLink>
-      <NamedLink name="CMSPage" params={{ pageId: "subscription" }} className={classNames(css.topbarLink)}>
+      {/* <NamedLink name="CMSPage" params={{ pageId: "subscription" }} className={classNames(css.topbarLink)}>
+        <span className={css.topbarLinkLabel}>
+          Classes And Memberships
+        </span>
+      </NamedLink> */}
+      <NamedLink name="SearchPage" className={classNames(css.topbarLink)}>
         <span className={css.topbarLinkLabel}>
           Classes And Memberships
         </span>

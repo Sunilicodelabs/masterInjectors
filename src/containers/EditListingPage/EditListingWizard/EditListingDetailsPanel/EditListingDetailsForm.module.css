@@ -31,6 +31,9 @@
 
 .title {
   composes: formMargins;
+  & label{
+    font-weight: 500;
+  }
 }
 
 .description {
@@ -68,10 +71,20 @@
   margin-top: auto;
   margin-bottom: 24px;
   flex-shrink: 0;
-
+  color: var(--White, #FFF);
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.267px;
+  text-transform: uppercase;
   @media (--viewportLarge) {
     display: inline-block;
     width: 241px;
-    margin-top: 100px;
+    margin-top: 15px;
+    height: 64px;
+    border-radius: 0;
+
   }
 }

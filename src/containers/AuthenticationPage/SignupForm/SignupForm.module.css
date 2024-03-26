@@ -59,11 +59,18 @@
 
 .labelTitle {
   color: #4a4a4a;
-  font-family: Poppins;
   font-size: 13px;
   font-style: normal;
   font-weight: 600;
   line-height: 20px; /* 153.846% */
   letter-spacing: -0.305px;
   margin: 33px 0 14px;
+}
+.inputBox {
+  margin-bottom: 24px;
+}
+
+
+.inputField{
+  margin-top: -10px;
 }
