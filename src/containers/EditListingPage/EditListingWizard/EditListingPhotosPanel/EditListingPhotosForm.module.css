@@ -11,10 +11,27 @@
 
 .imagesFieldArray {
   flex-shrink: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: 24px;
   margin: 0 0 24px 0;
+  & > div {
+    max-height: 202px;
+    flex: 1;
+    min-width: 160px;
+  }
+  & .addImageWrapper{
+    max-height: 202px;
+    height: 100%;
+    & > div{
+      height: 100%;
+      & > div{
+        height: 100%;
+        padding-bottom: 26% !important;
+
+      }
+    }
+  }
 }
 
 .thumbnail {
@@ -50,6 +67,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   margin-top: 0;
 
   /* Colors */
@@ -60,9 +78,10 @@
   }
 
   border-style: dashed;
-  border-color: var(--colorGrey100);
+  border-color: #000;
   border-width: 2px;
-  border-radius: 2px;
+  border-radius: 15px;
+
 
   /* Behaviour */
   cursor: pointer;
@@ -80,23 +99,33 @@
 }
 
 .chooseImage {
-  composes: h4 from global;
-  color: var(--colorGrey700);
-  font-weight: var(--fontWeightSemiBold);
+  color: var(--Lighter, #4c5368);
+  text-align: center;
+  font-family: Poppins;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: 0.14px;
 
   margin-top: 0;
   margin-bottom: 0;
 
   @media (--viewportLarge) {
-    font-weight: var(--fontWeightSemiBold);
+    
     margin-top: 0;
     margin-bottom: 0;
   }
 }
 
 .imageTypes {
-  composes: marketplaceTinyFontStyles from global;
-  color: var(--colorGrey300);
+  color: var(--Lighter, #4c5368);
+  font-family: Poppins;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.12px;
 
   margin-top: 0;
   margin-bottom: 0;
@@ -152,10 +181,32 @@
   flex-shrink: 0;
   margin-top: auto;
   margin-bottom: 24px;
+  color: var(--White, #fff);
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.267px;
+  text-transform: uppercase;
 
   @media (--viewportLarge) {
     display: inline-block;
     width: 241px;
-    margin-top: 100px;
+    margin-top: 30px;
+    height: 64px;
+
+  }
+}
+
+.fieldsWrapper{
+  display: flex;
+  gap: 22px;
+  margin-bottom: 29px;
+  & > div {
+    flex: 1;
+  }
+  & select{
+    padding: 3px 32px 2px 16px;
   }
 }

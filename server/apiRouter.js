@@ -20,6 +20,7 @@ const createUserWithIdp = require('./api/auth/createUserWithIdp');
 
 const { authenticateFacebook, authenticateFacebookCallback } = require('./api/auth/facebook');
 const { authenticateGoogle, authenticateGoogleCallback } = require('./api/auth/google');
+const { createCustomer, createCharge, createCourse, deleteCourse, updateCourse } = require('./chargebee/api');
 
 const router = express.Router();
 
@@ -79,5 +80,17 @@ router.get('/auth/google', authenticateGoogle);
 // with Google. In this route a Passport.js custom callback is used for calling
 // loginWithIdp endpoint in Sharetribe Auth API to authenticate user to the marketplace
 router.get('/auth/google/callback', authenticateGoogleCallback);
+
+//charge bee api
+// router.post('/chargebee/generate_checkout_new_url', subscribe);
+// router.post('/chargebee/generate_portal_session', createSessionPortal);
+// router.post('/chargebee/get-subscription-info', getSubscriptionInfo);
+// router.post('/chargebee/generate_checkout_existing_url', checkoutExisting);
+// router.post('/chargebee/retrieve-hosted-page', retrieveHostedPage);
+// router.post('/chargebee/get-saved-cards', getSavedCards);
+router.post('/chargebee/create-course', createCourse);
+router.post('/chargebee/update-course', updateCourse);
+router.post('/chargebee/delete-course', deleteCourse);
+router.post('/chargebee/create-customer', createCustomer);
 
 module.exports = router;

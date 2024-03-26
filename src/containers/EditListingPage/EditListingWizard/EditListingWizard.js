@@ -27,6 +27,7 @@ import {
   SCHEMA_TYPE_LONG,
   SCHEMA_TYPE_BOOLEAN,
   propTypes,
+  ADMIN,
 } from '../../../util/types';
 import { ensureCurrentUser, ensureListing } from '../../../util/data';
 import {
@@ -48,14 +49,17 @@ import {
 // Import modules from this directory
 import EditListingWizardTab, {
   DETAILS,
+  TEMPLATES,
   PRICING,
   PRICING_AND_STOCK,
   DELIVERY,
   LOCATION,
   AVAILABILITY,
   PHOTOS,
+  FAQ,
 } from './EditListingWizardTab';
 import css from './EditListingWizard.module.css';
+import { getUserType } from '../../../util/helper';
 
 // You can reorder these panels.
 // Note 1: You need to change save button translations for new listing flow
@@ -66,9 +70,12 @@ import css from './EditListingWizard.module.css';
 const TABS_DETAILS_ONLY = [DETAILS];
 const TABS_PRODUCT = [DETAILS, PRICING_AND_STOCK, DELIVERY, PHOTOS];
 const TABS_BOOKING = [DETAILS, LOCATION, PRICING, AVAILABILITY, PHOTOS];
+const TABS_TEMPLATE = [TEMPLATES];
+const TABS_COURSES = [TEMPLATES, DETAILS, PRICING_AND_STOCK, FAQ, PHOTOS];
+const TABS_COURSES_VARIANTS = [TEMPLATES, LOCATION, PRICING_AND_STOCK, FAQ, PHOTOS];
+const TABS_COURSES_VARIANTS_WITHOUT_PRICE = [TEMPLATES, LOCATION, FAQ, PHOTOS];
 const TABS_INQUIRY = [DETAILS, LOCATION, PRICING, PHOTOS];
-const TABS_ALL = [...TABS_PRODUCT, ...TABS_BOOKING, ...TABS_INQUIRY];
-
+const TABS_ALL = [...TABS_PRODUCT, ...TABS_BOOKING, ...TABS_INQUIRY, ...TABS_COURSES, ...TABS_TEMPLATE];
 // Tabs are horizontal in small screens
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
 
@@ -111,12 +118,15 @@ const tabsForInquiryProcess = (processTabs, listingTypeConfig) => {
 const tabLabelAndSubmit = (intl, tab, isNewListingFlow, isPriceDisabled, processName) => {
   const processNameString = isNewListingFlow ? `${processName}.` : '';
   const newOrEdit = isNewListingFlow ? 'new' : 'edit';
-
+  var isTemplate =typeof window!="undefined" && localStorage.getItem('isTemplate');
   let labelKey = null;
   let submitButtonKey = null;
   if (tab === DETAILS) {
     labelKey = 'EditListingWizard.tabLabelDetails';
     submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.saveDetails`;
+  } else if (tab === TEMPLATES) {
+    labelKey = 'EditListingWizard.tabLabelTemplates';
+    submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.savePricing`;
   } else if (tab === PRICING) {
     labelKey = 'EditListingWizard.tabLabelPricing';
     submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.savePricing`;
@@ -136,8 +146,11 @@ const tabLabelAndSubmit = (intl, tab, isNewListingFlow, isPriceDisabled, process
     labelKey = 'EditListingWizard.tabLabelAvailability';
     submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.saveAvailability`;
   } else if (tab === PHOTOS) {
-    labelKey = 'EditListingWizard.tabLabelPhotos';
+    labelKey =  isTemplate==="variant" ? "EditListingWizard.tabLabelAttachment" : 'EditListingWizard.tabLabelPhotos';
     submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.savePhotos`;
+  } else if (tab === FAQ) {
+    labelKey = 'EditListingWizard.tabLabelFAQ';
+    submitButtonKey = isTemplate ==="variant" ? `EditListingWizard.${processNameString}${newOrEdit}.saveFAQsAttacment` :`EditListingWizard.${processNameString}${newOrEdit}.saveFAQs`;
   }
 
   return {
@@ -179,14 +192,14 @@ const hasValidListingFieldsInExtendedData = (publicData, privateData, config) =>
       return schemaType === SCHEMA_TYPE_ENUM
         ? typeof savedListingField === 'string' && hasValidEnumValue(savedListingField)
         : schemaType === SCHEMA_TYPE_MULTI_ENUM
-        ? Array.isArray(savedListingField) && hasValidMultiEnumValues(savedListingField)
-        : schemaType === SCHEMA_TYPE_TEXT
-        ? typeof savedListingField === 'string'
-        : schemaType === SCHEMA_TYPE_LONG
-        ? typeof savedListingField === 'number' && Number.isInteger(savedListingField)
-        : schemaType === SCHEMA_TYPE_BOOLEAN
-        ? savedListingField === true || savedListingField === false
-        : false;
+          ? Array.isArray(savedListingField) && hasValidMultiEnumValues(savedListingField)
+          : schemaType === SCHEMA_TYPE_TEXT
+            ? typeof savedListingField === 'string'
+            : schemaType === SCHEMA_TYPE_LONG
+              ? typeof savedListingField === 'number' && Number.isInteger(savedListingField)
+              : schemaType === SCHEMA_TYPE_BOOLEAN
+                ? savedListingField === true || savedListingField === false
+                : false;
     }
     return true;
   };
@@ -218,8 +231,9 @@ const tabCompleted = (tab, listing, config) => {
   const { listingType, transactionProcessAlias, unitType, shippingEnabled, pickupEnabled } =
     publicData || {};
   const deliveryOptionPicked = publicData && (shippingEnabled || pickupEnabled);
-
   switch (tab) {
+    case TEMPLATES:
+      return true
     case DETAILS:
       return !!(
         description &&
@@ -237,6 +251,8 @@ const tabCompleted = (tab, listing, config) => {
       return !!deliveryOptionPicked;
     case LOCATION:
       return !!(geolocation && publicData?.location?.address);
+    case FAQ:
+      return !!(publicData?.FAQs);
     case AVAILABILITY:
       return !!availabilityPlan;
     case PHOTOS:
@@ -328,10 +344,10 @@ const getListingTypeConfig = (listing, selectedListingType, config) => {
   const listingTypeConfig = existingListingType
     ? validListingTypes.find(conf => conf.listingType === existingListingType)
     : selectedListingType
-    ? validListingTypes.find(conf => conf.listingType === selectedListingType.listingType)
-    : hasOnlyOneListingType
-    ? validListingTypes[0]
-    : null;
+      ? validListingTypes.find(conf => conf.listingType === selectedListingType.listingType)
+      : hasOnlyOneListingType
+        ? validListingTypes[0]
+        : null;
   return listingTypeConfig;
 };
 
@@ -401,6 +417,7 @@ class EditListingWizard extends Component {
     this.setState({ showPayoutDetails: false });
   }
 
+
   render() {
     const {
       id,
@@ -428,9 +445,10 @@ class EditListingWizard extends Component {
       currentUser,
       config,
       routeConfiguration,
+      listings,
       ...rest
     } = this.props;
-
+    const userType = getUserType(currentUser);
     const selectedTab = params.tab;
     const isNewListingFlow = [LISTING_PAGE_PARAM_TYPE_NEW, LISTING_PAGE_PARAM_TYPE_DRAFT].includes(
       params.type
@@ -462,21 +480,30 @@ class EditListingWizard extends Component {
     const processName = transactionProcessAlias
       ? transactionProcessAlias.split('/')[0]
       : validListingTypes.length === 1
-      ? validListingTypes[0].transactionType.process
-      : INQUIRY_PROCESS_NAME;
+        ? validListingTypes[0].transactionType.process
+        : INQUIRY_PROCESS_NAME;
 
     const hasListingTypeSelected =
       existingListingType || this.state.selectedListingType || validListingTypes.length === 1;
-
+    var isTemplate = typeof window!="undefined" && localStorage.getItem('isTemplate');
     // For oudated draft listing, we don't show other tabs but the "details"
     const tabs =
       isNewListingFlow && (invalidExistingListingType || !hasListingTypeSelected)
         ? TABS_DETAILS_ONLY
-        : isBookingProcess(processName)
-        ? tabsForBookingProcess(TABS_BOOKING, listingTypeConfig)
-        : isPurchaseProcess(processName)
-        ? tabsForPurchaseProcess(TABS_PRODUCT, listingTypeConfig)
-        : tabsForInquiryProcess(TABS_INQUIRY, listingTypeConfig);
+        : userType === ADMIN && isTemplate === "true"
+          ? tabsForBookingProcess(TABS_TEMPLATE, listingTypeConfig)
+        : userType === ADMIN && isTemplate === "variant" && listing?.attributes?.publicData?.isPriceEditable?.length === 0
+          ? tabsForBookingProcess(TABS_COURSES_VARIANTS_WITHOUT_PRICE, listingTypeConfig)
+          : userType === ADMIN && isTemplate === "variant"
+          ? tabsForBookingProcess(TABS_COURSES_VARIANTS, listingTypeConfig)
+          : userType === ADMIN
+            ? tabsForBookingProcess(TABS_COURSES, listingTypeConfig)
+            : isBookingProcess(processName)
+              ? tabsForBookingProcess(TABS_BOOKING, listingTypeConfig)
+              : isPurchaseProcess(processName)
+                ? tabsForPurchaseProcess(TABS_PRODUCT, listingTypeConfig)
+                : tabsForInquiryProcess(TABS_INQUIRY, listingTypeConfig);
+
 
     // Check if wizard tab is active / linkable.
     // When creating a new listing, we don't allow users to access next tab until the current one is completed.
@@ -595,6 +622,7 @@ class EditListingWizard extends Component {
                 disabled={isNewListingFlow && !tabsStatus[tab]}
                 tab={tab}
                 params={params}
+                listings={listings}
                 listing={listing}
                 marketplaceTabs={tabs}
                 errors={errors}
@@ -605,6 +633,7 @@ class EditListingWizard extends Component {
                 onManageDisableScrolling={onManageDisableScrolling}
                 config={config}
                 routeConfiguration={routeConfiguration}
+                userType={userType}
               />
             );
           })}

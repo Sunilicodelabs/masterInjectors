@@ -100,14 +100,7 @@ class PasswordRecoveryFormComponent extends Component {
               />
 
               <div className={css.bottomWrapper}>
-                <p className={css.bottomWrapperText}>
-                  <span className={css.modalHelperText}>
-                    <FormattedMessage
-                      id="PasswordRecoveryForm.loginLinkInfo"
-                      values={{ loginLink }}
-                    />
-                  </span>
-                </p>
+            
 
                 <PrimaryButton
                   type="submit"
@@ -116,6 +109,14 @@ class PasswordRecoveryFormComponent extends Component {
                 >
                   <FormattedMessage id="PasswordRecoveryForm.sendInstructions" />
                 </PrimaryButton>
+                <p className={css.bottomWrapperText}>
+                  <span className={css.modalHelperText}>
+                    <FormattedMessage
+                      id="PasswordRecoveryForm.loginLinkInfo"
+                      values={{ loginLink }}
+                    />
+                  </span>
+                </p>
               </div>
             </Form>
           );

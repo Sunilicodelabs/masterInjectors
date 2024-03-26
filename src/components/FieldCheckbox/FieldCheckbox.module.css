@@ -9,7 +9,13 @@
   opacity: 0;
   height: 0;
   width: 0;
-
+  & + label path {
+    d: none;
+  }
+  & + label svg {
+    border: 1px solid rgba(0, 0, 0, 0.601);
+    border-radius: 2px;
+  }
   /* Highlight the borders if the checkbox is hovered, focused or checked */
   &:hover + label .box,
   &:focus + label .box,
@@ -17,11 +23,20 @@
     stroke: var(--marketplaceColor);
   }
 
+  &:checked + label .tick {
+    d: path(
+      'M 16.3453 5.38184 C 16.345 5.38184 16.3448 5.38143 16.345 5.38121 C 16.6038 5.13717 16.9479 5.00227 17.305 5.00495 C 17.6623 5.00763 18.0047 5.14793 18.2597 5.39622 C 18.5148 5.64452 18.6626 5.98139 18.6721 6.33577 C 18.6815 6.69015 18.5518 7.03431 18.3103 7.29563 L 10.9792 16.3907 C 10.8532 16.5254 10.701 16.6335 10.5319 16.7085 C 10.3628 16.7835 10.1801 16.8239 9.99486 16.8273 C 9.80962 16.8307 9.62558 16.7971 9.45376 16.7283 C 9.28194 16.6595 9.12587 16.5571 8.99487 16.4271 L 4.13318 11.6044 C 3.99779 11.4792 3.88919 11.3283 3.81388 11.1606 C 3.73856 10.993 3.69806 10.8119 3.69479 10.6284 C 3.69153 10.4448 3.72557 10.2625 3.79487 10.0923 C 3.86418 9.9221 3.96734 9.76748 4.0982 9.63767 C 4.22905 9.50786 4.38492 9.40553 4.55651 9.33678 C 4.7281 9.26803 4.91189 9.23426 5.09692 9.2375 C 5.28195 9.24074 5.46442 9.28091 5.63346 9.35563 C 5.8025 9.43034 5.95463 9.53807 6.08079 9.67237 L 8.33968 11.9121 C 9.18679 12.752 10.5761 12.6683 11.3163 11.7328 L 16.3095 5.42194 C 16.3207 5.40814 16.3328 5.39497 16.3455 5.38248 C 16.3458 5.38225 16.3456 5.38184 16.3453 5.38184 Z'
+    ) !important;
+  }
+  &:checked + label svg {
+    border: none;
+  }
+
   /* successColor version */
   &:hover + label .boxSuccess,
   &:focus + label .boxSuccess,
   &:checked + label .boxSuccess {
-    stroke: var(--colorSuccess);
+    stroke: var(--marketplaceColor);
   }
 
   /* disabled version */
@@ -34,14 +49,15 @@
   /* Display the "check" when checked */
   &:checked + label .checked {
     display: inline;
-    stroke: var(--marketplaceColor);
+    /* stroke: var(--marketplaceColor); */
+    fill: var(--marketplaceColor);
     stroke-width: 1px;
   }
 
   /* Display the "check" when checked */
   &:checked + label .checkedSuccess {
     display: inline;
-    stroke: var(--colorSuccess);
+    stroke: var(--marketplaceColor);
     stroke-width: 1px;
   }
 
@@ -87,7 +103,7 @@
 }
 .checkedSuccess {
   display: none;
-  fill: var(--colorSuccess);
+  fill: var(--marketplaceColor);
 }
 
 .checkedDisabled {
@@ -105,9 +121,10 @@
 }
 .textRoot {
   composes: marketplaceListingAttributeFontStyles from global;
-  color: var(--colorGrey700);
+  color: #696969;
   padding: 0;
   margin-top: -1px;
   margin-bottom: 1px;
   cursor: pointer;
+  font-size: 14px;
 }

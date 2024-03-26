@@ -231,6 +231,40 @@ export const listingFields = [
  *                        providers who have not set payout details and contact them to ensure that they add the details.
  */
 
+
+export const courseHosts = [
+  { key: "host1", value: "host1", label: "Host 1" },
+  { key: "host2", value: "host2", label: "Host 2" },
+  { key: "host3", value: "host3", label: "Host 3" },
+  { key: "host4", value: "host4", label: "Host 4" },
+]
+
+export const courseType = [
+  { key: "online", value: "online", label: "Online" },
+  { key: "inPerson", value: "inPerson", label: "In Person" },
+  { key: "hybrid", value: "hybrid", label: "Hybrid" }
+]
+
+export const courseDressCode = [
+  { key: "scrubsPreferred", value: "scrubsPreferred", label: "Scrubs preferred" },
+  { key: "professionalAttireCloseToedShoes", value: "professionalAttireCloseToedShoes", label: "Professional attire close toed shoes" },
+]
+
+export const courseLevels = [
+  { key: "noviceNeurotoxin", value: "noviceNeurotoxin", label: "Novice Neurotoxin - Frontalis, Glabella Complex, Crows Feet" },
+  { key: "expertNeurotoxin", value: "expertNeurotoxin", label: "Expert Neurotoxin - Brow lift, Lip Flip, Dao, Mentalis" },
+  { key: "masterNeurotoxins", value: "masterNeurotoxins", label: "Master Neurotoxin -  Masseter, Jowls, Septum, Platysmal Bands" },
+  { key: "noviceDermalFiller", value: "noviceDermalFiller", label: "Novice Dermal Filler - lips" },
+  { key: "expertDermalFiller", value: "expertDermalFiller", label: "Expert Dermal Filler - Chin & Cheek" },
+]
+
+export const courseRequirements = [
+  { key: "wellnessInjectionsCourse", value: "WellnessInjectionsCourse", label: "Therapy / Wellness Injections Course" },
+  { key: "nursingOrEMTLicense", value: "nursingOrEMTLicense", label: "Nursing or EMT license" },
+  { key: "SkilledInLipFiller", value: "SkilledInLipFiller", label: "Skilled in Lip Filler" },
+  { key: "expertDermalFiller", value: "expertDermalFiller", label: "Expert Dermal Filler" }
+]
+
 export const listingTypes = [
   {
     listingType: 'daily-booking',
@@ -294,6 +328,49 @@ export const listingTypes = [
   //   },
   // },
 ];
+
+
+export const professionTypes = [
+  { key: "nurse", value: "nurse", label: "Nurse" },
+  { key: "esthetician", value: "esthetician", label: "Esthetician" },
+  { key: "aspiring-injector ", value: "aspiring-injector ", label: "Aspiring Injector " },
+  { key: "nurse-practitioner ", value: "nurse-practitioner", label: "Nurse Practitioner" },
+  { key: "doctor", value: "doctor", label: "Doctor" },
+  { key: "physician", value: "physician", label: "Physician" },
+  { key: "other", value: "other", label: "Other" },
+]
+
+export const languageISpeak = [
+  { key: "nurse", value: "nurse", label: "English" },
+  { key: "spanish", value: "spanish", label: "Spanish" }
+]
+
+export const hearAboutUs = [
+  { key: "instagram", value: "instagram", label: "Instagram" },
+  { key: "facebook", value: "facebook", label: "Facebook" },
+  { key: "google", value: "google", label: "Google" },
+  { key: "friend", value: "friend", label: "My friend said you're the best!" },
+]
+
+
+export const tShirtSize = [
+  { key: "womenXS", value: "womenXS", label: "Women's Extra Small (XS)" },
+  { key: "womenS", value: "womenS", label: "Women's Small (S)" },
+  { key: "womenM", value: "womenM", label: "Women's Medium (M)" },
+  { key: "womenL", value: "womenL", label: "Women's Large (L)" },
+  { key: "womenXL", value: "womenXL", label: "Women's Extra Large (XL)" },
+  { key: "womenXXL", value: "womenXXL", label: "Women's Double Extra Large (XXL)" },
+  { key: "womenXXXL", value: "womenXXXL", label: "Women's Triple Extra Large (XXXL)" },
+  { key: "menXS", value: "menXS", label: "Men's Extra Small (XS)" },
+  { key: "menS", value: "menS", label: "Men's Small (S)" },
+  { key: "menM", value: "menM", label: "Men's Medium (M)" },
+  { key: "menL", value: "menL", label: "Men's Large (L)" },
+  { key: "menXL", value: "menXL", label: "Men's Extra Large (XL)" },
+  { key: "menXXL", value: "menXXL", label: "Men's Double Extra Large (XXL)" },
+  { key: "menXXXL", value: "menXXXL", label: "Men's Triple Extra Large (XXXL)" },
+];
+
+
 
 // SearchPage can enforce listing query to only those listings with valid listingType
 // However, it only works if you have set 'enum' type search schema for the public data fields

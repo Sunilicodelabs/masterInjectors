@@ -53,6 +53,9 @@
     border-bottom-width: 4px;
     padding: 16px 10px 14px 10px;
   }
+  & h2{
+    font-weight: 500;
+  }
 }
 
 .button {
@@ -64,8 +67,11 @@
 }
 
 .selectedTabContent {
-  border-bottom-color: var(--colorBlack);
+  border-bottom-color: var(--marketplaceColor);
   color: var(--colorBlack);
+  & h1{
+    font-weight: 700;
+  }
 }
 
 .disabled {

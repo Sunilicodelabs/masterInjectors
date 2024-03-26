@@ -11,3 +11,15 @@
 .form {
   flex-grow: 1;
 }
+
+.SectionTitle{
+  font-size: 26px;
+  line-height: 32px;
+  padding: 0;
+  margin-bottom: 11px;
+}
+
+.subTitle{
+  line-height: 22px;
+  margin-top: 0;
+}

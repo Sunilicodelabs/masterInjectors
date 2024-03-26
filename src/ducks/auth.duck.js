@@ -1,6 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import { clearCurrentUser, fetchCurrentUser } from './user.duck';
-import { createUserWithIdp } from '../util/api';
+import { createUserWithIdp, postCreateCustomers } from '../util/api';
 import { storableError } from '../util/errors';
 import * as log from '../util/log';
 
@@ -199,11 +199,10 @@ export const signup = params => (dispatch, getState, sdk) => {
     return Promise.reject(new Error('Login or logout already in progress'));
   }
   dispatch(signupRequest());
-  const { email, password, firstName, lastName, ...rest } = params;
-
+  const { email, password, firstName, lastName,phoneNumber, ...rest } = params;
   const createUserParams = isEmpty(rest)
     ? { email, password, firstName, lastName }
-    : { email, password, firstName, lastName, protectedData: { ...rest } };
+    : { email, password, firstName, lastName, protectedData: { phoneNumber }, publicData: { ...rest } };
 
   // We must login the user if signup succeeds since the API doesn't
   // do that automatically.
@@ -211,6 +210,21 @@ export const signup = params => (dispatch, getState, sdk) => {
     .create(createUserParams)
     .then(() => dispatch(signupSuccess()))
     .then(() => dispatch(login(email, password)))
+    .then(() => {
+      const { currentUser } = getState().user;
+      const { email, profile } = (currentUser && currentUser.attributes) || {};
+      const {chargeBeeCustomerId = false} = (profile && profile.publicData ) || false;
+      if (!chargeBeeCustomerId) {
+        return postCreateCustomers({
+          id: currentUser?.id?.uuid,
+          email: email,
+          first_name: profile.firstName,
+          last_name: profile.lastName
+        }).then((result) => {
+          return sdk.currentUser.updateProfile({ publicData: { chargeBeeCustomerId: result.id } })
+        })
+      }
+    })
     .catch(e => {
       dispatch(signupError(storableError(e)));
       log.error(e, 'signup-failed', {

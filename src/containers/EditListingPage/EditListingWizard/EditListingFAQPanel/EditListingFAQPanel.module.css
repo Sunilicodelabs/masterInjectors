@@ -1,0 +1,29 @@
+@import '../../../../styles/customMediaQueries.css';
+
+.root {
+  flex-grow: 1;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.form {
+  flex-grow: 1;
+}
+
+.priceCurrencyInvalid {
+  color: var(--colorFail);
+}
+
+.SectionTitle{
+  font-size: 26px;
+  line-height: 32px;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.subTitle{
+  line-height: 22px;
+  margin-top: 0;
+}

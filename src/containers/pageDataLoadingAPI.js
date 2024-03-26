@@ -17,6 +17,8 @@ import { loadData as ProfilePageLoader } from './ProfilePage/ProfilePage.duck';
 import { loadData as SearchPageLoader } from './SearchPage/SearchPage.duck';
 import { loadData as StripePayoutPageLoader } from './StripePayoutPage/StripePayoutPage.duck';
 import { loadData as TermsOfServicePageLoader } from './TermsOfServicePage/TermsOfServicePage.duck';
+import { loadData as CoursesPageLoader } from './CoursesPage/CoursesPage.duck';
+import { loadData as TemplatePageLoader } from './TemplatePage/TemplatePage.duck';
 import {
   loadData as TransactionPageLoader,
   setInitialValues as TransactionPageInitialValues,
@@ -32,6 +34,12 @@ const getPageDataLoadingAPI = () => {
     },
     CheckoutPage: {
       setInitialValues: CheckoutPageInitialValues,
+    },
+    CoursesPage: {
+      loadData: CoursesPageLoader,
+    },
+    TemplatePage: {
+      loadData: TemplatePageLoader,
     },
     CMSPage: {
       loadData: CMSPageLoader,

@@ -34,7 +34,7 @@ const PasswordRecovery = props => {
   const { initialEmail, onChange, onSubmitEmail, recoveryInProgress, recoveryError } = props;
   return (
     <div className={css.submitEmailContent}>
-      <IconKeys className={css.modalIcon} />
+    
       <Heading as="h1" rootClassName={css.modalTitle}>
         <FormattedMessage id="PasswordRecoveryPage.forgotPasswordTitle" />
       </Heading>

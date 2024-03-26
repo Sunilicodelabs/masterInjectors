@@ -4,17 +4,25 @@ import { compose } from 'redux';
 import { Field, Form as FinalForm } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import classNames from 'classnames';
-
+import * as validators from '../../../../util/validators';
+import { formatMoney } from '../../../../util/currency';
+import { types as sdkTypes } from '../../../../util/sdkLoader';
 // Import util modules
 import { intlShape, injectIntl, FormattedMessage } from '../../../../util/reactIntl';
-import { EXTENDED_DATA_SCHEMA_TYPES, propTypes } from '../../../../util/types';
+import { ADMIN, EXTENDED_DATA_SCHEMA_TYPES, propTypes } from '../../../../util/types';
 import { maxLength, required, composeValidators } from '../../../../util/validators';
 
 // Import shared components
-import { Form, Button, FieldSelect, FieldTextInput, Heading } from '../../../../components';
+import { Form, Button, FieldSelect, FieldTextInput, Heading, FieldCurrencyInput } from '../../../../components';
 // Import modules from this directory
 import CustomExtendedDataField from '../CustomExtendedDataField';
 import css from './EditListingDetailsForm.module.css';
+import appSettings from '../../../../config/settings';
+import { courseDressCode, courseLevels, courseRequirements, courseType } from '../../../../config/configListing';
+
+
+const { Money } = sdkTypes;
+const MILLION = 1000000;
 
 const TITLE_MAX_LENGTH = 60;
 
@@ -129,21 +137,25 @@ const AddListingFields = props => {
 
     return isKnownSchemaType && isTargetListingType && isProviderScope
       ? [
-          ...pickedFields,
-          <CustomExtendedDataField
-            key={namespacedKey}
-            name={namespacedKey}
-            fieldConfig={fieldConfig}
-            defaultRequiredMessage={intl.formatMessage({
-              id: 'EditListingDetailsForm.defaultRequiredMessage',
-            })}
-          />,
-        ]
+        ...pickedFields,
+        <CustomExtendedDataField
+          key={namespacedKey}
+          name={namespacedKey}
+          fieldConfig={fieldConfig}
+          defaultRequiredMessage={intl.formatMessage({
+            id: 'EditListingDetailsForm.defaultRequiredMessage',
+          })}
+        />,
+      ]
       : pickedFields;
   }, []);
 
   return <>{fields}</>;
 };
+
+
+
+
 
 // Form that asks title, description, transaction process and unit type for pricing
 // In addition, it asks about custom fields according to marketplace-custom-config.js
@@ -172,8 +184,11 @@ const EditListingDetailsFormComponent = props => (
         fetchErrors,
         listingFieldsConfig,
         values,
+        userType,
+        listingMinimumPriceSubUnits,
+        marketplaceCurrency,
+        unitType
       } = formRenderProps;
-
       const { listingType } = values;
 
       const titleRequiredMessage = intl.formatMessage({
@@ -186,6 +201,8 @@ const EditListingDetailsFormComponent = props => (
         }
       );
       const maxLength60Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH);
+
+
 
       // Show title and description only after listing type is selected
       const showTitle = listingType;
@@ -215,7 +232,7 @@ const EditListingDetailsFormComponent = props => (
               name="title"
               className={css.title}
               type="text"
-              label={intl.formatMessage({ id: 'EditListingDetailsForm.title' })}
+              label={intl.formatMessage({ id: userType === ADMIN ? 'EditListingDetailsForm.CourseTitle' : 'EditListingDetailsForm.title' })}
               placeholder={intl.formatMessage({ id: 'EditListingDetailsForm.titlePlaceholder' })}
               maxLength={TITLE_MAX_LENGTH}
               validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
@@ -223,13 +240,70 @@ const EditListingDetailsFormComponent = props => (
             />
           ) : null}
 
+          <FieldTextInput
+            id={`${formId}courseForDescription`}
+            name="courseForDescription"
+            className={css.description}
+            type="textarea"
+            label={intl.formatMessage({ id: userType === ADMIN ? 'EditListingDetailsForm.courseForDescription' : 'EditListingDetailsForm.description' })}
+            placeholder={intl.formatMessage({
+              id: 'EditListingDetailsForm.courseForDescriptionPlaceholder',
+            })}
+            validate={required(
+              intl.formatMessage({
+                id: 'EditListingDetailsForm.descriptionRequired',
+              })
+            )}
+          />
+
+          <div className={css.fieldsWrapper}>
+            <FieldSelect
+              className={css.customField}
+              name="courseType"
+              id="courseType"
+              label="Is this online, in person, or a hybrid?"
+            >
+              <option disabled value="">
+                {intl.formatMessage({ id: 'EditListingDetailsForm.selectQuantityOption' })}
+              </option>
+              {courseType.map(optionConfig => {
+                const key = optionConfig.key;
+                return (
+                  <option key={key} value={key}>
+                    {optionConfig.label}
+                  </option>
+                );
+              })}
+            </FieldSelect>
+
+            <FieldSelect
+              className={css.customField}
+              name="courseDressCode"
+              id="courseDressCode"
+              label="Select the dress code options:"
+            >
+              <option disabled value="">
+                {intl.formatMessage({ id: 'EditListingDetailsForm.selectQuantityOption' })}
+              </option>
+              {courseDressCode.map(optionConfig => {
+                const key = optionConfig.key;
+                return (
+                  <option key={key} value={key}>
+                    {optionConfig.label}
+                  </option>
+                );
+              })}
+            </FieldSelect>
+          </div>
+
           {showDescription ? (
+
             <FieldTextInput
               id={`${formId}description`}
               name="description"
               className={css.description}
               type="textarea"
-              label={intl.formatMessage({ id: 'EditListingDetailsForm.description' })}
+              label={intl.formatMessage({ id: userType === ADMIN ? 'EditListingDetailsForm.courseDescription' : 'EditListingDetailsForm.description' })}
               placeholder={intl.formatMessage({
                 id: 'EditListingDetailsForm.descriptionPlaceholder',
               })}
@@ -240,12 +314,54 @@ const EditListingDetailsFormComponent = props => (
               )}
             />
           ) : null}
+          <div className={css.fieldsWrapper}>
+            <FieldSelect
+              className={css.customField}
+              name="courseLevels"
+              id="courseLevels"
+              label="What levels are being covered?"
+            >
+              <option disabled value="">
+                {intl.formatMessage({ id: 'EditListingDetailsForm.selectQuantityOption' })}
+              </option>
+              {courseLevels.map(optionConfig => {
+                const key = optionConfig.key;
+                return (
+                  <option key={key} value={key}>
+                    {optionConfig.label}
+                  </option>
+                );
+              })}
+            </FieldSelect>
 
-          <AddListingFields
-            listingType={listingType}
-            listingFieldsConfig={listingFieldsConfig}
-            intl={intl}
-          />
+            <FieldSelect
+              className={css.customField}
+              name="courseRequirements"
+              id="courseRequirements"
+              label="What requirements are needed?"
+            >
+              <option disabled value="">
+                {intl.formatMessage({ id: 'EditListingDetailsForm.selectQuantityOption' })}
+              </option>
+              {courseRequirements.map(optionConfig => {
+                const key = optionConfig.key;
+                return (
+                  <option key={key} value={key}>
+                    {optionConfig.label}
+                  </option>
+                );
+              })}
+            </FieldSelect>
+          </div>
+
+
+
+          {/* <AddListingFields
+              listingType={listingType}
+              listingFieldsConfig={listingFieldsConfig}
+              intl={intl}
+            /> */}
+
 
           <Button
             className={css.submitButton}

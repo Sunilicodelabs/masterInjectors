@@ -8,7 +8,7 @@ import { EXTENDED_DATA_SCHEMA_TYPES, LISTING_STATE_DRAFT } from '../../../../uti
 import { isBookingProcessAlias } from '../../../../transactions/transaction';
 
 // Import shared components
-import { H3, ListingLink } from '../../../../components';
+import { H3, H5, ListingLink } from '../../../../components';
 
 // Import modules from this directory
 import ErrorMessage from './ErrorMessage';
@@ -184,12 +184,13 @@ const setNoAvailabilityForUnbookableListings = processAlias => {
  */
 const getInitialValues = (props, existingListingTypeInfo, listingTypes, listingFieldsConfig) => {
   const { description, title, publicData, privateData } = props?.listing?.attributes || {};
-  const { listingType } = publicData;
+  const { listingType ,courseForDescription} = publicData;
 
   // Initial values for the form
   return {
     title,
     description,
+    courseForDescription,
     // Transaction type info: listingType, transactionProcessAlias, unitType
     ...getTransactionInfo(listingTypes, existingListingTypeInfo),
     ...initialValuesForListingFields(publicData, 'public', listingType, listingFieldsConfig),
@@ -211,8 +212,9 @@ const EditListingDetailsPanel = props => {
     updateInProgress,
     errors,
     config,
+    userType,
+    listingMinimumPriceSubUnits
   } = props;
-
   const classes = classNames(rootClassName || css.root, className);
   const { publicData, state } = listing?.attributes || {};
   const listingTypes = config.listing.listingTypes;
@@ -242,7 +244,7 @@ const EditListingDetailsPanel = props => {
 
   return (
     <div className={classes}>
-      <H3 as="h1">
+      <H3 as="h1" className={css.SectionTitle}>
         {isPublished ? (
           <FormattedMessage
             id="EditListingDetailsPanel.title"
@@ -255,12 +257,19 @@ const EditListingDetailsPanel = props => {
           />
         )}
       </H3>
+      <H5 className={css.subTitle}>
+        <FormattedMessage 
+        id="EditListingDetailsPanel.createListingDesc"
+        />
+      </H5>
 
       {canShowEditListingDetailsForm ? (
         <EditListingDetailsForm
           className={css.form}
+          userType={userType}
           initialValues={initialValues}
           saveActionMsg={submitButtonText}
+          listingMinimumPriceSubUnits={listingMinimumPriceSubUnits}
           onSubmit={values => {
             const {
               title,
@@ -268,6 +277,7 @@ const EditListingDetailsPanel = props => {
               listingType,
               transactionProcessAlias,
               unitType,
+              courseForDescription,
               ...rest
             } = values;
 
@@ -278,6 +288,7 @@ const EditListingDetailsPanel = props => {
               publicData: {
                 listingType,
                 transactionProcessAlias,
+                courseForDescription,
                 unitType,
                 ...pickListingFieldsData(rest, 'public', listingType, listingFieldsConfig),
               },

@@ -16,11 +16,28 @@
 
 .bottomWrapper {
   composes: marketplaceModalBottomWrapper from global;
+  margin-top: 42px;
+  & button {
+    background-color: var(--marketplaceColor);
+    &:hover {
+      background-color: var(--marketplaceColor);
+    }
+  }
 }
 
 /* Adjust the bottomWrapper's margin to match modals without the helper text */
 .bottomWrapperText {
   composes: marketplaceModalBottomWrapperText from global;
+  margin-top: 17px;
+  & span {
+    color: #4a4a4a;
+  }
+  & a {
+    & span {
+      color: var(--marketplaceColor);
+      font-weight: 500;
+    }
+  }
 }
 
 .recoveryLink {

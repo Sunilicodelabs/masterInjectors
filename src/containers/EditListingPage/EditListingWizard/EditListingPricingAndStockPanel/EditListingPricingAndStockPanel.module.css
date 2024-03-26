@@ -15,3 +15,11 @@
 .priceCurrencyInvalid {
   color: var(--colorFail);
 }
+
+.SectionTitle{
+  font-size: 26px;
+  line-height: 32px;
+  padding: 0;
+  margin-bottom: 25px;
+
+}

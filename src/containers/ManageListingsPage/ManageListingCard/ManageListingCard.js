@@ -130,7 +130,9 @@ const ShowFinishDraftOverlayMaybe = props => {
           name="EditListingPage"
           params={{ id, slug, type: LISTING_PAGE_PARAM_TYPE_DRAFT, tab: 'photos' }}
         >
+          <span onClick={()=> typeof window!="undefined" && localStorage.setItem('isTemplate', 'false')}>            
           <FormattedMessage id="ManageListingCard.finishListingDraft" />
+          </span>
         </NamedLink>
       </Overlay>
     </React.Fragment>
@@ -361,7 +363,6 @@ export const ManageListingCardComponent = props => {
   const isPendingApproval = state === LISTING_STATE_PENDING_APPROVAL;
   const isClosed = state === LISTING_STATE_CLOSED;
   const isDraft = state === LISTING_STATE_DRAFT;
-
   const { listingType, transactionProcessAlias } = publicData || {};
   const isBookable = isBookingProcessAlias(transactionProcessAlias);
   const isProductOrder = isPurchaseProcessAlias(transactionProcessAlias);
@@ -555,7 +556,9 @@ export const ManageListingCardComponent = props => {
             name="EditListingPage"
             params={{ id, slug, type: editListingLinkType, tab: 'details' }}
           >
+            <span onClick={()=>typeof window!="undefined" && localStorage.setItem('isTemplate', 'false')}>
             <FormattedMessage id="ManageListingCard.editListing" />
+              </span>
           </NamedLink>
 
           <LinkToStockOrAvailabilityTab

@@ -7,11 +7,12 @@ import { FormattedMessage } from '../../../../util/reactIntl';
 import { LISTING_STATE_DRAFT } from '../../../../util/types';
 
 // Import shared components
-import { H3, ListingLink } from '../../../../components';
+import { H1, H3, H5, ListingLink } from '../../../../components';
 
 // Import modules from this directory
 import EditListingLocationForm from './EditListingLocationForm';
 import css from './EditListingLocationPanel.module.css';
+import { availabilityPlan } from '../../EditListingPage.duck';
 
 const getInitialValues = props => {
   const { listing } = props;
@@ -21,10 +22,20 @@ const getInitialValues = props => {
   // TODO bounds are missing - those need to be queried directly from Google Places
   const locationFieldsPresent = publicData?.location?.address && geolocation;
   const location = publicData?.location || {};
+  const { dateAndTime , capacity, courseHost, additionalDetails } = publicData || [];
   const { address, building } = location;
-
+  let listingdateAndTime = dateAndTime;
+  if (listingdateAndTime && listingdateAndTime.length > 0) {
+    if (listingdateAndTime.length === 1) {
+      listingdateAndTime.push({});
+    }
+} else {
+  listingdateAndTime = [{}, {}];
+}
   return {
     building,
+    capacity, courseHost, additionalDetails,
+    dateAndTime:listingdateAndTime && listingdateAndTime.length > 0 ? listingdateAndTime : [{},{}],
     location: locationFieldsPresent
       ? {
           search: address,
@@ -51,29 +62,37 @@ const EditListingLocationPanel = props => {
     errors,
   } = props;
 
+
+  const listingTittle = listing?.attributes?.title;
   const classes = classNames(rootClassName || css.root, className);
   const isPublished = listing?.id && listing?.attributes.state !== LISTING_STATE_DRAFT;
 
   return (
     <div className={classes}>
-      <H3 as="h1">
+      <H3 as="h1" className={css.SectionTitle}>
         {isPublished ? (
           <FormattedMessage
             id="EditListingLocationPanel.title"
             values={{ listingTitle: <ListingLink listing={listing} />, lineBreak: <br /> }}
           />
         ) : (
-          <FormattedMessage
-            id="EditListingLocationPanel.createListingTitle"
-            values={{ lineBreak: <br /> }}
-          />
+          listingTittle
+          // <FormattedMessage
+          //   id="EditListingLocationPanel.createListingTitle"
+          //   values={{ lineBreak: <br /> }}
+          // />
         )}
       </H3>
+      <H5 className={css.subTitle}>Create a new bookable listing for the {listingTittle}</H5>
       <EditListingLocationForm
         className={css.form}
         initialValues={state.initialValues}
         onSubmit={values => {
-          const { building = '', location } = values;
+          const { building = '', location ,dateAndTime ,capacity ,courseHost ,additionalDetails } = values;
+          const filteredDateAndTime = dateAndTime.filter(item => Object.keys(item).length !== 0);
+
+          console.log('values', values)
+          console.log('filteredDateAndTime', filteredDateAndTime)
           const {
             selectedPlace: { address, origin },
           } = location;
@@ -81,8 +100,13 @@ const EditListingLocationPanel = props => {
           // New values for listing attributes
           const updateValues = {
             geolocation: origin,
+            availabilityPlan:availabilityPlan,
             publicData: {
               location: { address, building },
+              dateAndTime:filteredDateAndTime,
+              capacity,
+              courseHost,
+              additionalDetails
             },
           };
           // Save the initialValues to state
@@ -90,8 +114,7 @@ const EditListingLocationPanel = props => {
           // and therefore re-rendering would overwrite the values during XHR call.
           setState({
             initialValues: {
-              building,
-              location: { search: address, selectedPlace: { address, origin } },
+             ...values
             },
           });
           onSubmit(updateValues);

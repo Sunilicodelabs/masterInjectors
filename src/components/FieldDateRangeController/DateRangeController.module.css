@@ -139,12 +139,12 @@
     align-items: center;
     width: 100%;
     height: var(--DateRangeController_selectionHeight);
-    background-image: url("data:image/svg+xml;utf8,<svg width='14' height='2' viewBox='0 0 14 2' xmlns='http://www.w3.org/2000/svg'><path d='M0 0h14v2H0z' fill='%234A4A4A' fill-rule='evenodd'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg width='14' height='2' viewBox='0 0 14 2' xmlns='http://www.w3.org/2000/svg'><path d='M0 0h14v2H0z' fill='%234A4A4A' fillRule='evenodd'/></svg>");
     background-position: center 28px;
   }
 
   & :global(.CalendarDay__today.CalendarDay__selected .renderedDay) {
-    background-image: url("data:image/svg+xml;utf8,<svg width='14' height='2' viewBox='0 0 14 2' xmlns='http://www.w3.org/2000/svg'><path d='M0 0h14v2H0z' fill='%23FFF' fill-rule='evenodd'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg width='14' height='2' viewBox='0 0 14 2' xmlns='http://www.w3.org/2000/svg'><path d='M0 0h14v2H0z' fill='%23FFF' fillRule='evenodd'/></svg>");
   }
 
   & :global(.CalendarDay:hover .renderedDay) {

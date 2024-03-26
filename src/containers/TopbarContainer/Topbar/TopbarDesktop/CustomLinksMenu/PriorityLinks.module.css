@@ -16,7 +16,7 @@
   font-size: 14px;
   line-height: 18px;
   letter-spacing: 0;
-  color: var(--colorGrey700);
+  color: var(--colorWhite);
 
   flex-shrink: 0;
   height: 100%;
@@ -24,7 +24,7 @@
   margin: 0;
 
   &:hover {
-    color: var(--colorBlack);
+    color: var(--colorWhite);
     border-bottom: 4px solid var(--marketplaceColor);
     border-radius: 0;
     text-decoration: none;
@@ -37,7 +37,7 @@
 }
 
 .highlight {
-  color: var(--marketplaceColor);
+  color: var(--colorWhite);
   &:hover {
     color: var(--marketplaceColorDark);
   }

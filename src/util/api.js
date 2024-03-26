@@ -144,3 +144,17 @@ export const transitionPrivileged = body => {
 export const createUserWithIdp = body => {
   return post('/api/auth/create-user-with-idp', body);
 };
+export const postCreateCustomers = body => {
+  return post('/api/chargebee/create-customer', body);
+};
+
+
+export const postCreateCourse = body => {
+  return post('/api/chargebee/create-course', body);
+};
+export const postUpdateCourse = body => {
+  return post('/api/chargebee/update-course', body);
+};
+export const postDeleteCourse = body => {
+  return post('/api/chargebee/delete-course', body);
+};

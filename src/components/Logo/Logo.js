@@ -60,15 +60,15 @@ export const LogoComponent = props => {
     const variantNames = getVariantNames(variants);
     const { width } = getVariantData(variants);
     return (
-      <div className={logoClasses} style={{ width: `${width}px` }}>
+      <div className={logoClasses} style={{ width: `${217}px` }}>
         <ResponsiveImage
           rootClassName={logoImageClasses}
           alt={marketplaceName}
           image={logoImageDesktop}
           variants={variantNames}
-          sizes={`${width}px`}
-          width={width}
-          height={logoSettings?.height}
+          sizes={`${217}px`}
+          width={217}
+          height={68}
         />
       </div>
     );

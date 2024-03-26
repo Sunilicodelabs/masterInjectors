@@ -261,13 +261,7 @@ export const loadData = (params, search, config) => {
         'title',
         'geolocation',
         'price',
-        'publicData.listingType',
-        'publicData.transactionProcessAlias',
-        'publicData.unitType',
-        // These help rendering of 'purchase' listings,
-        // when transitioning from search page to listing page
-        'publicData.pickupEnabled',
-        'publicData.shippingEnabled',
+        'publicData'
       ],
       'fields.user': ['profile.displayName', 'profile.abbreviatedName'],
       'fields.image': [

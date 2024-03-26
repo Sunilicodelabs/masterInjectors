@@ -35,10 +35,66 @@
 .submitButton {
   margin-top: auto;
   margin-bottom: 24px;
+  color: var(--White, #FFF);
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.267px;
+  text-transform: uppercase;
 
   @media (--viewportLarge) {
     display: inline-block;
     width: 241px;
-    margin-top: 100px;
+    margin-top: 48px;
+    height: 64px;
+    border-radius: 0;
   }
+}
+
+.fieldsWrapper {
+  display: flex;
+  gap: 22px;
+  margin-bottom: 29px;
+  & > div {
+    flex: 1;
+  }
+}
+
+.fieldsWrapperWithBtn {
+  display: flex;
+  gap: 22px;
+  padding-right: 5px;
+  & .inputBox {
+    flex: 1;
+  }
+  & .addValue {
+    display: flex;
+    align-items: center;
+    margin-top: 26px;
+    cursor: pointer;
+    width: 35px;
+  }
+}
+
+.lineItem{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 18px;
+  margin-right: 10px;
+  & div{
+    & svg{
+      margin-right: 10px;
+    }
+  }
+  & .tagClose{
+    & svg{
+      fill: transparent;
+    }
+  }
+}
+
+.checkbox{
+  margin-top: 18px;
 }

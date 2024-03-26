@@ -2,6 +2,7 @@
 
 .root {
   flex-grow: 1;
+  
 }
 
 .contentContainer {
@@ -11,7 +12,7 @@
 
   @media (--viewportMedium) {
     height: unset;
-    min-height: unset;
+    min-height: 876px;
   }
 }
 
@@ -22,7 +23,28 @@
   @media (--viewportMedium) {
     margin-top: 5vh;
     margin-bottom: 7.5vh;
-    min-height: 700px;
+    /* min-height: 700px; */
+    max-height: 750px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+      background: #ddd;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #383F52;;
+      border-radius: 6px;
+      outline: 1px solid #fff;
+    }
+  }
+  & nav{
+   
+    min-height: 49px;
+   
   }
 }
 
@@ -31,6 +53,9 @@
 .tabs {
   @media (--viewportMedium) {
     margin-top: 6px;
+  }
+  & a{
+    padding: 0 0 6px;
   }
 }
 
@@ -44,6 +69,7 @@
     padding: 0;
     margin-top: 0;
   }
+ 
 }
 
 .form {

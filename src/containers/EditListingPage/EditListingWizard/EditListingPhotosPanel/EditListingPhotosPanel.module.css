@@ -37,3 +37,10 @@
 .modalMessage {
   composes: marketplaceModalParagraphStyles from global;
 }
+
+.SectionTitle {
+  font-size: 26px;
+  line-height: 32px;
+  padding: 0;
+  margin-bottom: 26px;
+}

@@ -15,6 +15,7 @@ import { storableError } from '../../util/errors';
 import * as log from '../../util/log';
 import { parse } from '../../util/urlHelpers';
 import { isBookingProcessAlias } from '../../transactions/transaction';
+const RESULT_PAGE_SIZE = 24;
 
 import { addMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import {
@@ -23,6 +24,9 @@ import {
   fetchStripeAccount,
 } from '../../ducks/stripeConnectAccount.duck';
 import { fetchCurrentUser } from '../../ducks/user.duck';
+import { isOriginInUse } from '../../util/search';
+import moment from 'moment';
+import {  postCreateCourse, postUpdateCourse } from '../../util/api';
 
 const { UUID } = sdkTypes;
 
@@ -55,13 +59,13 @@ const updateUploadedImagesState = (state, payload) => {
   );
   return duplicateImageEntities.length > 0
     ? {
-        uploadedImages: {},
-        uploadedImagesOrder: [],
-      }
+      uploadedImages: {},
+      uploadedImagesOrder: [],
+    }
     : {
-        uploadedImages,
-        uploadedImagesOrder,
-      };
+      uploadedImages,
+      uploadedImagesOrder,
+    };
 };
 
 const getImageVariantInfo = listingImageConfig => {
@@ -87,14 +91,14 @@ const sortExceptionsByStartTime = (a, b) => {
 const mergeToWeeklyExceptionQueries = (weeklyExceptionQueries, weekStartId, newDataProps) => {
   return weekStartId
     ? {
-        weeklyExceptionQueries: {
-          ...weeklyExceptionQueries,
-          [weekStartId]: {
-            ...weeklyExceptionQueries[weekStartId],
-            ...newDataProps,
-          },
+      weeklyExceptionQueries: {
+        ...weeklyExceptionQueries,
+        [weekStartId]: {
+          ...weeklyExceptionQueries[weekStartId],
+          ...newDataProps,
         },
-      }
+      },
+    }
     : {};
 };
 // When navigating through monthly calendar (e.g. when adding a new AvailabilityException),
@@ -102,14 +106,14 @@ const mergeToWeeklyExceptionQueries = (weeklyExceptionQueries, weekStartId, newD
 const mergeToMonthlyExceptionQueries = (monthlyExceptionQueries, monthId, newDataProps) => {
   return monthId
     ? {
-        monthlyExceptionQueries: {
-          ...monthlyExceptionQueries,
-          [monthId]: {
-            ...monthlyExceptionQueries[monthId],
-            ...newDataProps,
-          },
+      monthlyExceptionQueries: {
+        ...monthlyExceptionQueries,
+        [monthId]: {
+          ...monthlyExceptionQueries[monthId],
+          ...newDataProps,
         },
-      }
+      },
+    }
     : {};
 };
 
@@ -168,6 +172,17 @@ export const SAVE_PAYOUT_DETAILS_REQUEST = 'app/EditListingPage/SAVE_PAYOUT_DETA
 export const SAVE_PAYOUT_DETAILS_SUCCESS = 'app/EditListingPage/SAVE_PAYOUT_DETAILS_SUCCESS';
 export const SAVE_PAYOUT_DETAILS_ERROR = 'app/EditListingPage/SAVE_PAYOUT_DETAILS_ERROR';
 
+
+export const SEARCH_LISTINGS_REQUEST = 'app/TemplatePage/SEARCH_LISTINGS_REQUEST';
+export const SEARCH_LISTINGS_SUCCESS = 'app/TemplatePage/SEARCH_LISTINGS_SUCCESS';
+export const SEARCH_LISTINGS_ERROR = 'app/TemplatePage/SEARCH_LISTINGS_ERROR';
+
+export const SEARCH_MAP_LISTINGS_REQUEST = 'app/TemplatePage/SEARCH_MAP_LISTINGS_REQUEST';
+export const SEARCH_MAP_LISTINGS_SUCCESS = 'app/TemplatePage/SEARCH_MAP_LISTINGS_SUCCESS';
+export const SEARCH_MAP_LISTINGS_ERROR = 'app/TemplatePage/SEARCH_MAP_LISTINGS_ERROR';
+
+export const SEARCH_MAP_SET_ACTIVE_LISTING = 'app/TemplatePage/SEARCH_MAP_SET_ACTIVE_LISTING';
+
 // ================ Reducer ================ //
 
 const initialState = {
@@ -208,7 +223,14 @@ const initialState = {
   updateInProgress: false,
   payoutDetailsSaveInProgress: false,
   payoutDetailsSaved: false,
+
+  pagination: null,
+  searchParams: null,
+  searchInProgress: false,
+  searchListingsError: null,
+  currentPageResultIds: [],
 };
+const resultIds = data => data.data.map(l => l.id);
 
 export default function reducer(state = initialState, action = {}) {
   const { type, payload } = action;
@@ -291,12 +313,12 @@ export default function reducer(state = initialState, action = {}) {
       // If listing stays the same, we trust previously fetched exception data.
       return listingIdFromPayload?.uuid === state.listingId?.uuid
         ? {
-            ...initialState,
-            listingId,
-            allExceptions,
-            weeklyExceptionQueries,
-            monthlyExceptionQueries,
-          }
+          ...initialState,
+          listingId,
+          allExceptions,
+          weeklyExceptionQueries,
+          monthlyExceptionQueries,
+        }
         : { ...initialState, listingId: listingIdFromPayload };
     }
     case SHOW_LISTINGS_ERROR:
@@ -311,8 +333,8 @@ export default function reducer(state = initialState, action = {}) {
       const exceptionQueriesMaybe = monthId
         ? mergeToMonthlyExceptionQueries(state.monthlyExceptionQueries, monthId, newData)
         : weekStartId
-        ? mergeToWeeklyExceptionQueries(state.weeklyExceptionQueries, weekStartId, newData)
-        : {};
+          ? mergeToWeeklyExceptionQueries(state.weeklyExceptionQueries, weekStartId, newData)
+          : {};
       return { ...state, ...exceptionQueriesMaybe };
     }
     case FETCH_EXCEPTIONS_SUCCESS: {
@@ -325,8 +347,8 @@ export default function reducer(state = initialState, action = {}) {
       const exceptionQueriesMaybe = monthId
         ? mergeToMonthlyExceptionQueries(state.monthlyExceptionQueries, monthId, newData)
         : weekStartId
-        ? mergeToWeeklyExceptionQueries(state.weeklyExceptionQueries, weekStartId, newData)
-        : {};
+          ? mergeToWeeklyExceptionQueries(state.weeklyExceptionQueries, weekStartId, newData)
+          : {};
       return { ...state, allExceptions, ...exceptionQueriesMaybe };
     }
     case FETCH_EXCEPTIONS_ERROR: {
@@ -336,8 +358,8 @@ export default function reducer(state = initialState, action = {}) {
       const exceptionQueriesMaybe = monthId
         ? mergeToMonthlyExceptionQueries(state.monthlyExceptionQueries, monthId, newData)
         : weekStartId
-        ? mergeToWeeklyExceptionQueries(state.weeklyExceptionQueries, weekStartId, newData)
-        : {};
+          ? mergeToWeeklyExceptionQueries(state.weeklyExceptionQueries, weekStartId, newData)
+          : {};
 
       return { ...state, ...exceptionQueriesMaybe };
     }
@@ -452,6 +474,32 @@ export default function reducer(state = initialState, action = {}) {
     case SAVE_PAYOUT_DETAILS_SUCCESS:
       return { ...state, payoutDetailsSaveInProgress: false, payoutDetailsSaved: true };
 
+    case SEARCH_LISTINGS_REQUEST:
+      return {
+        ...state,
+        searchParams: payload.searchParams,
+        searchInProgress: true,
+        searchMapListingIds: [],
+        searchListingsError: null,
+      };
+    case SEARCH_LISTINGS_SUCCESS:
+      return {
+        ...state,
+        currentPageResultIds: resultIds(payload.data),
+        pagination: payload.data.meta,
+        searchInProgress: false,
+      };
+    case SEARCH_LISTINGS_ERROR:
+      // eslint-disable-next-line no-console
+      console.error(payload);
+      return { ...state, searchInProgress: false, searchListingsError: payload };
+
+    case SEARCH_MAP_SET_ACTIVE_LISTING:
+      return {
+        ...state,
+        activeListingId: payload,
+      };
+
     default:
       return state;
   }
@@ -473,6 +521,23 @@ export const clearUpdatedTab = () => ({
 export const removeListingImage = imageId => ({
   type: REMOVE_LISTING_IMAGE,
   payload: { imageId },
+});
+
+
+export const searchListingsRequest = searchParams => ({
+  type: SEARCH_LISTINGS_REQUEST,
+  payload: { searchParams },
+});
+
+export const searchListingsSuccess = response => ({
+  type: SEARCH_LISTINGS_SUCCESS,
+  payload: { data: response.data },
+});
+
+export const searchListingsError = e => ({
+  type: SEARCH_LISTINGS_ERROR,
+  error: true,
+  payload: e,
 });
 
 // All the action creators that don't have the {Success, Error} suffix
@@ -632,6 +697,32 @@ export function requestCreateListingDraft(data, config) {
   };
 }
 
+
+export const onCreateAvalabiltyException = (data) => (dispatch, getState, sdk) => {
+
+  const { dateAndTime, capacity = 1 } = data.publicData;
+  return sdk.availabilityExceptions.query({
+    listingId: data.id,
+    start: moment().toDate(),
+    end: moment().add(364, "days").toDate()
+  }).then(async res => {
+    // res.data contains the response data
+    for (let i = 0; i < dateAndTime.length; i++) {
+      const { date, startTime, endTime } = dateAndTime[i];
+      const findIndexDeleteValue = res.data.data.findIndex((st => moment(st.attributes.start).format("YYYY-MM-DD") == date));
+      if (res.data.data.length && findIndexDeleteValue >= 0) {
+        const deleteException = await sdk.availabilityExceptions.delete({
+          id: res.data.data[findIndexDeleteValue].id,
+        });
+      }
+
+      const createException = await sdk.availabilityExceptions.create({ listingId: data.id, start: moment(`${date} ${startTime}`).toDate(), end: moment(`${date} ${endTime}`).toDate(), seats: capacity });
+
+    }
+
+  });
+}
+
 // Update the given tab of the wizard with the given data. This saves
 // the data to the listing, and marks the tab updated so the UI can
 // display the state.
@@ -661,10 +752,27 @@ export function requestUpdateListing(tab, data, config) {
     // That way we get updated currentStock info among ownListings.update
     return updateStockOfListingMaybe(id, stockUpdate, dispatch)
       .then(() => sdk.ownListings.update(ownListingUpdateValues, queryParams))
-      .then(response => {
+      .then(async response => {
+        
+        if (tab == "location" && data && data.availabilityPlan) {
+          await dispatch(onCreateAvalabiltyException(data));
+        }
+
         dispatch(updateListingSuccess(response));
         dispatch(addMarketplaceEntities(response));
         dispatch(markTabUpdated(tab));
+        console.log('ram',tab, data, config);
+        const id = response.data.data.id.uuid;
+        console.log(response.data.data,response.data.data.attributes);
+        const {
+          title = "",
+          price,
+          state
+        } = response.data.data.attributes || {};
+        if(state == 'published'){
+           postUpdateCourse({id:id,name: title, type: 'charge',item_family_id: "Package",price: (price && price.amount)? price.amount : null})
+        }
+       
 
         // If time zone has changed, we need to fetch exceptions again
         // since week and month boundaries might have changed.
@@ -690,6 +798,13 @@ export const requestPublishListingDraft = listingId => (dispatch, getState, sdk)
   return sdk.ownListings
     .publishDraft({ id: listingId }, { expand: true })
     .then(response => {
+      const id = response.data.data.id.uuid;
+      console.log(response.data.data,response.data.data.attributes);
+      const {
+        title = "",
+        price,
+      } = response.data.data.attributes || {};
+      postCreateCourse({id:id,name: title, type: 'charge',item_family_id: "Package",price: (price && price.amount)? price.amount : null})
       // Add the created listing to the marketplace data
       dispatch(addMarketplaceEntities(response));
       dispatch(publishListingSuccess(response));
@@ -903,12 +1018,80 @@ export const savePayoutDetails = (values, isUpdateCall) => (dispatch, getState, 
     .catch(() => dispatch(savePayoutDetailsError()));
 };
 
+
+export const searchListings = (config) => (dispatch, getState, sdk) => {
+
+  const originMaybe = isOriginInUse(config) && origin ? { origin } : {};
+  const {
+    aspectWidth = 1,
+    aspectHeight = 1,
+    variantPrefix = 'listing-card',
+  } = config.layout.listingImage;
+  const aspectRatio = aspectHeight / aspectWidth;
+  const imageVariantConfig = {
+    ...createImageVariantConfig(`${variantPrefix}`, 400, aspectRatio),
+    ...createImageVariantConfig(`${variantPrefix}-2x`, 800, aspectRatio),
+  };
+
+  // Merge all parameters
+  const searchParamsMerged = {
+    ...originMaybe,
+    // meta_isTemplate:true,
+    perPage: RESULT_PAGE_SIZE,
+    include: ['author', 'images'],
+    'fields.listing': [
+      'title',
+      'description',
+      'geolocation',
+      'price',
+      'publicData',
+    ],
+    'fields.user': ['profile.displayName', 'profile.abbreviatedName'],
+    'fields.image': [
+      'variants.scaled-small',
+      'variants.scaled-medium',
+      `variants.${variantPrefix}`,
+      `variants.${variantPrefix}-2x`,
+    ],
+    ...imageVariantConfig,
+    'limit.images': 1,
+    // ...searchValidListingTypes(config.listing.listingTypes),
+  };
+
+  // Query listings using SDK
+  return sdk.listings
+    .query(searchParamsMerged)
+    .then(response => {
+      const listingFields = config?.listing?.listingFields;
+      const sanitizeConfig = { listingFields };
+
+      // Dispatch action to add listings to store
+      dispatch(addMarketplaceEntities(response, sanitizeConfig));
+      // Dispatch action to indicate successful search
+      dispatch(searchListingsSuccess(response));
+      return response;
+    })
+    .catch(e => {
+      // Dispatch action to indicate search error
+      dispatch(searchListingsError(storableError(e)));
+      throw e;
+    });
+};
+
+export const setActiveListing = listingId => ({
+  type: SEARCH_MAP_SET_ACTIVE_LISTING,
+  payload: listingId,
+});
+
+
+
 // loadData is run for each tab of the wizard. When editing an
 // existing listing, the listing must be fetched first.
 export const loadData = (params, search, config) => (dispatch, getState, sdk) => {
   dispatch(clearUpdatedTab());
   const { id, type } = params;
 
+  dispatch(searchListings(config))
   if (type === 'new') {
     // No need to listing data when creating a new listing
     return Promise.all([dispatch(fetchCurrentUser())])
@@ -947,3 +1130,17 @@ export const loadData = (params, search, config) => (dispatch, getState, sdk) =>
       throw e;
     });
 };
+
+export const availabilityPlan = {
+  type: 'availability-plan/time',
+  timezone: typeof window !== 'undefined' ? getDefaultTimeZoneOnBrowser() : 'Etc/UTC',
+  entries: [
+    { dayOfWeek: 'mon', startTime: '00:00', endTime: '23:55', seats: 0, },
+    { dayOfWeek: 'tue', startTime: '00:00', endTime: '23:55', seats: 0, },
+    { dayOfWeek: 'wed', startTime: '00:00', endTime: '23:55', seats: 0, },
+    { dayOfWeek: 'thu', startTime: '00:00', endTime: '23:55', seats: 0, },
+    { dayOfWeek: 'fri', startTime: '00:00', endTime: '23:55', seats: 0, },
+    { dayOfWeek: 'sat', startTime: '00:00', endTime: '23:55', seats: 0, },
+    { dayOfWeek: 'sun', startTime: '00:00', endTime: '23:55', seats: 0, },
+  ]
+}; 

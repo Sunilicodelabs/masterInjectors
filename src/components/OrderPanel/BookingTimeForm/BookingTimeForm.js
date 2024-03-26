@@ -173,7 +173,7 @@ export class BookingTimeFormComponent extends Component {
                 </PrimaryButton>
               </div>
 
-              <p className={css.finePrint}>
+              {/* <p className={css.finePrint}>
                 {payoutDetailsWarning ? (
                   payoutDetailsWarning
                 ) : (
@@ -185,7 +185,7 @@ export class BookingTimeFormComponent extends Component {
                     }
                   />
                 )}
-              </p>
+              </p> */}
             </Form>
           );
         }}

@@ -416,7 +416,7 @@ export const AuthenticationPageComponent = props => {
   if (isAuthenticated && from) {
     return <Redirect to={from} />;
   } else if (isAuthenticated && currentUserLoaded && !showEmailVerification) {
-    return <NamedRedirect name="LandingPage" />;
+    return <NamedRedirect name="CoursesPage" />;
   }
 
   const resendErrorTranslationId = isTooManyEmailVerificationRequestsError(
@@ -456,8 +456,7 @@ export const AuthenticationPageComponent = props => {
       <LayoutSingleColumn
         mainColumnClassName={css.layoutWrapperMain}
         topbar={<TopbarContainer className={topbarClasses} />}
-        footer={<FooterContainer />}
-      >
+        footer={<FooterContainer currentPage="AuthPage"/>}      >
         <ResponsiveBackgroundImageContainer
           className={css.root}
           childrenWrapperClassName={css.contentContainer}
@@ -530,6 +529,7 @@ export const AuthenticationPageComponent = props => {
           />
         </div>
       </Modal>
+      
     </Page>
   );
 };

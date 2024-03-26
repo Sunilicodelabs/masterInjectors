@@ -22,7 +22,7 @@
    * In the future, we are planning to bring more --marketplace* CSS Properties
    * from hosted assets, which means that they could be managed through Console.
    */
-  --marketplaceColor: #5d2bc0; /* hsl(260, 63%, 46%) */
+  --marketplaceColor: #FC0483; /* hsl(260, 63%, 46%) */
   --marketplaceColorLight: #7748d5; /* hsl(260, 63%, 56%), +10L from marketplaceColor */
   --marketplaceColorDark: #492296; /* hsl(260, 63%, 26%), -10L from marketplaceColor */
 
@@ -48,7 +48,7 @@
   --colorGrey400: hsl(240 3% 60%);
   --colorGrey500: hsl(240 3% 50%);
   --colorGrey600: hsl(240 3% 40%);
-  --colorGrey700: hsl(240 3% 30%);
+  --colorGrey700: #4A4A4A;
   --colorGrey800: hsl(240 3% 20%);
   --colorGrey900: hsl(240 3% 10%);
   --colorBlack: hsl(0 0% 0%);
@@ -56,7 +56,7 @@
   --colorLightTransparent: rgba(255, 255, 255, 0.65);
 
   /* ================ Font ================ */
-  --fontFamily: -apple-system, BlinkMacSystemFont, 'Inter', Helvetica, Arial, sans-serif,
+  --fontFamily: 'Montserrat', 'Inter', Helvetica, Arial, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 
   --fontWeightRegular: 400;
@@ -74,7 +74,7 @@
    * Note: changing --contentMaxWidth does not affect layouts with LayoutSideNavigation or search pages.
    */
   --contentMaxWidth: 1056px;
-  --contentMaxWidthPages: 1120px; /* calc(Global width (1056px) + (Horizontal padding (32px) * 2) */
+  --contentMaxWidthPages: 1410px; /* calc(Global width (1056px) + (Horizontal padding (32px) * 2) */
 
   /* Multiples of mobile and desktop spacing units should be used with margins and paddings. */
   --spacingUnit: 6px;
@@ -118,7 +118,7 @@
   /* ================ Topbar related ================ */
 
   --topbarHeight: 60px;
-  --topbarHeightDesktop: 72px;
+  --topbarHeightDesktop: 80px;
 
   --TopbarMobileMenu_topMargin: 96px;
 
@@ -402,20 +402,22 @@ legend {
 }
 
 label {
-  font-weight: var(--fontWeightSemiBold);
+  font-weight: var(--fontWeightMedium);
   font-size: 13px;
   line-height: 18px;
   display: block;
   margin-top: 0;
   margin-bottom: 6px;
+  color: #4A4A4A;
+
 
   @media (--viewportMedium) {
-    font-weight: var(--fontWeightSemiBold);
+    font-weight: var(--fontWeightMedium);
     line-height: 16px;
     margin-top: 0;
     margin-bottom: 0;
     padding-top: 3px;
-    padding-bottom: 13px;
+    padding-bottom: 5px;
   }
 }
 
@@ -429,7 +431,8 @@ select,
 input,
 textarea {
   font-family: var(--fontFamily);
-  font-size: 16px;
+  font-size: 14px;
+
 }
 
 select {
@@ -457,9 +460,10 @@ select {
   appearance: none;
 
   /* Background */
-  background-image: url("data:image/svg+xml,%3Csvg width='10' height='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%232D4053' stroke='%232D4053' stroke-width='.5' fill-rule='evenodd'%3E%3Cpath d='M4.687 15.315a.443.443 0 0 0 .626 0l3.557-3.556a.446.446 0 0 0-.629-.629L5 14.37l-3.241-3.24a.445.445 0 0 0-.629.63l3.557 3.553v.002ZM5.313 1.13a.443.443 0 0 0-.626 0L1.13 4.685a.446.446 0 0 0 .629.63L5 2.074l3.241 3.24a.445.445 0 0 0 .629-.629L5.313 1.131V1.13Z'/%3E%3C/g%3E%3C/svg%3E");
+  /* background-image: url("data:image/svg+xml,%3Csvg width='10' height='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%232D4053' stroke='%232D4053' stroke-width='.5' fillRule='evenodd'%3E%3Cpath d='M4.687 15.315a.443.443 0 0 0 .626 0l3.557-3.556a.446.446 0 0 0-.629-.629L5 14.37l-3.241-3.24a.445.445 0 0 0-.629.63l3.557 3.553v.002ZM5.313 1.13a.443.443 0 0 0-.626 0L1.13 4.685a.446.446 0 0 0 .629.63L5 2.074l3.241 3.24a.445.445 0 0 0 .629-.629L5.313 1.131V1.13Z'/%3E%3C/g%3E%3C/svg%3E"); */
   background-position: center right 12px;
-  background-size: 8px 14px;
+  background-size: 4px 8px;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='7' viewBox='0 0 10 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fillRule='evenodd' clipRule='evenodd' d='M4.68579 5.75897C4.86 5.9323 5.14 5.9323 5.31421 5.75897L8.86967 2.20352C9.04344 2.0293 9.04344 1.74842 8.86967 1.57509C8.6959 1.40087 8.41457 1.40087 8.24124 1.57509L5 4.81589L1.75876 1.57509C1.58498 1.40087 1.30366 1.40087 1.13033 1.57509C0.956557 1.74842 0.956557 2.0293 1.13033 2.20352L4.68579 5.75897Z' fill='%234A4A4A' stroke='%234A4A4A'/%3E%3C/svg%3E%0A");
 
   &::placeholder {
     color: var(--colorGrey300);
@@ -469,7 +473,7 @@ select {
     padding: 7px 32px 7px 16px;
     line-height: 32px;
     background-position: center right 16px;
-    background-size: 10px 16px;
+    background-size: 8px 10px;
   }
 }
 /* Effects */
@@ -516,7 +520,7 @@ textarea {
 
   @media (--viewportMedium) {
     /* 7 + 32 + 7 + borders = 48, which is divisible by 8. */
-    padding: 7px 16px 7px 16px;
+    padding: 3px 16px 3px 16px;
     line-height: 32px;
   }
 }
@@ -1257,6 +1261,8 @@ textarea {
     margin-top: 12.5vh;
     margin-bottom: 12.5vh;
     border-bottom: 8px solid var(--marketplaceColor);
+    border-radius: 4px;
+
   }
 }
 
@@ -1288,26 +1294,31 @@ textarea {
 /* Modal title */
 .marketplaceModalTitleStyles {
   font-weight: var(--fontWeightBold);
-  font-size: 30px;
+  font-size: 23px;
   line-height: 36px;
   margin: 0;
 
   @media (--viewportMedium) {
     font-weight: var(--fontWeightBold);
-    line-height: 40px;
+    line-height: 32px;
     margin: 0;
   }
 }
 
 /* Modal message */
 .marketplaceModalParagraphStyles {
-  font-size: 20px;
-  line-height: 32px;
-  font-weight: var(--fontWeightMedium);
+  color: #4A4A4A;
+
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px; /* 123.077% */
+  letter-spacing: -0.2px;
   margin: 18px 0 0 0;
 
   @media (--viewportMedium) {
-    margin: 24px 0 0 0;
+    margin: 12px 0 0 0;
+    padding: 0;
   }
 }
 

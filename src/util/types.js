@@ -271,6 +271,10 @@ export const BOOKING_STATES = [
   BOOKING_STATE_CANCELLED,
 ];
 
+// userTypes
+export const ADMIN = "admin";
+
+
 // Denormalised booking object
 propTypes.booking = shape({
   id: propTypes.uuid.isRequired,
